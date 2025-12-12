@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "proofpack://receipts/compaction",
+  "allOf": [{"$ref": "_base.schema.json"}],
+  "properties": {
+    "receipt_type": {"const": "compaction"},
+    "input_span": {
+      "type": "object",
+      "properties": {
+        "start": {"type": "string", "format": "date-time"},
+        "end": {"type": "string", "format": "date-time"}
+      },
+      "required": ["start", "end"]
+    },
+    "output_span": {
+      "type": "object",
+      "properties": {
+        "start": {"type": "string", "format": "date-time"},
+        "end": {"type": "string", "format": "date-time"}
+      },
+      "required": ["start", "end"]
+    },
+    "counts": {
+      "type": "object",
+      "properties": {
+        "before": {"type": "integer"},
+        "after": {"type": "integer"}
+      },
+      "required": ["before", "after"]
+    },
+    "sums": {
+      "type": "object",
+      "properties": {
+        "before": {"type": "number"},
+        "after": {"type": "number"}
+      }
+    },
+    "hash_continuity": {"type": "boolean"}
+  },
+  "required": ["input_span", "output_span", "counts", "hash_continuity"]
+}

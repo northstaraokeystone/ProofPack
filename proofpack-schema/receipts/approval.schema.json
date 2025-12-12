@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "proofpack://receipts/approval",
+  "allOf": [{"$ref": "_base.schema.json"}],
+  "properties": {
+    "receipt_type": {"const": "approval"},
+    "action_proposed": {"type": "string"},
+    "risk_score": {"type": "number", "minimum": 0, "maximum": 1},
+    "decision": {"enum": ["approved", "rejected", "deferred"]},
+    "approver": {"type": "string"},
+    "rationale": {"type": "string"},
+    "requires_second_approval": {"type": "boolean"}
+  },
+  "required": ["action_proposed", "risk_score", "decision", "approver"]
+}

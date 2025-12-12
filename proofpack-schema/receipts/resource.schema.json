@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "proofpack://receipts/resource",
+  "allOf": [{"$ref": "_base.schema.json"}],
+  "properties": {
+    "receipt_type": {"const": "resource"},
+    "compute_used": {"type": "number"},
+    "memory_used": {"type": "number"},
+    "io_operations": {"type": "integer"},
+    "cycle_duration_ms": {"type": "number"},
+    "cost": {
+      "type": "object",
+      "properties": {
+        "compute": {"type": "number"},
+        "storage": {"type": "number"}
+      }
+    }
+  }
+}

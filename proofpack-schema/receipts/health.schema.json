@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "proofpack://receipts/health",
+  "allOf": [{"$ref": "_base.schema.json"}],
+  "properties": {
+    "receipt_type": {"const": "decision_health"},
+    "strength": {"type": "number", "minimum": 0, "maximum": 1},
+    "coverage": {"type": "number", "minimum": 0, "maximum": 1},
+    "efficiency": {"type": "number"},
+    "thresholds": {
+      "type": "object",
+      "properties": {
+        "min_strength": {"type": "number"}
+      }
+    },
+    "policy_diffs": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "reason": {"type": "string"}
+  },
+  "required": ["strength", "coverage", "efficiency"]
+}

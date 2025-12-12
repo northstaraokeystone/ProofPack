@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "proofpack://receipts/packet",
+  "allOf": [{"$ref": "_base.schema.json"}],
+  "properties": {
+    "receipt_type": {"const": "packet"},
+    "packet_id": {"type": "string"},
+    "brief_id": {"type": "string"},
+    "attached_receipts": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "merkle_anchor": {"type": "string"},
+    "consistency_score": {"type": "number", "minimum": 0, "maximum": 1}
+  },
+  "required": ["packet_id", "brief_id", "attached_receipts"]
+}
