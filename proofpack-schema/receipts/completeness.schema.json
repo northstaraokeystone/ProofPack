@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "proofpack://receipts/completeness",
+  "allOf": [{"$ref": "_base.schema.json"}],
+  "properties": {
+    "receipt_type": {"const": "completeness"},
+    "levels": {
+      "type": "object",
+      "properties": {
+        "L0": {"$ref": "#/$defs/level_status"},
+        "L1": {"$ref": "#/$defs/level_status"},
+        "L2": {"$ref": "#/$defs/level_status"},
+        "L3": {"$ref": "#/$defs/level_status"},
+        "L4": {"$ref": "#/$defs/level_status"}
+      },
+      "required": ["L0", "L1", "L2", "L3", "L4"]
+    },
+    "feedback_active": {"type": "boolean"},
+    "self_verifying": {"type": "boolean"}
+  },
+  "$defs": {
+    "level_status": {
+      "type": "object",
+      "properties": {
+        "coverage": {"type": "number", "minimum": 0, "maximum": 1},
+        "status": {"enum": ["complete", "partial", "missing"]}
+      },
+      "required": ["coverage", "status"]
+    }
+  },
+  "required": ["levels", "self_verifying"]
+}

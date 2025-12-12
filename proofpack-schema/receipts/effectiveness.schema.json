@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "proofpack://receipts/effectiveness",
+  "allOf": [{"$ref": "_base.schema.json"}],
+  "properties": {
+    "receipt_type": {"const": "effectiveness"},
+    "helper_id": {"type": "string"},
+    "measurement_window": {"type": "string"},
+    "actions_taken": {"type": "integer"},
+    "effectiveness_score": {"type": "number", "minimum": -1, "maximum": 1},
+    "trend": {"enum": ["improving", "stable", "declining"]},
+    "status": {"enum": ["active", "dormant", "retired"]}
+  },
+  "required": ["helper_id", "effectiveness_score", "status"]
+}

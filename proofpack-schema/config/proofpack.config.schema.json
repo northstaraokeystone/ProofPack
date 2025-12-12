@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "proofpack://config/proofpack",
+  "type": "object",
+  "properties": {
+    "proofpack": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "hash_strategy": {
+          "type": "object",
+          "properties": {
+            "algorithm": {
+              "type": "array",
+              "const": ["SHA256", "BLAKE3"]
+            }
+          },
+          "required": ["algorithm"]
+        },
+        "modules": {
+          "type": "object",
+          "properties": {
+            "qed": {"$ref": "#/$defs/module_config"},
+            "ledger": {"$ref": "#/$defs/module_config"},
+            "brief": {"$ref": "#/$defs/module_config"},
+            "packet": {"$ref": "#/$defs/module_config"},
+            "detect": {"$ref": "#/$defs/module_config"},
+            "anchor": {"$ref": "#/$defs/module_config"},
+            "loop": {"$ref": "#/$defs/module_config"}
+          }
+        }
+      },
+      "required": ["version", "modules"]
+    }
+  },
+  "$defs": {
+    "module_config": {
+      "type": "object",
+      "properties": {
+        "enabled": {"type": "boolean"}
+      },
+      "required": ["enabled"]
+    }
+  },
+  "required": ["proofpack"]
+}

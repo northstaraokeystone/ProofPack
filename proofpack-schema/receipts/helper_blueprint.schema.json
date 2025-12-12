@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "proofpack://receipts/helper_blueprint",
+  "allOf": [{"$ref": "_base.schema.json"}],
+  "properties": {
+    "receipt_type": {"const": "helper_blueprint"},
+    "blueprint_id": {"type": "string"},
+    "origin": {
+      "type": "object",
+      "properties": {
+        "gap_count": {"type": "integer"},
+        "total_human_hours_saved": {"type": "number"}
+      }
+    },
+    "pattern": {
+      "type": "object",
+      "properties": {
+        "trigger": {"type": "string"},
+        "action": {"type": "string"},
+        "parameters": {"type": "object"}
+      },
+      "required": ["trigger", "action"]
+    },
+    "validation": {
+      "type": "object",
+      "properties": {
+        "backtested_gaps": {"type": "integer"},
+        "would_have_resolved": {"type": "integer"},
+        "success_rate": {"type": "number", "minimum": 0, "maximum": 1}
+      }
+    },
+    "risk_score": {"type": "number", "minimum": 0, "maximum": 1},
+    "requires_approval": {"type": "boolean"},
+    "status": {
+      "enum": ["proposed", "approved", "active", "dormant", "retired"]
+    }
+  },
+  "required": ["blueprint_id", "pattern", "risk_score", "status"]
+}

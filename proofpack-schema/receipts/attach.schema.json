@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "proofpack://receipts/attach",
+  "allOf": [{"$ref": "_base.schema.json"}],
+  "properties": {
+    "receipt_type": {"const": "attach"},
+    "claim_id": {"type": "string"},
+    "receipt_ids": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  },
+  "required": ["claim_id", "receipt_ids"]
+}

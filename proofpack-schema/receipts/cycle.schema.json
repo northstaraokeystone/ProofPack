@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "proofpack://receipts/cycle",
+  "allOf": [{"$ref": "_base.schema.json"}],
+  "properties": {
+    "receipt_type": {"const": "cycle"},
+    "cycle_id": {"type": "string"},
+    "phases_completed": {
+      "type": "array",
+      "items": {"enum": ["SENSE", "ANALYZE", "HARVEST", "HYPOTHESIZE", "GATE", "ACTUATE", "EMIT"]}
+    },
+    "duration_ms": {"type": "number"},
+    "entropy_delta": {"type": "number"},
+    "gaps_found": {"type": "integer"},
+    "helpers_proposed": {"type": "integer"}
+  },
+  "required": ["cycle_id", "phases_completed", "duration_ms"]
+}

@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "proofpack://interface/module",
+  "type": "object",
+  "properties": {
+    "module": {"type": "string"},
+    "version": {"type": "string"},
+    "exports": {
+      "type": "object",
+      "properties": {
+        "functions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {"type": "string"},
+              "signature": {"type": "string"},
+              "returns": {"type": "string"}
+            },
+            "required": ["name", "signature"]
+          }
+        },
+        "receipt_types": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "slos": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "threshold": {"type": "number"},
+          "unit": {"type": "string"}
+        }
+      }
+    }
+  },
+  "required": ["module", "version", "exports"]
+}

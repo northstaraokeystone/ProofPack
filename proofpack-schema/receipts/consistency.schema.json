@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "proofpack://receipts/consistency",
+  "allOf": [{"$ref": "_base.schema.json"}],
+  "properties": {
+    "receipt_type": {"const": "consistency"},
+    "packet_id": {"type": "string"},
+    "match_rate": {"type": "number", "minimum": 0, "maximum": 1},
+    "violations": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "halt_triggered": {"type": "boolean"}
+  },
+  "required": ["packet_id", "match_rate"]
+}

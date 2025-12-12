@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "proofpack://receipts/anchor",
+  "allOf": [{"$ref": "_base.schema.json"}],
+  "properties": {
+    "receipt_type": {"const": "anchor"},
+    "merkle_root": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}:[a-f0-9]{64}$",
+      "description": "Merkle root in dual-hash format"
+    },
+    "hash_algos": {
+      "type": "array",
+      "items": {"type": "string"},
+      "const": ["SHA256", "BLAKE3"]
+    },
+    "batch_size": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "proof_path": {
+      "type": ["string", "null"],
+      "description": "Optional proof path for verification"
+    }
+  },
+  "required": ["merkle_root", "hash_algos", "batch_size"]
+}

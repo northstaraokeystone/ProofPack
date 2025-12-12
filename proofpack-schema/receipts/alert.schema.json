@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "proofpack://receipts/alert",
+  "allOf": [{"$ref": "_base.schema.json"}],
+  "properties": {
+    "receipt_type": {"const": "anomaly"},
+    "metric": {"type": "string"},
+    "baseline": {"type": "number"},
+    "delta": {"type": "number"},
+    "classification": {
+      "enum": ["drift", "degradation", "violation", "deviation", "anti_pattern"]
+    },
+    "action": {
+      "enum": ["alert", "escalate", "halt", "auto_fix"]
+    }
+  },
+  "required": ["metric", "classification", "action"]
+}
