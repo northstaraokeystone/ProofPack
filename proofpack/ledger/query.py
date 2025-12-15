@@ -24,18 +24,18 @@ def set_store(store: LedgerStore) -> None:
 
 
 def query_receipts(
+    store: LedgerStore | None = None,
     receipt_type: str | None = None,
     since: str | None = None,
     tenant_id: str | None = None,
-    store: LedgerStore | None = None,
 ) -> list[dict]:
     """Query receipts with optional filters.
 
     Args:
+        store: LedgerStore instance (uses default if None)
         receipt_type: Filter by receipt_type (optional)
         since: Filter by ts >= since ISO8601 string (optional)
         tenant_id: Filter by tenant_id (optional)
-        store: Optional LedgerStore instance
 
     Returns:
         List of matching receipts sorted by ts descending
@@ -62,8 +62,9 @@ def query_receipts(
 
 
 def trace_lineage(
+    store: LedgerStore | None,
     receipt_id: str,
-    store: LedgerStore | None = None,
+    max_depth: int = 100,
 ) -> list[dict]:
     """Find receipt by payload_hash and trace its lineage.
 
@@ -71,11 +72,12 @@ def trace_lineage(
     Currently returns just the receipt if found.
 
     Args:
+        store: LedgerStore instance (uses default if None)
         receipt_id: The payload_hash to look up
-        store: Optional LedgerStore instance
+        max_depth: Maximum depth to traverse (default: 100)
 
     Returns:
-        Chronological list of receipts in the lineage chain
+        Chronological list of receipts in the lineage chain (oldest first)
     """
     ledger = store if store is not None else _get_store()
 
@@ -92,7 +94,8 @@ def trace_lineage(
 
     # If parent_hash exists, recursively collect chain
     parent_hash = receipt.get("parent_hash")
-    while parent_hash:
+    depth = 0
+    while parent_hash and depth < max_depth:
         parent_matches = ledger.query(
             lambda r, ph=parent_hash: r.get("payload_hash") == ph
         )
@@ -101,6 +104,7 @@ def trace_lineage(
         parent = parent_matches[0]
         chain.append(parent)
         parent_hash = parent.get("parent_hash")
+        depth += 1
 
     # Return chronological order (oldest first)
     chain.reverse()
