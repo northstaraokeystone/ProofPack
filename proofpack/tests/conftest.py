@@ -100,3 +100,93 @@ def sample_brief():
             "gaps": ["Gap 1"],
         },
     }
+
+
+# Detect module fixtures
+
+@pytest.fixture
+def sample_receipts_for_scan():
+    """Provide 100 receipts with various field values for scanning."""
+    receipts = []
+    for i in range(100):
+        receipts.append({
+            "receipt_type": "ingest",
+            "ts": f"2024-01-{(i % 28) + 1:02d}T{i % 24:02d}:00:00Z",
+            "tenant_id": "test_tenant",
+            "payload_hash": dual_hash(f"scan_payload_{i}".encode()),
+            "latency_ms": 50 + (i % 100),  # Values 50-149
+            "error_count": i % 5,  # Values 0-4
+            "status": "success" if i % 10 != 0 else "failure",
+            "source_type": "api" if i % 3 == 0 else "batch",
+        })
+    return receipts
+
+
+@pytest.fixture
+def sample_patterns():
+    """Provide 5 patterns covering each classification type."""
+    return [
+        {
+            "id": "threshold_breach_latency",
+            "type": "threshold_breach",
+            "conditions": [
+                {"field": "latency_ms", "operator": "gt", "value": 100}
+            ]
+        },
+        {
+            "id": "trend_change_errors",
+            "type": "trend_change",
+            "conditions": [
+                {"field": "error_count", "operator": "gt", "value": 2}
+            ]
+        },
+        {
+            "id": "performance_drop_status",
+            "type": "performance_drop",
+            "conditions": [
+                {"field": "status", "operator": "eq", "value": "failure"}
+            ]
+        },
+        {
+            "id": "unexpected_value_source",
+            "type": "unexpected_value",
+            "conditions": [
+                {"field": "source_type", "operator": "eq", "value": "unknown"}
+            ]
+        },
+        {
+            "id": "code_smell_empty",
+            "type": "code_smell",
+            "conditions": [
+                {"field": "payload_hash", "operator": "contains", "value": "empty"}
+            ]
+        },
+    ]
+
+
+@pytest.fixture
+def sample_baseline():
+    """Provide baseline dict with known metric value."""
+    return {
+        "metric": "latency_ms",
+        "baseline_value": 75.0,
+        "sample_size": 100,
+        "computed_at": "2024-01-01T00:00:00Z",
+    }
+
+
+@pytest.fixture
+def drifting_receipts():
+    """Provide receipts with values 20% above baseline."""
+    receipts = []
+    baseline_value = 75.0
+    drifted_value = baseline_value * 1.2  # 20% above
+    for i in range(20):
+        receipts.append({
+            "receipt_type": "ingest",
+            "ts": f"2024-01-{i + 1:02d}T00:00:00Z",
+            "tenant_id": "test_tenant",
+            "payload_hash": dual_hash(f"drift_payload_{i}".encode()),
+            "latency_ms": drifted_value + (i % 5 - 2),  # Slight variation around 90
+        })
+    return receipts
