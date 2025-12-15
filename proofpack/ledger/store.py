@@ -82,3 +82,11 @@ class LedgerStore:
             List of matching receipt dicts
         """
         return [r for r in self.read_all() if predicate(r)]
+
+    def get_path(self) -> str:
+        """Return ledger file path.
+
+        Returns:
+            Path to the JSONL ledger file
+        """
+        return str(self.path)
