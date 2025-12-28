@@ -3,15 +3,46 @@
   "$id": "proofpack://receipts/spawn",
   "allOf": [{"$ref": "_base.schema.json"}],
   "type": "object",
-  "required": ["receipt_type", "ts", "tenant_id", "payload_hash", "wound_count", "helpers_spawned", "convergence_proof", "merkle_root"],
+  "required": ["receipt_type", "ts", "tenant_id", "payload_hash", "trigger", "confidence_at_spawn", "depth_level"],
   "properties": {
     "receipt_type": {
       "const": "spawn"
     },
+    "parent_agent_id": {
+      "type": ["string", "null"],
+      "description": "UUID of parent agent (null if root spawn)"
+    },
+    "child_agents": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "UUIDs of spawned child agents"
+    },
+    "trigger": {
+      "type": "string",
+      "enum": ["GREEN_GATE", "YELLOW_GATE", "RED_GATE", "WOUND_THRESHOLD"],
+      "description": "What triggered the spawn"
+    },
+    "confidence_at_spawn": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Confidence score when spawn was triggered"
+    },
+    "depth_level": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 3,
+      "description": "Depth level of spawned agents (0-3)"
+    },
+    "max_ttl_seconds": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Maximum TTL for spawned agents"
+    },
     "wound_count": {
       "type": "integer",
       "minimum": 0,
-      "description": "Number of wounds that triggered the spawn"
+      "description": "Number of wounds that influenced spawn count"
     },
     "helpers_spawned": {
       "type": "integer",
@@ -24,18 +55,18 @@
       "maximum": 1,
       "description": "Convergence proof score (0-1)"
     },
-    "merkle_root": {
-      "type": "string",
-      "pattern": "^[a-f0-9]{64}:[a-f0-9]{64}$",
-      "description": "Merkle root of spawned helper data"
-    },
     "convergence_bonus": {
       "type": "boolean",
       "description": "Whether convergence bonus multiplier was applied"
     },
+    "merkle_root": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}:[a-f0-9]{64}$",
+      "description": "Merkle root of spawned agent data in dual-hash format"
+    },
     "spawn_ms": {
       "type": "number",
-      "description": "Time taken to spawn helpers in milliseconds"
+      "description": "Time taken to spawn agents in milliseconds"
     }
   }
 }
