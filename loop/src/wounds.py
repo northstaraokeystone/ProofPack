@@ -2,15 +2,16 @@
 
 A wound is a significant confidence drop that indicates the system is struggling.
 Tracking wounds helps detect when the system needs help.
+
+When wound count exceeds threshold, triggers spawn evaluation.
 """
 import time
 from dataclasses import dataclass, field
-from typing import Callable
 
 from ledger.core import emit_receipt
 from anchor import dual_hash
-from constants import WOUND_DROP_THRESHOLD
-from config.features import FEATURE_WOUND_DETECTION_ENABLED
+from constants import WOUND_DROP_THRESHOLD, WOUND_SPAWN_THRESHOLD
+from config.features import FEATURE_WOUND_DETECTION_ENABLED, FEATURE_AGENT_SPAWNING_ENABLED
 
 
 @dataclass
@@ -29,6 +30,7 @@ class WoundTracker:
     """Tracks wounds over a rolling window."""
     window_size: int = 100
     drop_threshold: float = WOUND_DROP_THRESHOLD
+    spawn_threshold: int = WOUND_SPAWN_THRESHOLD
     confidence_history: list[float] = field(default_factory=list)
     wound_events: list[WoundEvent] = field(default_factory=list)
     wound_count: int = 0
@@ -38,9 +40,10 @@ def track_confidence(
     tracker: WoundTracker,
     new_confidence: float,
     action_id: str = "",
+    variance: float = 0.0,
     tenant_id: str = "default"
 ) -> tuple[WoundTracker, WoundEvent | None, dict | None]:
-    """Track a new confidence value, detect wounds.
+    """Track a new confidence value, detect wounds, trigger spawning.
 
     Returns (updated_tracker, wound_event_if_detected, receipt_if_wound)
     """
@@ -87,12 +90,56 @@ def track_confidence(
     updated_tracker = WoundTracker(
         window_size=tracker.window_size,
         drop_threshold=tracker.drop_threshold,
+        spawn_threshold=tracker.spawn_threshold,
         confidence_history=new_history,
         wound_events=new_wound_events,
         wound_count=new_wound_count
     )
 
+    # Check if wound threshold triggers spawn evaluation
+    if wound_event and new_wound_count >= tracker.spawn_threshold:
+        _evaluate_spawn(
+            wound_count=new_wound_count,
+            confidence=new_confidence,
+            variance=variance,
+            tenant_id=tenant_id,
+        )
+
     return updated_tracker, wound_event, receipt
+
+
+def _evaluate_spawn(
+    wound_count: int,
+    confidence: float,
+    variance: float,
+    tenant_id: str,
+) -> None:
+    """Evaluate whether to spawn helpers based on wounds."""
+    if not FEATURE_AGENT_SPAWNING_ENABLED:
+        # Log shadow mode
+        emit_receipt("spawn_evaluation_shadow", {
+            "tenant_id": tenant_id,
+            "wound_count": wound_count,
+            "confidence": confidence,
+            "trigger": "WOUND_THRESHOLD",
+            "would_spawn": True,
+        })
+        return
+
+    try:
+        from spawner.birth import spawn_for_gate
+
+        # RED gate spawn triggered by wound threshold
+        spawn_for_gate(
+            gate_color="RED",
+            confidence_score=confidence,
+            wound_count=wound_count,
+            variance=variance,
+            tenant_id=tenant_id,
+        )
+
+    except ImportError:
+        pass  # Spawner not available
 
 
 def get_wound_summary(
@@ -119,12 +166,18 @@ def get_wound_summary(
         if recent_history[i-1] - recent_history[i] >= tracker.drop_threshold:
             recent_wounds += 1
 
+    # Calculate spawn multiplier
+    spawn_multiplier = calculate_spawn_multiplier(tracker.wound_count)
+
     summary = {
         "total_wounds": tracker.wound_count,
         "wound_density": wound_density,
         "average_drop_magnitude": avg_drop,
         "recent_wounds": recent_wounds,
-        "history_length": total_readings
+        "history_length": total_readings,
+        "spawn_threshold": tracker.spawn_threshold,
+        "spawn_multiplier": spawn_multiplier,
+        "would_trigger_spawn": tracker.wound_count >= tracker.spawn_threshold,
     }
 
     receipt = emit_receipt("wound_summary", {
@@ -133,6 +186,19 @@ def get_wound_summary(
     }, tenant_id=tenant_id)
 
     return summary, receipt
+
+
+def calculate_spawn_multiplier(wound_count: int) -> int:
+    """Calculate how many helpers would spawn for given wound count.
+
+    Formula: (wound_count // 2) + 1
+    """
+    return (wound_count // 2) + 1
+
+
+def get_current_multiplier(tracker: WoundTracker) -> int:
+    """Get current spawn multiplier based on tracker state."""
+    return calculate_spawn_multiplier(tracker.wound_count)
 
 
 def stoprule_excessive_wounds(
