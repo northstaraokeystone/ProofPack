@@ -11,6 +11,7 @@ from .loop_cmd import loop
 from .compose_cmd import compose
 from .gate_cmd import gate
 from .monte_cmd import monte
+from .spawn_cmd import spawn
 
 
 @click.group()
@@ -29,6 +30,7 @@ cli.add_command(loop)
 cli.add_command(compose)
 cli.add_command(gate)
 cli.add_command(monte)
+cli.add_command(spawn)
 
 
 if __name__ == "__main__":
