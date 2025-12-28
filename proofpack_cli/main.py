@@ -9,6 +9,8 @@ from .detect_cmd import detect
 from .anchor_cmd import anchor
 from .loop_cmd import loop
 from .compose_cmd import compose
+from .gate_cmd import gate
+from .monte_cmd import monte
 
 
 @click.group()
@@ -25,6 +27,8 @@ cli.add_command(detect)
 cli.add_command(anchor)
 cli.add_command(loop)
 cli.add_command(compose)
+cli.add_command(gate)
+cli.add_command(monte)
 
 
 if __name__ == "__main__":

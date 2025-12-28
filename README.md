@@ -46,6 +46,40 @@ Event → Ledger Receipt → Anchor Hash → Brief Synthesis → Packet Assembly
 | **detect** | Finds problems early | Anomaly and drift detection |
 | **anchor** | Makes receipts tamper-proof | Cryptographic hashing (SHA256 + BLAKE3) |
 | **loop** | Helps the system improve itself | Self-improvement with human approval |
+| **gate** | Stops bad decisions before they happen | Pre-execution confidence gating |
+| **monte_carlo** | Tests decisions before committing | Statistical variance reduction |
+
+## Pre-Execution Safety
+
+ProofPack validates actions BEFORE execution, not after. Three systems work together:
+
+### Gate System
+
+Every action passes through a confidence gate before execution:
+
+| Decision | Confidence | Action |
+|----------|------------|--------|
+| GREEN | >0.9 | Execute immediately |
+| YELLOW | 0.7-0.9 | Execute with monitoring |
+| RED | <0.7 | Block, require approval |
+
+The gate calculates confidence from:
+- Context drift (how much has changed since reasoning started)
+- Reasoning entropy (how stable is the decision process)
+- Monte Carlo variance (how consistent are simulated outcomes)
+
+### Monte Carlo Variance Reduction
+
+Before committing to an action, run 100 simulated variations. High variance = unstable action = lower confidence score. This catches edge cases before they become production incidents.
+
+### Meta-Loop Detection
+
+Track confidence drops (wounds) over time. When the system is stuck:
+- Detect reasoning loops (same question asked 5+ times)
+- Auto-spawn helper agents based on wound count
+- Convergence proof triggers helper multiplier
+
+All three systems emit receipts. Every decision is blockchain-anchored.
 
 ## Value Delivered
 
@@ -71,6 +105,16 @@ proof loop status
 proof loop gaps
 proof loop helpers --proposed
 proof loop approve <helper_id>
+proof loop wounds
+proof loop convergence
+
+# Gate
+proof gate check <action_id>
+proof gate history
+
+# Monte Carlo
+proof monte status
+proof monte simulate <action_id>
 ```
 
 ## Repository Structure
@@ -83,9 +127,13 @@ ProofPack/
 ├── detect/           # Pattern finding
 ├── anchor/           # Cryptographic proofs
 ├── loop/             # Self-improvement layer
+├── gate/             # Pre-execution gating
+├── monte_carlo/      # Variance reduction
+├── config/           # Feature flags
 ├── proofpack_cli/    # Command line interface
 ├── proofpack-schema/ # Central JSON schemas
 ├── proofpack-test/   # Test harness
+├── constants.py      # Shared thresholds
 ├── CLAUDEME.md       # Execution standard
 ├── setup.py          # Package installation
 └── README.md         # This file

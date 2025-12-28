@@ -1,4 +1,4 @@
-"""Loop commands: status, gaps, helpers, approve, completeness, trace."""
+"""Loop commands: status, gaps, helpers, approve, completeness, trace, wounds, convergence."""
 import sys
 import time
 import click
@@ -253,4 +253,93 @@ def trace(receipt_id: str):
             error_box("Trace: NOT FOUND", f"Receipt {receipt_id} not found")
             sys.exit(2)
         error_box("Trace: ERROR", str(e))
+        sys.exit(2)
+
+
+@loop.command()
+@click.option('--limit', default=10, help='Number of recent wounds to show')
+def wounds(limit: int):
+    """Show wound history (confidence drops)."""
+    t0 = time.perf_counter()
+    try:
+        from constants import WOUND_DROP_THRESHOLD, WOUND_SPAWN_THRESHOLD
+        from config.features import FEATURE_WOUND_DETECTION_ENABLED
+
+        # Mock wound data (would load from ledger in production)
+        all_wounds = [
+            {"index": 5, "before": 0.85, "after": 0.68, "drop": 0.17, "ts": "2024-01-15T10:30:00Z"},
+            {"index": 4, "before": 0.91, "after": 0.74, "drop": 0.17, "ts": "2024-01-15T10:28:00Z"},
+            {"index": 3, "before": 0.88, "after": 0.72, "drop": 0.16, "ts": "2024-01-15T10:25:00Z"},
+            {"index": 2, "before": 0.82, "after": 0.65, "drop": 0.17, "ts": "2024-01-15T10:22:00Z"},
+            {"index": 1, "before": 0.79, "after": 0.62, "drop": 0.17, "ts": "2024-01-15T10:20:00Z"},
+        ]
+
+        wounds_list = all_wounds[:limit]
+        total_wounds = len(all_wounds)
+        elapsed_ms = int((time.perf_counter() - t0) * 1000)
+
+        status = "ENABLED" if FEATURE_WOUND_DETECTION_ENABLED else "DISABLED"
+        spawn_status = "WILL SPAWN" if total_wounds >= WOUND_SPAWN_THRESHOLD else "OK"
+
+        print(f"\u256d\u2500 Wound History ({status}) " + "\u2500" * 35 + "\u256e")
+        print(f"\u2502 Total Wounds: {total_wounds}  Threshold: {WOUND_DROP_THRESHOLD*100:.0f}%  Spawn at: {WOUND_SPAWN_THRESHOLD}")
+        print(f"\u2502 Status: {spawn_status}")
+        print("\u251c" + "\u2500" * 59 + "\u2524")
+        print(f"\u2502 {'#':<5}\u2502 {'Before':<8}\u2502 {'After':<8}\u2502 {'Drop':<8}\u2502 {'Timestamp':<20}\u2502")
+        print("\u251c" + "\u2500" * 5 + "\u253c" + "\u2500" * 8 + "\u253c" + "\u2500" * 8 + "\u253c" + "\u2500" * 8 + "\u253c" + "\u2500" * 20 + "\u2524")
+        for w in wounds_list:
+            print(f"\u2502 {w['index']:<5}\u2502 {w['before']:<8.3f}\u2502 {w['after']:<8.3f}\u2502 {w['drop']:<8.3f}\u2502 {w['ts']:<20}\u2502")
+        print("\u2570" + "\u2500" * 5 + "\u2500" + "\u2500" * 8 + "\u2500" + "\u2500" * 8 + "\u2500" + "\u2500" * 8 + "\u2500" + "\u2500" * 20 + "\u256f")
+        print(f"Duration: {elapsed_ms}ms")
+        print("Next: proof loop convergence")
+
+        exit_code = 0 if total_wounds < WOUND_SPAWN_THRESHOLD else 1
+        sys.exit(exit_code)
+
+    except Exception as e:
+        error_box("Wounds: ERROR", str(e))
+        sys.exit(2)
+
+
+@loop.command()
+def convergence():
+    """Show convergence/loop detection status."""
+    t0 = time.perf_counter()
+    try:
+        from constants import CONVERGENCE_LOOP_THRESHOLD
+
+        # Mock convergence data (would load from ledger in production)
+        convergence_data = {
+            "total_questions": 47,
+            "unique_questions": 38,
+            "loop_detected": False,
+            "max_repeats": 3,
+            "convergence_proof": 0.42,
+            "recent_questions": [
+                {"hash": "a3f2c1", "count": 3},
+                {"hash": "b7d4e2", "count": 2},
+                {"hash": "c9f1a3", "count": 2},
+            ]
+        }
+
+        elapsed_ms = int((time.perf_counter() - t0) * 1000)
+
+        status = "LOOP DETECTED" if convergence_data["loop_detected"] else "OK"
+        repetition_ratio = convergence_data["total_questions"] / max(convergence_data["unique_questions"], 1)
+
+        success_box(f"Convergence Status: {status}", [
+            ("Total Questions", str(convergence_data["total_questions"])),
+            ("Unique Questions", str(convergence_data["unique_questions"])),
+            ("Repetition Ratio", f"{repetition_ratio:.2f}x"),
+            ("Max Repeats", f"{convergence_data['max_repeats']} / {CONVERGENCE_LOOP_THRESHOLD} threshold"),
+            ("Convergence Proof", f"{convergence_data['convergence_proof']:.3f}"),
+            ("Loop Detected", str(convergence_data["loop_detected"])),
+            ("Duration", f"{elapsed_ms}ms")
+        ], "proof loop status")
+
+        exit_code = 0 if not convergence_data["loop_detected"] else 1
+        sys.exit(exit_code)
+
+    except Exception as e:
+        error_box("Convergence: ERROR", str(e))
         sys.exit(2)

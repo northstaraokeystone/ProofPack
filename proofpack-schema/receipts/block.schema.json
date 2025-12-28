@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "proofpack://receipts/block",
+  "allOf": [{"$ref": "_base.schema.json"}],
+  "type": "object",
+  "required": ["receipt_type", "ts", "tenant_id", "payload_hash", "action_id", "reason", "requires_approval", "blocked_at"],
+  "properties": {
+    "receipt_type": {
+      "const": "block"
+    },
+    "action_id": {
+      "type": "string",
+      "description": "Unique identifier for the blocked action"
+    },
+    "reason": {
+      "type": "string",
+      "description": "Reason for blocking the action"
+    },
+    "requires_approval": {
+      "type": "boolean",
+      "description": "Whether human approval is required to proceed"
+    },
+    "blocked_at": {
+      "type": "number",
+      "description": "Unix timestamp when the action was blocked"
+    },
+    "confidence_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Confidence score that triggered the block"
+    }
+  }
+}

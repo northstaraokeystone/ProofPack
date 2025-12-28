@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "proofpack://receipts/spawn",
+  "allOf": [{"$ref": "_base.schema.json"}],
+  "type": "object",
+  "required": ["receipt_type", "ts", "tenant_id", "payload_hash", "wound_count", "helpers_spawned", "convergence_proof", "merkle_root"],
+  "properties": {
+    "receipt_type": {
+      "const": "spawn"
+    },
+    "wound_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of wounds that triggered the spawn"
+    },
+    "helpers_spawned": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Number of helper agents spawned"
+    },
+    "convergence_proof": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Convergence proof score (0-1)"
+    },
+    "merkle_root": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}:[a-f0-9]{64}$",
+      "description": "Merkle root of spawned helper data"
+    },
+    "convergence_bonus": {
+      "type": "boolean",
+      "description": "Whether convergence bonus multiplier was applied"
+    },
+    "spawn_ms": {
+      "type": "number",
+      "description": "Time taken to spawn helpers in milliseconds"
+    }
+  }
+}
