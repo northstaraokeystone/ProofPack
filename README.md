@@ -48,6 +48,7 @@ Event → Ledger Receipt → Anchor Hash → Brief Synthesis → Packet Assembly
 | **loop** | Helps the system improve itself | Self-improvement with human approval |
 | **gate** | Stops bad decisions before they happen | Pre-execution confidence gating |
 | **monte_carlo** | Tests decisions before committing | Statistical variance reduction |
+| **spawner** | Creates helpers when uncertain | Agent birthing and lifecycle management |
 
 ## Pre-Execution Safety
 
@@ -80,6 +81,50 @@ Track confidence drops (wounds) over time. When the system is stuck:
 - Convergence proof triggers helper multiplier
 
 All three systems emit receipts. Every decision is blockchain-anchored.
+
+## Agent Birthing Architecture
+
+Traffic lights don't just stop — they create helpers. When confidence drops, ProofPack spawns specialized agents to assist.
+
+### Agent Types by Gate Color
+
+| Gate | Confidence | Agents Spawned | Purpose |
+|------|------------|----------------|---------|
+| GREEN | >0.9 | 1 success_learner | Captures what worked |
+| YELLOW | 0.7-0.9 | 3 watchers | Monitors drift, wounds, success |
+| RED | <0.7 | (wounds/2)+1 helpers | Tries different approaches |
+
+### Agent Lifecycle
+
+```
+SPAWNED → ACTIVE → GRADUATED (effective)
+                 → PRUNED (ineffective)
+```
+
+Agents can be pruned for:
+- TTL expired (default 5 minutes)
+- Sibling solved the problem
+- Depth limit reached (max 3 levels)
+- Resource cap hit (max 50 agents)
+- Low effectiveness
+
+### Pattern Graduation
+
+Successful helpers become permanent. When an agent:
+- Achieves effectiveness >= 0.85
+- Has autonomy score > 0.75
+
+It graduates to a permanent pattern. Future RED gates check for matching patterns before spawning new helpers.
+
+### Topology Classification
+
+Agents are classified like META-LOOP patterns:
+
+| Topology | Condition | Fate |
+|----------|-----------|------|
+| OPEN | effectiveness >= 0.85, autonomy > 0.75 | Graduate |
+| CLOSED | effectiveness < 0.85 | Prune |
+| HYBRID | transfer_score > 0.70 | Transfer |
 
 ## Value Delivered
 
@@ -115,6 +160,13 @@ proof gate history
 # Monte Carlo
 proof monte status
 proof monte simulate <action_id>
+
+# Spawn
+proof spawn status
+proof spawn history
+proof spawn kill <agent_id>
+proof spawn patterns
+proof spawn simulate
 ```
 
 ## Repository Structure
@@ -129,6 +181,7 @@ ProofPack/
 ├── loop/             # Self-improvement layer
 ├── gate/             # Pre-execution gating
 ├── monte_carlo/      # Variance reduction
+├── spawner/          # Agent birthing and lifecycle
 ├── config/           # Feature flags
 ├── proofpack_cli/    # Command line interface
 ├── proofpack-schema/ # Central JSON schemas
