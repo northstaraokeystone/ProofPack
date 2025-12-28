@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "proofpack://receipts/merge",
+  "allOf": [{"$ref": "_base.schema.json"}],
+  "type": "object",
+  "required": ["receipt_type", "ts", "tenant_id", "payload_hash", "merge_strategy", "confidence_before", "confidence_after"],
+  "properties": {
+    "receipt_type": {
+      "const": "merge"
+    },
+    "internal_receipt_ids": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Receipt IDs of internal sources used in merge"
+    },
+    "web_retrieval_id": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}:[a-f0-9]{64}$",
+      "description": "Receipt ID of web_retrieval receipt"
+    },
+    "merge_strategy": {
+      "type": "string",
+      "enum": ["AUGMENT", "REPLACE", "INTERLEAVE"],
+      "description": "Strategy used to merge internal and external results"
+    },
+    "confidence_before": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Confidence score before merge"
+    },
+    "confidence_after": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Confidence score after merge"
+    },
+    "sources_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of web sources merged"
+    },
+    "content_length": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Length of merged content in characters"
+    },
+    "internal_weight": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Weight given to internal sources (0-1)"
+    },
+    "web_weight": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Weight given to web sources (0-1)"
+    }
+  }
+}

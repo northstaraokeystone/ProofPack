@@ -12,6 +12,9 @@ from .compose_cmd import compose
 from .gate_cmd import gate
 from .monte_cmd import monte
 from .spawn_cmd import spawn
+from .mcp_cmd import mcp
+from .graph_cmd import graph
+from .fallback_cmd import fallback
 
 
 @click.group()
@@ -21,6 +24,7 @@ def cli():
     pass
 
 
+# v3.0 commands
 cli.add_command(ledger)
 cli.add_command(brief)
 cli.add_command(packet)
@@ -31,6 +35,11 @@ cli.add_command(compose)
 cli.add_command(gate)
 cli.add_command(monte)
 cli.add_command(spawn)
+
+# v3.1 commands
+cli.add_command(mcp)
+cli.add_command(graph)
+cli.add_command(fallback)
 
 
 if __name__ == "__main__":

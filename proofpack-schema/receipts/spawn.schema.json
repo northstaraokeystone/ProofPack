@@ -22,6 +22,16 @@
       "enum": ["GREEN_GATE", "YELLOW_GATE", "RED_GATE", "WOUND_THRESHOLD"],
       "description": "What triggered the spawn"
     },
+    "trigger_source": {
+      "type": "string",
+      "enum": ["INTERNAL", "MCP_CLIENT"],
+      "default": "INTERNAL",
+      "description": "Source of spawn trigger (internal gate or MCP client)"
+    },
+    "client_id": {
+      "type": ["string", "null"],
+      "description": "MCP client ID if trigger_source is MCP_CLIENT"
+    },
     "confidence_at_spawn": {
       "type": "number",
       "minimum": 0,
