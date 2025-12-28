@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "proofpack://receipts/gate_decision",
+  "allOf": [{"$ref": "_base.schema.json"}],
+  "type": "object",
+  "required": ["receipt_type", "ts", "tenant_id", "payload_hash", "action_id", "confidence_score", "decision", "context_drift", "reasoning_entropy"],
+  "properties": {
+    "receipt_type": {
+      "const": "gate_decision"
+    },
+    "action_id": {
+      "type": "string",
+      "description": "Unique identifier for the action being gated"
+    },
+    "confidence_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Interpretation stability score (0-1)"
+    },
+    "decision": {
+      "type": "string",
+      "enum": ["GREEN", "YELLOW", "RED"],
+      "description": "Gate decision: GREEN (execute), YELLOW (execute+watch), RED (block)"
+    },
+    "context_drift": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Measure of context change since reasoning started"
+    },
+    "reasoning_entropy": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Shannon entropy of the reasoning process"
+    },
+    "decision_ms": {
+      "type": "number",
+      "description": "Time taken to make the decision in milliseconds"
+    }
+  }
+}

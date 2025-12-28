@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "proofpack://receipts/wound",
+  "allOf": [{"$ref": "_base.schema.json"}],
+  "type": "object",
+  "required": ["receipt_type", "ts", "tenant_id", "payload_hash", "confidence_before", "confidence_after", "drop_magnitude", "wound_index"],
+  "properties": {
+    "receipt_type": {
+      "const": "wound"
+    },
+    "confidence_before": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Confidence score before the drop"
+    },
+    "confidence_after": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Confidence score after the drop"
+    },
+    "drop_magnitude": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Magnitude of the confidence drop"
+    },
+    "wound_index": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Sequential index of this wound event"
+    },
+    "action_id": {
+      "type": "string",
+      "description": "Action that caused the wound (if applicable)"
+    }
+  }
+}

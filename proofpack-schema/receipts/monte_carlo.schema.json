@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "proofpack://receipts/monte_carlo",
+  "allOf": [{"$ref": "_base.schema.json"}],
+  "type": "object",
+  "required": ["receipt_type", "ts", "tenant_id", "payload_hash", "action_id", "n_simulations", "variance", "mean_outcome", "is_stable"],
+  "properties": {
+    "receipt_type": {
+      "const": "monte_carlo"
+    },
+    "action_id": {
+      "type": "string",
+      "description": "Unique identifier for the simulated action"
+    },
+    "n_simulations": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Number of simulations run"
+    },
+    "variance": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Variance across simulation outcomes (normalized 0-1)"
+    },
+    "mean_outcome": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Mean outcome across simulations"
+    },
+    "is_stable": {
+      "type": "boolean",
+      "description": "Whether variance is below acceptable threshold"
+    },
+    "simulation_ms": {
+      "type": "number",
+      "description": "Time taken to run simulations in milliseconds"
+    },
+    "noise_level": {
+      "type": "number",
+      "description": "Noise level applied during simulation"
+    }
+  }
+}
