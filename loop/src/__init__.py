@@ -93,6 +93,31 @@ from loop.src.completeness import (
     stoprule_completeness_regression,
 )
 
+from loop.src.wounds import (
+    WoundEvent,
+    WoundTracker,
+    track_confidence,
+    get_wound_summary,
+    stoprule_excessive_wounds,
+)
+
+from loop.src.spawn import (
+    SpawnResult,
+    calculate_helpers_to_spawn,
+    should_spawn,
+    spawn_helpers,
+    stoprule_spawn_overflow,
+)
+
+from loop.src.convergence import (
+    ConvergenceState,
+    hash_question,
+    track_question,
+    detect_loops,
+    compute_convergence_proof,
+    stoprule_infinite_loop,
+)
+
 __all__ = [
     # quantum.py - The Foundation
     "FitnessDistribution",
@@ -168,4 +193,26 @@ __all__ = [
     "attempt_self_verification",
     "compute_completeness_entropy",
     "stoprule_completeness_regression",
+
+    # wounds.py - Tracking Confidence Drops
+    "WoundEvent",
+    "WoundTracker",
+    "track_confidence",
+    "get_wound_summary",
+    "stoprule_excessive_wounds",
+
+    # spawn.py - Auto-Spawning Helpers
+    "SpawnResult",
+    "calculate_helpers_to_spawn",
+    "should_spawn",
+    "spawn_helpers",
+    "stoprule_spawn_overflow",
+
+    # convergence.py - Loop Detection
+    "ConvergenceState",
+    "hash_question",
+    "track_question",
+    "detect_loops",
+    "compute_convergence_proof",
+    "stoprule_infinite_loop",
 ]
