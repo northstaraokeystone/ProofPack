@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "proofpack://receipts/web_retrieval",
+  "allOf": [{"$ref": "_base.schema.json"}],
+  "type": "object",
+  "required": ["receipt_type", "ts", "tenant_id", "payload_hash", "query", "provider", "results_count"],
+  "properties": {
+    "receipt_type": {
+      "const": "web_retrieval"
+    },
+    "query": {
+      "type": "string",
+      "description": "Search query sent to web provider"
+    },
+    "provider": {
+      "type": "string",
+      "enum": ["tavily", "serpapi", "brave", "mock"],
+      "description": "Web search provider used"
+    },
+    "results_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of results returned"
+    },
+    "sources": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "URLs of web sources fetched"
+    },
+    "content_hashes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{64}:[a-f0-9]{64}$"
+      },
+      "description": "Dual-hash of each source's content"
+    },
+    "latency_ms": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Time taken to fetch results in milliseconds"
+    },
+    "triggered_by": {
+      "type": "string",
+      "enum": ["manual", "fallback_auto", "mcp_client"],
+      "description": "What triggered the web retrieval"
+    },
+    "classification": {
+      "type": "string",
+      "enum": ["CORRECT", "AMBIGUOUS", "INCORRECT"],
+      "description": "CRAG classification that triggered the retrieval"
+    },
+    "confidence_before": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Confidence score before web augmentation"
+    }
+  }
+}

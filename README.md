@@ -18,6 +18,10 @@ Every decision gets documented. Every receipt is verifiable. Nothing happens wit
 | **detect** | Finds problems early |
 | **anchor** | Makes receipts tamper-proof |
 | **loop** | Helps the system improve itself |
+| **proof** | Unified interface for brief/packet/detect (v3.1) |
+| **mcp** | Exposes ProofPack to AI clients (v3.1) |
+| **graph** | Temporal knowledge graph for receipts (v3.1) |
+| **fallback** | Confidence-gated web augmentation (v3.1) |
 
 ## Quick Start
 
@@ -49,6 +53,10 @@ Event → Ledger Receipt → Anchor Hash → Brief Synthesis → Packet Assembly
 | **gate** | Stops bad decisions before they happen | Pre-execution confidence gating |
 | **monte_carlo** | Tests decisions before committing | Statistical variance reduction |
 | **spawner** | Creates helpers when uncertain | Agent birthing and lifecycle management |
+| **proof** | Unified proof interface | Single entry point for BRIEF/PACKET/DETECT modes |
+| **mcp** | MCP server interface | Exposes tools to Claude Desktop, Cursor, Windsurf |
+| **graph** | Temporal knowledge graph | Queryable receipt storage with <300ms SLOs |
+| **fallback** | Web fallback (CRAG) | Confidence-gated web augmentation |
 
 ## Pre-Execution Safety
 
@@ -167,30 +175,109 @@ proof spawn history
 proof spawn kill <agent_id>
 proof spawn patterns
 proof spawn simulate
+
+# MCP Server (v3.1)
+proof mcp start [--port PORT] [--allow-spawn]
+proof mcp stop
+proof mcp status
+proof mcp tools
+
+# Knowledge Graph (v3.1)
+proof graph status
+proof graph query lineage <node_id>
+proof graph query temporal --start ISO --end ISO
+proof graph backfill <file.jsonl>
+
+# Web Fallback (v3.1)
+proof fallback test <query>
+proof fallback stats
+proof fallback sources
 ```
 
 ## Repository Structure
 
 ```
 ProofPack/
-├── ledger/           # Receipts storage
-├── brief/            # Evidence synthesis
-├── packet/           # Decision packaging
-├── detect/           # Pattern finding
-├── anchor/           # Cryptographic proofs
-├── loop/             # Self-improvement layer
-├── gate/             # Pre-execution gating
-├── monte_carlo/      # Variance reduction
-├── spawner/          # Agent birthing and lifecycle
+├── proofpack/        # Main package
+│   ├── core/         # Receipt primitives (dual_hash, emit_receipt, merkle)
+│   ├── ledger/       # Receipts storage
+│   ├── brief/        # Evidence synthesis
+│   ├── packet/       # Decision packaging
+│   ├── detect/       # Pattern finding
+│   ├── anchor/       # Cryptographic proofs
+│   ├── loop/         # Self-improvement layer
+│   ├── gate/         # Pre-execution gating
+│   ├── monte_carlo/  # Variance reduction
+│   ├── spawner/      # Agent birthing and lifecycle
+│   ├── proof.py      # Unified proof interface (v3.1)
+│   ├── mcp/          # MCP server (v3.1)
+│   ├── graph/        # Temporal knowledge graph (v3.1)
+│   └── fallback/     # Web fallback CRAG (v3.1)
 ├── config/           # Feature flags
 ├── proofpack_cli/    # Command line interface
 ├── proofpack-schema/ # Central JSON schemas
 ├── proofpack-test/   # Test harness
-├── constants.py      # Shared thresholds
+├── docs/             # Documentation
 ├── CLAUDEME.md       # Execution standard
 ├── setup.py          # Package installation
 └── README.md         # This file
 ```
+
+## v3.1 Features
+
+### Unified Proof Interface
+
+Single entry point for all proof operations:
+
+```python
+from proofpack.proof import proof, ProofMode
+
+# Evidence synthesis
+result = proof(ProofMode.BRIEF, {"operation": "compose", "evidence": [...]})
+
+# Claim-to-receipt fusion
+result = proof(ProofMode.PACKET, {"operation": "build", "brief": brief, "receipts": [...]})
+
+# Anomaly detection
+result = proof(ProofMode.DETECT, {"operation": "scan", "receipts": [...], "patterns": [...]})
+```
+
+### MCP Server
+
+Expose ProofPack to Claude Desktop, Cursor, and other AI clients:
+
+```bash
+proof mcp start --port 8765
+```
+
+Available tools: `query_receipts`, `validate_receipt`, `get_lineage`, `spawn_helper`, `check_confidence`, `list_patterns`, `agent_status`
+
+See [docs/mcp-integration.md](docs/mcp-integration.md) for setup guides.
+
+### Temporal Knowledge Graph
+
+Query receipt relationships with performance SLOs:
+
+| Query Type | SLO |
+|------------|-----|
+| Lineage | <100ms |
+| Temporal | <150ms |
+| Match | <200ms |
+| Causal Chain | <300ms |
+
+See [docs/temporal-graph.md](docs/temporal-graph.md) for details.
+
+### Confidence-Gated Web Fallback
+
+CRAG (Corrective RAG) pattern for augmenting low-confidence syntheses:
+
+| Classification | Confidence | Action |
+|----------------|------------|--------|
+| CORRECT | >0.8 | Use synthesis as-is |
+| AMBIGUOUS | 0.5-0.8 | Augment with web |
+| INCORRECT | <0.5 | Reformulate + replace |
+
+See [docs/web-fallback.md](docs/web-fallback.md) for configuration.
 
 ## Core Laws
 

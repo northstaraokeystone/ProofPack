@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "proofpack": {
+      "command": "python",
+      "args": ["-m", "proofpack.mcp.server"],
+      "env": {
+        "PROOFPACK_AUTH_TOKEN": "your-secure-token-here"
+      }
+    }
+  }
+}
