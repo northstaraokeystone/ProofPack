@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "proofpack://receipts/coordination",
+  "allOf": [{"$ref": "_base.schema.json"}],
+  "type": "object",
+  "required": ["receipt_type", "ts", "tenant_id", "payload_hash", "agent_group_id", "participants", "resolution"],
+  "properties": {
+    "receipt_type": {
+      "const": "coordination"
+    },
+    "agent_group_id": {
+      "type": "string",
+      "description": "UUID of the coordination group"
+    },
+    "winner_id": {
+      "type": ["string", "null"],
+      "description": "UUID of winning agent (null if no winner)"
+    },
+    "participants": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "UUIDs of all participating agents"
+    },
+    "resolution": {
+      "type": "string",
+      "enum": ["WINNER_FOUND", "ALL_FAILED", "TIMEOUT", "IN_PROGRESS"],
+      "description": "How the coordination was resolved"
+    },
+    "winning_confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Confidence score of winning solution"
+    }
+  }
+}

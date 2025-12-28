@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "proofpack://receipts/topology",
+  "allOf": [{"$ref": "_base.schema.json"}],
+  "type": "object",
+  "required": ["receipt_type", "ts", "tenant_id", "payload_hash", "agent_id", "classification", "recommended_action"],
+  "properties": {
+    "receipt_type": {
+      "const": "topology"
+    },
+    "agent_id": {
+      "type": "string",
+      "description": "UUID of the classified agent"
+    },
+    "classification": {
+      "type": "string",
+      "enum": ["OPEN", "CLOSED", "HYBRID"],
+      "description": "Topology classification"
+    },
+    "effectiveness": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Agent effectiveness score"
+    },
+    "autonomy_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Agent autonomy score"
+    },
+    "transfer_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Agent transfer score (for HYBRID classification)"
+    },
+    "recommended_action": {
+      "type": "string",
+      "enum": ["GRADUATE", "PRUNE", "TRANSFER"],
+      "description": "Recommended lifecycle action based on classification"
+    }
+  }
+}

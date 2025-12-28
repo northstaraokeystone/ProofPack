@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "proofpack://receipts/graduation",
+  "allOf": [{"$ref": "_base.schema.json"}],
+  "type": "object",
+  "required": ["receipt_type", "ts", "tenant_id", "payload_hash", "agent_id", "effectiveness", "autonomy_score", "promoted_to"],
+  "properties": {
+    "receipt_type": {
+      "const": "graduation"
+    },
+    "agent_id": {
+      "type": "string",
+      "description": "UUID of the graduating agent"
+    },
+    "solution_pattern_id": {
+      "type": "string",
+      "description": "UUID of the pattern created from this agent's approach"
+    },
+    "effectiveness": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Agent effectiveness score (must be >= 0.85 for graduation)"
+    },
+    "autonomy_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Agent autonomy score (must be > 0.75 for graduation)"
+    },
+    "promoted_to": {
+      "type": "string",
+      "enum": ["permanent_helper"],
+      "description": "What the agent was promoted to"
+    }
+  }
+}

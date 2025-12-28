@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "proofpack://receipts/pruning",
+  "allOf": [{"$ref": "_base.schema.json"}],
+  "type": "object",
+  "required": ["receipt_type", "ts", "tenant_id", "payload_hash", "agents_terminated", "reason"],
+  "properties": {
+    "receipt_type": {
+      "const": "pruning"
+    },
+    "agents_terminated": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "UUIDs of terminated agents"
+    },
+    "reason": {
+      "type": "string",
+      "enum": ["TTL_EXPIRED", "SIBLING_SOLVED", "DEPTH_LIMIT", "RESOURCE_CAP", "LOW_EFFECTIVENESS", "MANUAL"],
+      "description": "Reason for pruning"
+    },
+    "winner_id": {
+      "type": "string",
+      "description": "UUID of winning agent (for SIBLING_SOLVED)"
+    },
+    "group_id": {
+      "type": "string",
+      "description": "UUID of the coordination group"
+    },
+    "resources_freed": {
+      "type": "object",
+      "properties": {
+        "memory_mb": {"type": "number"},
+        "compute_units": {"type": "number"}
+      },
+      "description": "Resources freed by pruning"
+    }
+  }
+}
