@@ -1,0 +1,37 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "proofpack://shared/economic_fields",
+    "title": "Economic Metadata Fields",
+    "description": "Shared economic integration fields for SLO-based payments",
+    "type": "object",
+    "properties": {
+        "economic_metadata": {
+            "type": "object",
+            "description": "Economic integration fields for payment triggers",
+            "properties": {
+                "slo_status": {
+                    "type": "string",
+                    "enum": ["met", "failed", "pending", "exempt"],
+                    "description": "Whether receipt meets SLO for payment trigger"
+                },
+                "slo_threshold": {
+                    "type": "number",
+                    "description": "Threshold that was evaluated against"
+                },
+                "payment_eligible": {
+                    "type": "boolean",
+                    "description": "Whether this receipt qualifies for payment release"
+                },
+                "payment_amount_usd": {
+                    "type": "number",
+                    "minimum": 0,
+                    "description": "Amount unlocked if slo_status = met"
+                },
+                "payment_trigger_id": {
+                    "type": "string",
+                    "description": "External reference for payment system integration"
+                }
+            }
+        }
+    }
+}

@@ -13,6 +13,12 @@ v3.1 additions:
 8. GRAPH (temporal knowledge graph)
 9. MCP_SERVER (external interface)
 10. FALLBACK (CRAG web augmentation)
+
+v3.2 additions (Competitive Differentiation):
+11. RNES_COMPLIANCE (RNES standard validation)
+12. PRIVACY_LEVELS (field-level redaction)
+13. OFFLINE_MODE (disconnected operation)
+14. ECONOMIC_METADATA (SLO-based payments)
 """
 
 # =============================================================================
@@ -103,6 +109,61 @@ FEATURE_FALLBACK_WEB_SEARCH = False
 FEATURE_FALLBACK_AUTO_TRIGGER = False
 
 # =============================================================================
+# v3.2 Features - RNES Standard
+# =============================================================================
+
+# Enable RNES compliance checking on receipts
+FEATURE_RNES_COMPLIANCE_CHECK_ENABLED = False
+
+# Validate receipts against RNES schema on emit
+FEATURE_RNES_VALIDATE_ON_EMIT = False
+
+# =============================================================================
+# v3.2 Features - Privacy Levels
+# =============================================================================
+
+# Enable privacy_level field on receipts
+FEATURE_PRIVACY_LEVELS_ENABLED = False
+
+# Enable receipt redaction capability
+FEATURE_REDACTION_ENABLED = False
+
+# Enable ZK stub creation (placeholder for future ZK)
+FEATURE_ZK_STUB_ENABLED = False
+
+# =============================================================================
+# v3.2 Features - Offline Mode
+# =============================================================================
+
+# Enable offline receipt queue
+FEATURE_OFFLINE_QUEUE_ENABLED = False
+
+# Enable full offline mode with sync
+FEATURE_OFFLINE_MODE_ENABLED = False
+
+# Auto-sync when connectivity detected
+FEATURE_OFFLINE_AUTO_SYNC = False
+
+# Build local Merkle trees while offline
+FEATURE_OFFLINE_LOCAL_MERKLE = False
+
+# =============================================================================
+# v3.2 Features - Economic Integration
+# =============================================================================
+
+# Enable economic_metadata on receipts
+FEATURE_ECONOMIC_METADATA_ENABLED = False
+
+# Enable SLO evaluation on receipts
+FEATURE_SLO_EVALUATION_ENABLED = False
+
+# Enable payment eligibility tracking
+FEATURE_PAYMENT_ELIGIBILITY_ENABLED = False
+
+# Auto-attach economic metadata to receipts
+FEATURE_ECONOMIC_AUTO_ATTACH = False
+
+# =============================================================================
 # Deployment Sequence (v3.1)
 # =============================================================================
 # 1. PROOF_UNIFIED - test consolidation in isolation
@@ -113,3 +174,14 @@ FEATURE_FALLBACK_AUTO_TRIGGER = False
 # 6. FALLBACK_ENABLED - confidence evaluation active
 # 7. FALLBACK_WEB_SEARCH - web augmentation live
 # 8. FALLBACK_AUTO_TRIGGER - fully automated CRAG loop
+
+# =============================================================================
+# Deployment Sequence (v3.2)
+# =============================================================================
+# 1. RNES_COMPLIANCE_CHECK - Validate existing receipts against standard
+# 2. PRIVACY_LEVELS - Add fields, no behavior change
+# 3. REDACTION - Enable redaction logic
+# 4. OFFLINE_QUEUE - Local queue without sync
+# 5. OFFLINE_MODE - Full offline with sync
+# 6. ECONOMIC_METADATA - Add fields, no payment integration
+# 7. SLO_EVALUATION - Enable SLO checking

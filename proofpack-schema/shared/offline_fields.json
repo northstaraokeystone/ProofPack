@@ -1,0 +1,38 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "proofpack://shared/offline_fields",
+    "title": "Offline Metadata Fields",
+    "description": "Shared offline-mode fields for disconnected receipt generation",
+    "type": "object",
+    "properties": {
+        "offline_metadata": {
+            "type": "object",
+            "description": "Metadata for receipts generated offline",
+            "properties": {
+                "generated_offline": {
+                    "type": "boolean",
+                    "description": "Whether receipt was generated without connectivity"
+                },
+                "local_sequence_id": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "Sequence number in local offline queue"
+                },
+                "local_merkle_root": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}:[a-f0-9]{64}$",
+                    "description": "Merkle root of local batch at generation time"
+                },
+                "sync_timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "When receipt was synced to main ledger"
+                },
+                "sync_batch_id": {
+                    "type": "string",
+                    "description": "Batch ID for sync operation"
+                }
+            }
+        }
+    }
+}

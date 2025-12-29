@@ -1,27 +1,43 @@
 # ProofPack
 
-## What Is ProofPack
+**RNES-compliant governance infrastructure for systems that can't call home.**
 
-**ProofPack is a system that keeps receipts for everything.**
+## What Makes Us Different
 
-Imagine every time you do something important, you get a receipt—like when you buy something at a store. Now imagine a system that gives receipts for every decision a computer makes. If someone asks "why did you do that?"—you show the receipt. ProofPack is that system.
+| Competitor | Their Focus | Our Focus |
+|------------|-------------|-----------|
+| Hackett | Fast substrate | Governance substrate |
+| Brevis | Payment proofs | Decision proofs |
+| Miden | Gaming/consumer | Extreme environments |
+| idOS | Dispute resolution | Compliance resolution |
+| MorphLayer | Consumer finance | Industrial autonomy |
 
-Every decision gets documented. Every receipt is verifiable. Nothing happens without proof.
+## For Systems That Can't Call Home
 
-## What's Inside
+- **Off-planet:** Satellites, lunar missions, deep space probes
+- **Defense:** RF-denied environments, adversarial conditions
+- **Autonomous:** Vehicles in tunnels, drones beyond range
+- **Regulated:** FDA devices, financial infrastructure
 
-| Module | Simple Explanation |
-|--------|-------------------|
-| **ledger** | Keeps all the receipts |
-| **brief** | Summarizes evidence for decisions |
-| **packet** | Packages decisions with their proof |
-| **detect** | Finds problems early |
-| **anchor** | Makes receipts tamper-proof |
-| **loop** | Helps the system improve itself |
-| **proof** | Unified interface for brief/packet/detect (v3.1) |
-| **mcp** | Exposes ProofPack to AI clients (v3.1) |
-| **graph** | Temporal knowledge graph for receipts (v3.1) |
-| **fallback** | Confidence-gated web augmentation (v3.1) |
+## Core Capabilities
+
+| Capability | Description |
+|------------|-------------|
+| **Offline mode** | Generate receipts locally, sync when connected |
+| **Privacy levels** | Public, redacted, or ZK-ready |
+| **Economic triggers** | SLO status enables payment release |
+| **RNES-compliant** | Industry-standard receipt format |
+
+## Performance
+
+| Metric | Value |
+|--------|-------|
+| Receipt generation | <50ms |
+| Merkle anchor (1000) | <1s |
+| Graph query | <300ms |
+| Recall floor | 99.9% |
+
+[Full benchmarks](benchmarks/PERFORMANCE.md)
 
 ## Quick Start
 
@@ -30,15 +46,89 @@ pip install -e .
 proof --help
 ```
 
-That's it. You're ready to start keeping receipts.
+## What Is ProofPack
 
-## How It Works
+**ProofPack is a system that keeps receipts for everything.**
 
-**Simple version:**
-Something happens → System records it → Receipt created → Receipt stored safely → Anyone can verify later
+Every decision gets documented. Every receipt is verifiable. Nothing happens without proof.
 
-**Technical version:**
-Event → Ledger Receipt → Anchor Hash → Brief Synthesis → Packet Assembly → LOOP Learning
+When your satellite makes an autonomous decision 400km above Earth, it can't ask permission. It generates a receipt locally, builds a Merkle proof in isolation, and syncs when it sees ground station. That's ProofPack. Governance for systems that can't call home.
+
+## Offline Mode (Extreme Environments)
+
+ProofPack supports disconnected operation for:
+- Off-planet systems (satellites, lunar missions)
+- Autonomous vehicles (tunnels, remote areas)
+- Defense systems (RF-denied environments)
+- Edge devices (IoT, constrained power)
+
+Receipts generate locally. Merkle roots compute locally.
+Sync happens when connectivity allows.
+Governance doesn't stop when WiFi does.
+
+## v3.2 Features
+
+### RNES Standard
+
+Receipts-Native Execution Standard - proposed industry standard for auditable receipts:
+
+```python
+# RNES-compliant receipt
+{
+    "receipt_type": "decision",
+    "ts": "2024-01-01T12:00:00Z",
+    "tenant_id": "satellite-001",
+    "payload_hash": "sha256:blake3...",
+    "privacy_level": "redacted",
+    "slo_status": "met"
+}
+```
+
+See [standards/RNES_v1.md](standards/RNES_v1.md) for the full specification.
+
+### Offline Mode
+
+Generate receipts without connectivity:
+
+```python
+from proofpack.offline import queue, sync
+
+# Queue receipt while offline
+receipt = queue.enqueue_receipt({
+    "receipt_type": "decision",
+    "action": "course_correction",
+    "confidence": 0.95
+})
+
+# Sync when connected
+if sync.is_connected():
+    sync.full_sync()
+```
+
+### Privacy Levels
+
+Control field visibility for auditors:
+
+```python
+from proofpack.privacy import redact_receipt
+
+# Redact sensitive fields
+redacted = redact_receipt(receipt, ["pii_field", "proprietary_data"])
+```
+
+### Economic Integration
+
+Tie receipts to payment triggers:
+
+```python
+from proofpack.economic import evaluate_slo, calculate_payment
+
+# Check SLO status
+status = evaluate_slo(receipt, {"recall_floor": 0.999})
+
+# Calculate payment
+payment = calculate_payment(receipt)
+```
 
 ## Modules
 
@@ -57,6 +147,9 @@ Event → Ledger Receipt → Anchor Hash → Brief Synthesis → Packet Assembly
 | **mcp** | MCP server interface | Exposes tools to Claude Desktop, Cursor, Windsurf |
 | **graph** | Temporal knowledge graph | Queryable receipt storage with <300ms SLOs |
 | **fallback** | Web fallback (CRAG) | Confidence-gated web augmentation |
+| **privacy** | Privacy controls (v3.2) | Redaction and privacy levels |
+| **offline** | Disconnected operation (v3.2) | Local queue and sync |
+| **economic** | Payment integration (v3.2) | SLO evaluation and payment triggers |
 
 ## Pre-Execution Safety
 
@@ -72,94 +165,46 @@ Every action passes through a confidence gate before execution:
 | YELLOW | 0.7-0.9 | Execute with monitoring |
 | RED | <0.7 | Block, require approval |
 
-The gate calculates confidence from:
-- Context drift (how much has changed since reasoning started)
-- Reasoning entropy (how stable is the decision process)
-- Monte Carlo variance (how consistent are simulated outcomes)
-
 ### Monte Carlo Variance Reduction
 
-Before committing to an action, run 100 simulated variations. High variance = unstable action = lower confidence score. This catches edge cases before they become production incidents.
+Before committing to an action, run 100 simulated variations. High variance = unstable action = lower confidence score.
 
 ### Meta-Loop Detection
 
-Track confidence drops (wounds) over time. When the system is stuck:
-- Detect reasoning loops (same question asked 5+ times)
-- Auto-spawn helper agents based on wound count
-- Convergence proof triggers helper multiplier
+Track confidence drops (wounds) over time. When stuck, auto-spawn helper agents.
 
 All three systems emit receipts. Every decision is blockchain-anchored.
-
-## Agent Birthing Architecture
-
-Traffic lights don't just stop — they create helpers. When confidence drops, ProofPack spawns specialized agents to assist.
-
-### Agent Types by Gate Color
-
-| Gate | Confidence | Agents Spawned | Purpose |
-|------|------------|----------------|---------|
-| GREEN | >0.9 | 1 success_learner | Captures what worked |
-| YELLOW | 0.7-0.9 | 3 watchers | Monitors drift, wounds, success |
-| RED | <0.7 | (wounds/2)+1 helpers | Tries different approaches |
-
-### Agent Lifecycle
-
-```
-SPAWNED → ACTIVE → GRADUATED (effective)
-                 → PRUNED (ineffective)
-```
-
-Agents can be pruned for:
-- TTL expired (default 5 minutes)
-- Sibling solved the problem
-- Depth limit reached (max 3 levels)
-- Resource cap hit (max 50 agents)
-- Low effectiveness
-
-### Pattern Graduation
-
-Successful helpers become permanent. When an agent:
-- Achieves effectiveness >= 0.85
-- Has autonomy score > 0.75
-
-It graduates to a permanent pattern. Future RED gates check for matching patterns before spawning new helpers.
-
-### Topology Classification
-
-Agents are classified like META-LOOP patterns:
-
-| Topology | Condition | Fate |
-|----------|-----------|------|
-| OPEN | effectiveness >= 0.85, autonomy > 0.75 | Graduate |
-| CLOSED | effectiveness < 0.85 | Prune |
-| HYBRID | transfer_score > 0.70 | Transfer |
-
-## Value Delivered
-
-- **Trust:** Every decision has a receipt. Every receipt is verifiable.
-- **Speed:** 50% faster issue resolution through pattern learning.
-- **Savings:** ROI proven across Tesla ($11.1B), SpaceX ($331.7M), xAI ($195.6B) at scale.
-- **Compliance:** Audit-ready by construction. The receipts ARE the audit trail.
 
 ## CLI Examples
 
 ```bash
-# Ledger
+# Core operations
 proof ledger ingest <file>
 proof ledger verify <proof>
-proof ledger anchor
+proof anchor
 
-# Brief
-proof brief generate <query>
-proof brief health <brief>
+# RNES compliance (v3.2)
+proof rnes validate <receipt_id>
+proof rnes level <receipt_id>
+
+# Privacy (v3.2)
+proof privacy redact <receipt_id> --fields "field1,field2"
+proof privacy audit <receipt_id>
+
+# Offline (v3.2)
+proof offline status
+proof offline queue
+proof offline sync
+proof offline merkle
+
+# Economic (v3.2)
+proof economic evaluate <receipt_id>
+proof economic export --pending
 
 # Loop
 proof loop status
 proof loop gaps
-proof loop helpers --proposed
 proof loop approve <helper_id>
-proof loop wounds
-proof loop convergence
 
 # Gate
 proof gate check <action_id>
@@ -171,113 +216,54 @@ proof monte simulate <action_id>
 
 # Spawn
 proof spawn status
-proof spawn history
-proof spawn kill <agent_id>
 proof spawn patterns
-proof spawn simulate
 
-# MCP Server (v3.1)
-proof mcp start [--port PORT] [--allow-spawn]
-proof mcp stop
+# MCP Server
+proof mcp start [--port PORT]
 proof mcp status
-proof mcp tools
 
-# Knowledge Graph (v3.1)
-proof graph status
+# Knowledge Graph
 proof graph query lineage <node_id>
 proof graph query temporal --start ISO --end ISO
-proof graph backfill <file.jsonl>
 
-# Web Fallback (v3.1)
+# Web Fallback
 proof fallback test <query>
 proof fallback stats
-proof fallback sources
 ```
 
 ## Repository Structure
 
 ```
 ProofPack/
-├── proofpack/        # Main package
-│   ├── core/         # Receipt primitives (dual_hash, emit_receipt, merkle)
-│   ├── ledger/       # Receipts storage
-│   ├── brief/        # Evidence synthesis
-│   ├── packet/       # Decision packaging
-│   ├── detect/       # Pattern finding
-│   ├── anchor/       # Cryptographic proofs
-│   ├── loop/         # Self-improvement layer
-│   ├── gate/         # Pre-execution gating
-│   ├── monte_carlo/  # Variance reduction
-│   ├── spawner/      # Agent birthing and lifecycle
-│   ├── proof.py      # Unified proof interface (v3.1)
-│   ├── mcp/          # MCP server (v3.1)
-│   ├── graph/        # Temporal knowledge graph (v3.1)
-│   └── fallback/     # Web fallback CRAG (v3.1)
-├── config/           # Feature flags
-├── proofpack_cli/    # Command line interface
-├── proofpack-schema/ # Central JSON schemas
-├── proofpack-test/   # Test harness
-├── docs/             # Documentation
-├── CLAUDEME.md       # Execution standard
-├── setup.py          # Package installation
-└── README.md         # This file
+├── proofpack/           # Main package
+│   ├── core/            # Receipt primitives (dual_hash, emit_receipt, merkle)
+│   ├── ledger/          # Receipts storage
+│   ├── brief/           # Evidence synthesis
+│   ├── packet/          # Decision packaging
+│   ├── detect/          # Pattern finding
+│   ├── anchor/          # Cryptographic proofs
+│   ├── loop/            # Self-improvement layer
+│   ├── gate/            # Pre-execution gating
+│   ├── monte_carlo/     # Variance reduction
+│   ├── spawner/         # Agent birthing and lifecycle
+│   ├── proof.py         # Unified proof interface (v3.1)
+│   ├── mcp/             # MCP server (v3.1)
+│   ├── graph/           # Temporal knowledge graph (v3.1)
+│   ├── fallback/        # Web fallback CRAG (v3.1)
+│   ├── offline/         # Offline mode (v3.2)
+│   ├── privacy.py       # Privacy controls (v3.2)
+│   └── economic.py      # Economic integration (v3.2)
+├── config/              # Feature flags
+├── proofpack_cli/       # Command line interface
+├── proofpack-schema/    # Central JSON schemas
+├── proofpack-test/      # Test harness
+├── standards/           # RNES specification (v3.2)
+├── benchmarks/          # Performance benchmarks (v3.2)
+├── docs/                # Documentation
+├── CLAUDEME.md          # Execution standard
+├── setup.py             # Package installation
+└── README.md            # This file
 ```
-
-## v3.1 Features
-
-### Unified Proof Interface
-
-Single entry point for all proof operations:
-
-```python
-from proofpack.proof import proof, ProofMode
-
-# Evidence synthesis
-result = proof(ProofMode.BRIEF, {"operation": "compose", "evidence": [...]})
-
-# Claim-to-receipt fusion
-result = proof(ProofMode.PACKET, {"operation": "build", "brief": brief, "receipts": [...]})
-
-# Anomaly detection
-result = proof(ProofMode.DETECT, {"operation": "scan", "receipts": [...], "patterns": [...]})
-```
-
-### MCP Server
-
-Expose ProofPack to Claude Desktop, Cursor, and other AI clients:
-
-```bash
-proof mcp start --port 8765
-```
-
-Available tools: `query_receipts`, `validate_receipt`, `get_lineage`, `spawn_helper`, `check_confidence`, `list_patterns`, `agent_status`
-
-See [docs/mcp-integration.md](docs/mcp-integration.md) for setup guides.
-
-### Temporal Knowledge Graph
-
-Query receipt relationships with performance SLOs:
-
-| Query Type | SLO |
-|------------|-----|
-| Lineage | <100ms |
-| Temporal | <150ms |
-| Match | <200ms |
-| Causal Chain | <300ms |
-
-See [docs/temporal-graph.md](docs/temporal-graph.md) for details.
-
-### Confidence-Gated Web Fallback
-
-CRAG (Corrective RAG) pattern for augmenting low-confidence syntheses:
-
-| Classification | Confidence | Action |
-|----------------|------------|--------|
-| CORRECT | >0.8 | Use synthesis as-is |
-| AMBIGUOUS | 0.5-0.8 | Augment with web |
-| INCORRECT | <0.5 | Reformulate + replace |
-
-See [docs/web-fallback.md](docs/web-fallback.md) for configuration.
 
 ## Core Laws
 
@@ -287,12 +273,22 @@ From [CLAUDEME.md](CLAUDEME.md):
 - **LAW_2:** "No test → not shipped"
 - **LAW_3:** "No gate → not alive"
 
+## Value Delivered
+
+- **Trust:** Every decision has a receipt. Every receipt is verifiable.
+- **Speed:** 50% faster issue resolution through pattern learning.
+- **Compliance:** Audit-ready by construction. The receipts ARE the audit trail.
+
 ## Contributing
 
-ProofPack follows strict standards. See [CLAUDEME.md](CLAUDEME.md) for execution guidelines.
+ProofPack follows the RNES standard. See [standards/CONTRIBUTE.md](standards/CONTRIBUTE.md) for guidelines.
 
 **Remember:** No receipt → not real
 
 ## License
 
-TBD
+Apache 2.0
+
+---
+
+*They build for connectivity. We build for isolation. That's the wedge.*

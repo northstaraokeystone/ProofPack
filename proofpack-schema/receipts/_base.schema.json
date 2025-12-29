@@ -22,6 +22,74 @@
       "type": "string",
       "pattern": "^[a-f0-9]{64}:[a-f0-9]{64}$",
       "description": "Dual hash in SHA256:BLAKE3 format"
+    },
+    "lineage_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Links receipt to causal chain"
+    },
+    "merkle_anchor": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}:[a-f0-9]{64}$",
+      "description": "Root of batch containing this receipt"
+    },
+    "privacy_level": {
+      "type": "string",
+      "enum": ["public", "redacted", "zk_stub"],
+      "default": "public",
+      "description": "Controls field visibility for auditors"
+    },
+    "public_fields": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Fields visible regardless of privacy_level"
+    },
+    "redacted_fields": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Fields replaced with hash in redacted mode"
+    },
+    "disclosure_proof": {
+      "type": "string",
+      "description": "Future: ZK proof that redacted fields satisfy constraints"
+    },
+    "offline_metadata": {
+      "type": "object",
+      "description": "Metadata for receipts generated offline",
+      "properties": {
+        "generated_offline": {"type": "boolean"},
+        "local_sequence_id": {"type": "integer"},
+        "local_merkle_root": {"type": "string"},
+        "sync_timestamp": {"type": "string", "format": "date-time"},
+        "sync_batch_id": {"type": "string"}
+      }
+    },
+    "economic_metadata": {
+      "type": "object",
+      "description": "Economic integration fields",
+      "properties": {
+        "slo_status": {
+          "type": "string",
+          "enum": ["met", "failed", "pending", "exempt"],
+          "description": "Whether receipt meets SLO for payment trigger"
+        },
+        "slo_threshold": {
+          "type": "number",
+          "description": "Threshold that was evaluated against"
+        },
+        "payment_eligible": {
+          "type": "boolean",
+          "description": "Whether this receipt qualifies for payment release"
+        },
+        "payment_amount_usd": {
+          "type": "number",
+          "description": "Amount unlocked if slo_status = met"
+        },
+        "payment_trigger_id": {
+          "type": "string",
+          "description": "External reference for payment system integration"
+        }
+      }
     }
   }
 }

@@ -1,0 +1,29 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "proofpack://shared/privacy_fields",
+    "title": "Privacy Fields",
+    "description": "Shared privacy-related fields for RNES receipts",
+    "type": "object",
+    "properties": {
+        "privacy_level": {
+            "type": "string",
+            "enum": ["public", "redacted", "zk_stub"],
+            "default": "public",
+            "description": "Controls field visibility for auditors"
+        },
+        "public_fields": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Fields visible regardless of privacy_level"
+        },
+        "redacted_fields": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Fields replaced with hash in redacted mode"
+        },
+        "disclosure_proof": {
+            "type": "string",
+            "description": "Future: ZK proof that redacted fields satisfy constraints"
+        }
+    }
+}

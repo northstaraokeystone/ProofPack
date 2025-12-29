@@ -1,0 +1,51 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "proofpack://receipts/redaction",
+    "title": "Redaction Receipt",
+    "description": "Documents when and why receipt redaction occurred",
+    "type": "object",
+    "required": ["receipt_type", "ts", "tenant_id", "payload_hash", "original_receipt_id", "original_hash", "redacted_fields", "redaction_reason", "redacted_by"],
+    "properties": {
+        "receipt_type": {
+            "type": "string",
+            "const": "redaction"
+        },
+        "ts": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When redaction occurred"
+        },
+        "tenant_id": {
+            "type": "string",
+            "description": "Tenant isolation identifier"
+        },
+        "payload_hash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}:[a-f0-9]{64}$",
+            "description": "Dual hash of this redaction receipt"
+        },
+        "original_receipt_id": {
+            "type": "string",
+            "description": "Payload hash of the original receipt before redaction"
+        },
+        "original_hash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}:[a-f0-9]{64}$",
+            "description": "Dual hash of the full original receipt"
+        },
+        "redacted_fields": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "List of field names that were redacted"
+        },
+        "redaction_reason": {
+            "type": "string",
+            "enum": ["proprietary", "pii", "classified", "regulatory"],
+            "description": "Category of redaction reason"
+        },
+        "redacted_by": {
+            "type": "string",
+            "description": "Tenant or system ID that performed redaction"
+        }
+    }
+}
