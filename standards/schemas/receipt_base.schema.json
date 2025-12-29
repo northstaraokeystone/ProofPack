@@ -1,0 +1,104 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "rnes://receipts/base",
+    "title": "RNES Base Receipt",
+    "description": "Base schema for all RNES-compliant receipts",
+    "type": "object",
+    "required": ["receipt_type", "ts", "tenant_id", "payload_hash"],
+    "properties": {
+        "receipt_type": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Receipt type identifier"
+        },
+        "ts": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": ".*Z$",
+            "description": "ISO8601 timestamp with Z suffix"
+        },
+        "tenant_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Tenant isolation identifier",
+            "default": "default"
+        },
+        "payload_hash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}:[a-f0-9]{64}$",
+            "description": "Dual hash in SHA256:BLAKE3 format"
+        },
+        "lineage_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Links receipt to causal chain (RNES-AUDIT)"
+        },
+        "merkle_anchor": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}:[a-f0-9]{64}$",
+            "description": "Root of batch containing this receipt (RNES-AUDIT)"
+        },
+        "privacy_level": {
+            "type": "string",
+            "enum": ["public", "redacted", "zk_stub"],
+            "default": "public",
+            "description": "Controls field visibility for auditors (RNES-FULL)"
+        },
+        "slo_status": {
+            "type": "string",
+            "enum": ["met", "failed", "pending", "exempt"],
+            "description": "Whether receipt meets SLO for payment trigger (RNES-FULL)"
+        },
+        "offline_metadata": {
+            "type": "object",
+            "description": "Metadata for receipts generated offline",
+            "properties": {
+                "generated_offline": {
+                    "type": "boolean",
+                    "description": "Whether receipt was generated without connectivity"
+                },
+                "local_sequence_id": {
+                    "type": "integer",
+                    "description": "Sequence number in local offline queue"
+                },
+                "local_merkle_root": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}:[a-f0-9]{64}$",
+                    "description": "Merkle root of local batch at generation time"
+                },
+                "sync_timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "When receipt was synced to main ledger"
+                },
+                "sync_batch_id": {
+                    "type": "string",
+                    "description": "Batch ID for sync operation"
+                }
+            }
+        },
+        "economic_metadata": {
+            "type": "object",
+            "description": "Economic integration fields (RNES-FULL)",
+            "properties": {
+                "slo_threshold": {
+                    "type": "number",
+                    "description": "Threshold that was evaluated against"
+                },
+                "payment_eligible": {
+                    "type": "boolean",
+                    "description": "Whether this receipt qualifies for payment release"
+                },
+                "payment_amount_usd": {
+                    "type": "number",
+                    "minimum": 0,
+                    "description": "Amount unlocked if slo_status = met"
+                },
+                "payment_trigger_id": {
+                    "type": "string",
+                    "description": "External reference for payment system integration"
+                }
+            }
+        }
+    }
+}

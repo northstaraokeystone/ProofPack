@@ -1,0 +1,70 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "proofpack://receipts/payment_eligibility",
+    "title": "Payment Eligibility Receipt",
+    "description": "Documents SLO evaluation and payment eligibility for a source receipt",
+    "type": "object",
+    "required": [
+        "receipt_type",
+        "ts",
+        "tenant_id",
+        "payload_hash",
+        "source_receipt_id",
+        "slo_evaluated",
+        "slo_result",
+        "payment_amount_usd",
+        "payment_status"
+    ],
+    "properties": {
+        "receipt_type": {
+            "type": "string",
+            "const": "payment_eligibility"
+        },
+        "ts": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When payment eligibility was determined"
+        },
+        "tenant_id": {
+            "type": "string",
+            "description": "Tenant isolation identifier"
+        },
+        "payload_hash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}:[a-f0-9]{64}$",
+            "description": "Dual hash of this receipt"
+        },
+        "source_receipt_id": {
+            "type": "string",
+            "description": "Payload hash of the source receipt being evaluated"
+        },
+        "source_receipt_type": {
+            "type": "string",
+            "description": "Type of the source receipt"
+        },
+        "slo_evaluated": {
+            "type": "string",
+            "enum": ["met", "failed", "pending", "exempt"],
+            "description": "SLO status that was evaluated"
+        },
+        "slo_result": {
+            "type": "string",
+            "enum": ["met", "failed"],
+            "description": "Final SLO result for payment determination"
+        },
+        "payment_amount_usd": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Payment amount in USD"
+        },
+        "payment_status": {
+            "type": "string",
+            "enum": ["pending", "released", "withheld", "disputed"],
+            "description": "Current status of payment"
+        },
+        "payment_system_ref": {
+            "type": ["string", "null"],
+            "description": "External payment system reference ID"
+        }
+    }
+}

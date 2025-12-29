@@ -15,12 +15,16 @@ from .spawn_cmd import spawn
 from .mcp_cmd import mcp
 from .graph_cmd import graph
 from .fallback_cmd import fallback
+from .rnes_cmd import rnes
+from .privacy_cmd import privacy
+from .offline_cmd import offline
+from .economic_cmd import economic
 
 
 @click.group()
 @click.version_option(version=__version__)
 def cli():
-    """ProofPack: Receipts all the way down."""
+    """ProofPack: RNES-compliant governance infrastructure."""
     pass
 
 
@@ -40,6 +44,12 @@ cli.add_command(spawn)
 cli.add_command(mcp)
 cli.add_command(graph)
 cli.add_command(fallback)
+
+# v3.2 commands (Competitive Differentiation)
+cli.add_command(rnes)
+cli.add_command(privacy)
+cli.add_command(offline)
+cli.add_command(economic)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,24 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "proofpack://shared/lineage_fields",
+    "title": "Lineage Fields",
+    "description": "Shared lineage and anchoring fields for receipt chains",
+    "type": "object",
+    "properties": {
+        "lineage_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Links receipt to causal chain (parent receipt UUID)"
+        },
+        "merkle_anchor": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}:[a-f0-9]{64}$",
+            "description": "Root of batch containing this receipt"
+        },
+        "sequence_id": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Global sequence number for ordering"
+        }
+    }
+}
