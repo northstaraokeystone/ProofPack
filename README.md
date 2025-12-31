@@ -65,10 +65,14 @@ See [CLAIMS_VERIFICATION.md](docs/CLAIMS_VERIFICATION.md) for complete verificat
 - Merkle anchoring
 - Shannon entropy tracking
 - SLO enforcement with StopRule
+- **Workflow DAG** with deviation detection (HALT on unauthorized deviations)
+- **Sandbox execution** with network allowlist and Docker isolation
+- **Inference tracking** with model versioning and tampering detection
+- **Plan proposal** workflow with human-in-the-loop approval
+- **META-LOOP** with PLAN_PROPOSAL phase integration
 
 **Known Gaps:** (see [LIMITATIONS.md](LIMITATIONS.md))
 - No automated CI/CD pipeline
-- Limited test coverage (compliance + unit tests only)
 - No monitoring/observability hooks
 - Enterprise hardening planned for Q2 2025
 
@@ -124,13 +128,16 @@ When your satellite makes an autonomous decision 400km above Earth, it can't ask
 | **packet** | Packages decisions with their proof | Claim-to-receipt mapping |
 | **detect** | Finds problems early | Anomaly and drift detection |
 | **anchor** | Makes receipts tamper-proof | Cryptographic hashing (SHA256 + BLAKE3) |
-| **loop** | Helps the system improve itself | Self-improvement with human approval |
+| **loop** | Helps the system improve itself | Self-improvement with PLAN_PROPOSAL phase |
 | **gate** | Stops bad decisions before they happen | Pre-execution confidence gating |
 | **proof** | Unified proof interface | Single entry point for BRIEF/PACKET/DETECT modes |
 | **graph** | Temporal knowledge graph | Queryable receipt storage with <300ms SLOs |
 | **privacy** | Privacy controls | Redaction and privacy levels |
 | **offline** | Disconnected operation | Local queue and sync |
 | **economic** | Payment integration | SLO evaluation and payment triggers |
+| **workflow** | Explicit execution DAG | Workflow traversal with deviation detection |
+| **sandbox** | Containerized tool execution | Network-restricted Docker isolation |
+| **inference** | ML model call tracking | Inference receipts with tampering detection |
 
 ---
 
@@ -173,11 +180,21 @@ ProofPack/
 │   ├── ledger/          # Receipts storage
 │   ├── anchor/          # Cryptographic proofs
 │   ├── detect/          # Pattern finding
-│   ├── loop/            # Self-improvement layer (with entropy tracking)
+│   ├── loop/            # Self-improvement layer (with PLAN_PROPOSAL phase)
 │   ├── proof.py         # Unified proof interface
 │   ├── graph/           # Temporal knowledge graph
 │   ├── privacy.py       # Privacy controls
-│   └── economic.py      # Economic integration
+│   ├── economic.py      # Economic integration
+│   ├── src/
+│   │   ├── workflow/    # DAG traversal engine with deviation detection
+│   │   ├── sandbox/     # Docker-isolated tool execution
+│   │   ├── inference/   # ML model call tracking
+│   │   └── gate/        # Plan proposal and approval
+│   ├── config/          # Allowlist and configuration
+│   ├── workflow_graph.json  # 7-node execution DAG
+│   └── tests/           # Module tests
+├── proofpack-test/      # Monte Carlo scenarios
+│   └── scenarios/       # WORKFLOW, SANDBOX, INFERENCE, PLAN_APPROVAL
 ├── tests/               # Compliance tests
 ├── compliance/          # Compliance reports
 ├── receipts/            # Receipt bundles
