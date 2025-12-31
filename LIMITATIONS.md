@@ -1,7 +1,7 @@
 # ProofPack Known Limitations
 
-**Last Updated:** 2024-12-31
-**Version:** v3.2
+**Last Updated:** 2025-01-01
+**Version:** v3.3
 **Status:** Research-Grade Proof-of-Concept
 
 This document honestly describes ProofPack's current limitations. Enterprise hardening planned for Q2 2025 post-seed funding.
@@ -18,10 +18,11 @@ These gaps prevent enterprise deployment:
 **Workaround:** Run `pytest tests/` locally before merge
 **Fix ETA:** Q1 2025 (2-week effort post-seed)
 
-### L2: Limited Test Coverage (HIGH)
-**Gap:** Compliance tests cover principles; unit test coverage ~50%
+### L2: Test Coverage (MEDIUM - Improved)
+**Gap:** Compliance tests cover principles; unit test coverage improving
 **Impact:** Cannot verify all behavior changes don't break functionality
-**Workaround:** Manual testing + compliance suite
+**Workaround:** Manual testing + compliance suite + Monte Carlo scenarios
+**Progress:** Added Monte Carlo scenarios for WORKFLOW, SANDBOX, INFERENCE, PLAN_APPROVAL
 **Fix ETA:** Q2 2025 (target 80%+ coverage)
 
 ### L3: No Monitoring/Observability (HIGH)
@@ -67,7 +68,7 @@ Known areas needing review:
 **Gap:** Timeline gates (gate_t2h.sh, gate_t24h.sh, gate_t48h.sh) not as standalone scripts
 **Impact:** Gate enforcement is in Python, not easily scriptable
 **Location:** `gate/` module
-**Workaround:** Python gate module provides equivalent functionality
+**Workaround:** Python gate module + Plan Proposal module provides equivalent functionality
 **Fix ETA:** Q1 2025
 
 ### Entropy-StopRule Integration
@@ -76,6 +77,36 @@ Known areas needing review:
 **Location:** `proofpack/loop/entropy.py`
 **Workaround:** entropy_conservation() returns validity; calling code must check
 **Fix ETA:** Q1 2025
+
+---
+
+## Enterprise Integration (NEW - Implemented)
+
+The following enterprise features have been added in v3.3:
+
+### Workflow Visibility (CLAUDEME §12) [IMPLEMENTED]
+- 7-node DAG execution graph with deviation detection
+- HALT on unauthorized deviations
+- Location: `proofpack/src/workflow/`, `proofpack/workflow_graph.json`
+
+### Sandbox Execution (CLAUDEME §13) [IMPLEMENTED]
+- Docker-isolated tool execution
+- Network allowlist for government APIs
+- Location: `proofpack/src/sandbox/`, `proofpack/config/allowlist.json`
+
+### Inference Tracking (CLAUDEME §14) [IMPLEMENTED]
+- Model version hashing and tampering detection
+- Inference receipt emission
+- Location: `proofpack/src/inference/`
+
+### Plan Proposal (HITL) [IMPLEMENTED]
+- Human-in-the-loop approval workflow
+- Risk levels: CRITICAL, HIGH, MEDIUM, LOW
+- Location: `proofpack/src/gate/plan_proposal.py`
+
+### META-LOOP Integration [IMPLEMENTED]
+- PLAN_PROPOSAL phase added between GATE and ACTUATE
+- Location: `proofpack/loop/cycle.py`
 
 ---
 

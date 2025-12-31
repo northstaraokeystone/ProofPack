@@ -1,8 +1,8 @@
 # ProofPack Receipts-Native Compliance Report
 
-**Date:** 2024-12-31
-**Version:** ProofPack v3.2
-**Standard:** Receipts-Native Architecture v2.0 (RNES v1.0)
+**Date:** 2025-01-01
+**Version:** ProofPack v3.3
+**Standard:** Receipts-Native Architecture v2.0 (RNES v1.1)
 **Test Suite:** tests/test_compliance.py
 
 ---
@@ -14,6 +14,8 @@ ProofPack passes **6/6** receipts-native principles.
 **Status:** Research-Grade Proof-of-Concept (Fully Compliant)
 
 **Production Readiness:** Demonstrates thesis validity with full RNES compliance. Enterprise hardening (CI/CD, monitoring, security audit) planned for Q2 2025.
+
+**Enterprise Integration v1.0:** Added CLAUDEME §12-14 compliance (workflow visibility, sandbox execution, inference tracking, plan proposal).
 
 ---
 
@@ -231,9 +233,17 @@ pytest tests/test_compliance.py -v
 
 This report is generated from automated tests. Results are reproducible.
 
-**ProofPack Commit:** 7e20220c6a05186cd4eb7b0c766169c4e84caf31
+**ProofPack Commit:** 01f57308c92b81a0578416bbe95d5698ac4163c4
 **Test Suite:** tests/test_compliance.py (19 tests)
-**Report Generated:** 2024-12-31
+**Report Generated:** 2025-01-01
+
+### Enterprise Integration Tests
+
+Additional validation via Monte Carlo scenarios:
+- `proofpack-test/scenarios/test_workflow_scenario.py` - 200 cycles
+- `proofpack-test/scenarios/test_sandbox_scenario.py` - 100 cycles
+- `proofpack-test/scenarios/test_inference_scenario.py` - 150 cycles
+- `proofpack-test/scenarios/test_plan_approval_scenario.py` - 100 cycles
 
 ---
 

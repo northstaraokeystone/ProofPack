@@ -243,8 +243,71 @@ proof rnes level receipt.json
 proof rnes validate receipts.jsonl --format jsonl
 ```
 
+## Enterprise Receipt Types (RNES v1.1)
+
+RNES v1.1 adds receipt types for enterprise governance (CLAUDEME §12-14):
+
+### workflow_receipt
+Tracks execution DAG traversal with deviation detection:
+```json
+{
+    "receipt_type": "workflow",
+    "graph_hash": "sha256:blake3",
+    "planned_path": ["ledger", "brief", "packet"],
+    "actual_path": ["ledger", "brief", "packet"],
+    "deviations": []
+}
+```
+
+### sandbox_execution_receipt
+Records containerized tool execution:
+```json
+{
+    "receipt_type": "sandbox_execution",
+    "tool_name": "http_fetch",
+    "container_id": "sandbox-abc123",
+    "network_calls": [{"domain": "api.usaspending.gov", "allowed": true}]
+}
+```
+
+### inference_receipt
+Tracks ML model calls with version hashing:
+```json
+{
+    "receipt_type": "inference",
+    "model_id": "llm-v3",
+    "model_version": "v1.2.3",
+    "model_hash": "sha256:blake3",
+    "input_hash": "sha256:blake3",
+    "output_hash": "sha256:blake3"
+}
+```
+
+### plan_proposal_receipt
+Records plan generation for HITL approval:
+```json
+{
+    "receipt_type": "plan_proposal",
+    "plan_id": "uuid",
+    "steps": [{"step_id": "1", "action": "fetch", "tool": "http"}],
+    "risk_assessment": {"score": 0.75, "level": "high"}
+}
+```
+
+### plan_approval_receipt
+Records human approval decisions:
+```json
+{
+    "receipt_type": "plan_approval",
+    "plan_id": "uuid",
+    "decision": "approved",
+    "modifier_id": "human_reviewer_1"
+}
+```
+
 ## See Also
 
-- [RNES Specification](../standards/RNES_v1.md)
+- [RNES Specification v1.1](../standards/RNES_v1.md)
 - [Privacy Levels](privacy-levels.md)
 - [Economic Integration](economic-integration.md)
+- [Architecture - Enterprise Systems](architecture.md#system-4-workflow-visibility-claudeme-12)
