@@ -9,8 +9,7 @@ Detection taxonomy from QED v7:
 - emergent_anti_pattern: New problematic behavior
 """
 
-from collections import Counter, defaultdict
-from typing import Any
+from collections import Counter
 
 from proofpack.core.receipt import emit_receipt
 

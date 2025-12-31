@@ -5,7 +5,7 @@ Tools follow the MCP tool specification with name, description, and parameters.
 """
 import json
 import time
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 from typing import Any, Callable, Optional
 
 from proofpack.core.receipt import dual_hash, emit_receipt
@@ -271,9 +271,7 @@ def handle_spawn_helper(
         ToolResult with spawn receipt and agent IDs
     """
     try:
-        from config.features import FEATURE_AGENT_SPAWNING_ENABLED
         from spawner.birth import spawn_for_gate
-        from gate.confidence import calculate_entropy
 
         # Calculate confidence from problem (mock - real would analyze problem)
         context = context or {}

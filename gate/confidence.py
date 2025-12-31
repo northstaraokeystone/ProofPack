@@ -2,14 +2,11 @@
 
 Calculates interpretation stability score from action plan, context, and reasoning.
 """
-import hashlib
 import math
 import time
 from dataclasses import dataclass
-from typing import Any
 
 from ledger.core import emit_receipt
-from anchor import dual_hash
 
 
 @dataclass

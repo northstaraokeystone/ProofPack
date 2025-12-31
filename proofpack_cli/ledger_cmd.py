@@ -35,7 +35,7 @@ def ingest(file: str, tenant: str):
         elapsed_ms = int((time.perf_counter() - t0) * 1000)
         slo_status = "PASS" if elapsed_ms <= 50 * count else "WARN"
 
-        success_box(f"Ledger Ingest: SUCCESS", [
+        success_box("Ledger Ingest: SUCCESS", [
             ("File", file),
             ("Receipts", str(count)),
             ("Tenant", tenant),
@@ -102,7 +102,7 @@ def anchor(batch: str):
         receipts = [{"batch": batch, "idx": i} for i in range(10)]
         root = merkle(receipts)
 
-        result = emit_receipt("anchor", {
+        _result = emit_receipt("anchor", {  # noqa: F841
             "merkle_root": root,
             "batch_size": len(receipts),
             "batch_id": batch

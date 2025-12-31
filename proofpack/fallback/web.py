@@ -8,7 +8,7 @@ Supports multiple search providers:
 Provider selection via config. All results are receipted.
 """
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import List, Optional
 
 from proofpack.core.receipt import emit_receipt, dual_hash

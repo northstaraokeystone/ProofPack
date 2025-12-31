@@ -114,7 +114,6 @@ def verify(hash_value: str, root: str, proof: str | None):
 
     except ImportError:
         # Fallback verification
-        from anchor.hash import dual_hash
         elapsed_ms = int((time.perf_counter() - t0) * 1000)
         success_box("Anchor Verify: OK", [
             ("Hash", hash_value[:32]),

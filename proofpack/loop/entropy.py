@@ -7,7 +7,6 @@ If entropy reduction is visible but export is not tracked, risk is hiding.
 
 import math
 from collections import Counter
-from typing import Callable
 
 from proofpack.core.receipt import emit_receipt
 

@@ -5,7 +5,6 @@ Performance constraint: 100 simulations must complete in <200ms.
 import random
 import time
 from dataclasses import dataclass, field
-from typing import Any, Callable
 
 from ledger.core import emit_receipt
 from anchor import dual_hash

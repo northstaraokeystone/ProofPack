@@ -4,7 +4,6 @@ Enforces PROTECTED component restrictions and handles deployment lifecycle.
 """
 
 from datetime import datetime, timezone
-from typing import Any
 
 from proofpack.core.receipt import emit_receipt, StopRule
 
@@ -129,7 +128,7 @@ def deploy_helper(
     if is_protected(target):
         return {
             "status": "failed",
-            "reason": f"Blueprint targets protected component",
+            "reason": "Blueprint targets protected component",
         }
 
     # Register helper

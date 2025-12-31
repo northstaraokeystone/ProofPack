@@ -4,7 +4,7 @@ import time
 import json
 import click
 
-from .output import success_box, error_box, table
+from .output import success_box, error_box
 
 
 @click.group()
@@ -61,7 +61,7 @@ def scan(stream: str, threshold: float):
                 severity = "high" if count > 5 else "medium" if count > 2 else "low"
                 print(f"\u2502 {pattern_id:<20} \u2502 count: {count:<5} \u2502 severity: {severity:<8} \u2502")
             print("\u2570" + "\u2500" * 59 + "\u256f")
-            print(f"Next: proof loop gaps --type drift")
+            print("Next: proof loop gaps --type drift")
             sys.exit(1)
 
     except FileNotFoundError:

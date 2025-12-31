@@ -16,7 +16,6 @@ There's always a receipt type you haven't seen yet.
 Self-verification is P(system can verify itself | observations).
 The system is honest about its own uncertainty.
 """
-import time
 import math
 from dataclasses import dataclass, field
 from typing import Literal

@@ -1,5 +1,4 @@
 """Shared output formatting with ASCII boxes. NO class - just functions."""
-import sys
 
 BOX_WIDTH = 60
 

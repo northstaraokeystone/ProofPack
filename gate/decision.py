@@ -87,7 +87,7 @@ def gate_decision(
     # Check feature flags
     if not FEATURE_GATE_ENABLED:
         # Shadow mode - log but don't block
-        original_decision = decision
+        _original_decision = decision  # noqa: F841 - kept for debugging
         decision = GateDecision.GREEN
         requires_approval = False
         blocked_at = None

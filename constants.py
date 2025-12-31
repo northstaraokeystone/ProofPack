@@ -20,7 +20,10 @@ MONTE_CARLO_LATENCY_BUDGET_MS = 200
 HIGH_VARIANCE_THRESHOLD = 0.3  # Adds +1 helper when exceeded
 
 # Spawn formula
-SPAWN_BASE_FORMULA: Callable[[int], int] = lambda wounds: (wounds // 2) + 1
+def _spawn_base_formula(wounds: int) -> int:
+    return (wounds // 2) + 1
+
+SPAWN_BASE_FORMULA: Callable[[int], int] = _spawn_base_formula
 SPAWN_CONVERGENCE_MULTIPLIER = 1.5
 SPAWN_CONVERGENCE_THRESHOLD = 0.95
 

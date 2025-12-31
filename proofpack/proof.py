@@ -26,7 +26,6 @@ import json
 import re
 import time
 import uuid
-from collections import defaultdict
 from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any

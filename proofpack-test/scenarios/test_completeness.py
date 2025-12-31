@@ -10,7 +10,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import pytest
 from conftest import SimConfig, SimState
-from sim import run_simulation, check_completeness
+from sim import run_simulation
 
 
 class TestCompleteness:

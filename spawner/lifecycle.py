@@ -11,7 +11,6 @@ from dataclasses import dataclass
 from proofpack.core.receipt import emit_receipt
 
 from .registry import (
-    Agent,
     AgentState,
     get_agent,
     update_agent_state,

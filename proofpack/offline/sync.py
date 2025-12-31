@@ -12,14 +12,11 @@ Sync process:
 5. Verify sync success
 6. Clear local queue
 """
-import json
 import socket
-import time
 import uuid
 from datetime import datetime
-from typing import Optional
 
-from proofpack.core.receipt import dual_hash, emit_receipt, merkle
+from proofpack.core.receipt import emit_receipt
 from proofpack.offline.queue import (
     get_all_queued,
     get_local_merkle_root,
@@ -104,16 +101,6 @@ def sync_queue(
         if "offline_metadata" in receipt:
             receipt["offline_metadata"]["sync_timestamp"] = sync_time
             receipt["offline_metadata"]["sync_batch_id"] = batch_id
-
-    # Build sync batch
-    batch = {
-        "batch_id": batch_id,
-        "sync_timestamp": sync_time,
-        "tenant_id": tenant_id,
-        "receipt_count": len(receipts),
-        "local_merkle_root": local_merkle,
-        "receipts": receipts,
-    }
 
     # In production, this would POST to ledger API
     # For scaffold, we emit a sync receipt

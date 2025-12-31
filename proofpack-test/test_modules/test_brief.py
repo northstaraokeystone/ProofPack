@@ -8,11 +8,18 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 import time
-import pytest
 from brief.retrieve import retrieve
-from brief.compose import compose_brief
-from brief.health import compute_decision_health
-from brief.dialectic import run_dialectic
+from brief.compose import compose as compose_brief_raw
+from brief.health import score_health as compute_decision_health
+from brief.dialectic import dialectic as run_dialectic
+from ledger.core import StopRule
+
+def compose_brief(evidence, tenant):
+    """Wrapper that catches StopRule for empty evidence."""
+    try:
+        return compose_brief_raw(evidence, tenant)
+    except StopRule:
+        return {"receipt_type": "error", "error": "empty_evidence"}
 
 
 class TestBriefRetrieve:

@@ -12,8 +12,8 @@ from typing import Callable
 
 from proofpack.core.receipt import emit_receipt
 
-from .entropy import system_entropy, agent_fitness
-from .actuate import get_helper, get_active_helpers
+from .entropy import system_entropy
+from .actuate import get_helper
 
 # Constants
 FITNESS_WEIGHTS = {

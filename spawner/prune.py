@@ -15,7 +15,6 @@ from enum import Enum
 from proofpack.core.receipt import emit_receipt
 
 from .registry import (
-    Agent,
     AgentState,
     get_agent,
     get_agents_by_group,

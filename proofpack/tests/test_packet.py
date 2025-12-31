@@ -14,7 +14,6 @@ from proofpack.packet import (
     audit_consistency,
     compute_match_score,
     build_packet,
-    DecisionPacket,
     PACKET_SCHEMAS,
 )
 from proofpack.core.receipt import StopRule, dual_hash

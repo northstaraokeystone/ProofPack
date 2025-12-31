@@ -8,7 +8,6 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-import pytest
 
 from loop.src.convergence import (
     ConvergenceState,
@@ -17,7 +16,6 @@ from loop.src.convergence import (
     detect_loops,
     compute_convergence_proof
 )
-from constants import CONVERGENCE_LOOP_THRESHOLD
 
 
 class TestConvergence:

@@ -12,12 +12,10 @@ BASELINE ASSUMPTIONS BROKEN:
 The signal-to-noise ratio of a gap pattern is the true measure.
 """
 import time
-import math
 from dataclasses import dataclass, field
-from collections import defaultdict
 
 from ledger.core import emit_receipt, StopRule
-from loop.src.quantum import FitnessDistribution, shannon_entropy
+from loop.src.quantum import FitnessDistribution
 
 
 @dataclass

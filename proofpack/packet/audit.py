@@ -26,9 +26,6 @@ def audit_consistency(
     Raises:
         StopRule: If match_score < threshold
     """
-    # Extract attach_map
-    attach_map = attachments.get("attach_map", {})
-
     # Compute match score and mismatches
     match_score, mismatches = compute_match_score(attachments)
 

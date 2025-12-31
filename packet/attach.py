@@ -16,9 +16,6 @@ def attach(claims: list, receipts: list, tenant_id: str = "default") -> dict:
     mappings = {}
     used_receipts = set()
 
-    # Build receipt lookup by payload_hash
-    receipt_by_hash = {r.get("payload_hash"): r for r in receipts}
-
     for claim in claims:
         claim_id = claim.get("claim_id")
         claim_text = claim.get("text", "")

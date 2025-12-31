@@ -7,7 +7,7 @@ Functions:
 """
 import uuid
 
-from proofpack.core.receipt import emit_receipt, StopRule
+from proofpack.core.receipt import emit_receipt
 
 
 # Valid severity levels

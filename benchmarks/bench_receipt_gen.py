@@ -3,7 +3,6 @@
 Target SLO: <50ms per receipt generation.
 """
 import time
-import pytest
 
 from proofpack.core.receipt import dual_hash, emit_receipt
 
@@ -81,7 +80,7 @@ def manual_benchmark():
     avg_ms = (elapsed / iterations) * 1000
     throughput = iterations / elapsed
 
-    print(f"\nReceipt Generation Benchmark")
+    print("\nReceipt Generation Benchmark")
     print(f"  Iterations: {iterations}")
     print(f"  Total time: {elapsed:.3f}s")
     print(f"  Avg per receipt: {avg_ms:.2f}ms")

@@ -12,7 +12,6 @@ import os
 import time
 import uuid
 from dataclasses import dataclass
-from pathlib import Path
 
 from proofpack.core.receipt import emit_receipt
 

@@ -13,8 +13,6 @@ Principles tested:
     P5: Thermodynamic Governance - Entropy tracked, violations halt
     P6: Receipts-Gated Progress - Gates enforce SLOs, StopRule blocks
 """
-import ast
-import os
 import re
 import sys
 from pathlib import Path
@@ -91,7 +89,7 @@ class TestP1NativeProvenance:
         ratio = emit_count / total_ops if total_ops > 0 else 0
 
         # Report findings
-        print(f"\n=== P1: Native Provenance Results ===")
+        print("\n=== P1: Native Provenance Results ===")
         print(f"emit_receipt() calls: {emit_count}")
         print(f"  Sample locations: {emit_refs[:5]}")
         print(f"logger/print calls: {logger_count}")
@@ -133,7 +131,7 @@ class TestP1NativeProvenance:
                 if not EMIT_RECEIPT_PATTERN.search(content):
                     missing.append(module_path)
 
-        print(f"\n=== P1: Core Module Receipt Coverage ===")
+        print("\n=== P1: Core Module Receipt Coverage ===")
         print(f"Checked operation modules: {len(operation_modules)}")
         print(f"Excluded utility modules: {len(utility_modules)}")
         print(f"Modules missing emit_receipt: {missing if missing else 'None'}")
@@ -164,7 +162,7 @@ class TestP2CryptographicLineage:
         test_data = b"test_payload"
         result = dual_hash(test_data)
 
-        print(f"\n=== P2: Dual Hash Implementation ===")
+        print("\n=== P2: Dual Hash Implementation ===")
         print(f"dual_hash input: {test_data}")
         print(f"dual_hash output: {result}")
 
@@ -194,7 +192,7 @@ class TestP2CryptographicLineage:
 
         root = merkle(receipts)
 
-        print(f"\n=== P2: Merkle Implementation ===")
+        print("\n=== P2: Merkle Implementation ===")
         print(f"Input receipts: {len(receipts)}")
         print(f"Merkle root: {root}")
 
@@ -222,7 +220,7 @@ class TestP2CryptographicLineage:
 
         count, refs = count_pattern_in_files(py_files, parent_hash_pattern)
 
-        print(f"\n=== P2: Parent Hash Chain Infrastructure ===")
+        print("\n=== P2: Parent Hash Chain Infrastructure ===")
         print(f"parent_hash references: {count}")
         print(f"Locations: {refs[:10]}")
 
@@ -263,7 +261,7 @@ class TestP3VerifiableCausality:
             "evidence": evidence
         })
 
-        print(f"\n=== P3: Decision Receipt Structure ===")
+        print("\n=== P3: Decision Receipt Structure ===")
         print(f"Brief receipt type: {brief_result.get('receipt_type')}")
         print(f"Has payload_hash: {'payload_hash' in brief_result}")
         print(f"Has supporting_evidence: {'supporting_evidence' in brief_result}")
@@ -302,7 +300,7 @@ class TestP3VerifiableCausality:
             "receipts": receipts
         })
 
-        print(f"\n=== P3: Packet Attached Receipts ===")
+        print("\n=== P3: Packet Attached Receipts ===")
         print(f"Packet has attached_receipts: {'attached_receipts' in packet_result}")
         print(f"Packet has merkle_anchor: {'merkle_anchor' in packet_result}")
         print(f"Receipt count: {packet_result.get('receipt_count', 0)}")
@@ -320,7 +318,7 @@ class TestP3VerifiableCausality:
         test_data = {"key": "value", "number": 42}
         receipt = emit_receipt("test", test_data)
 
-        print(f"\n=== P3: Input Hash Verification ===")
+        print("\n=== P3: Input Hash Verification ===")
         print(f"Receipt has payload_hash: {'payload_hash' in receipt}")
         print(f"Payload hash format valid: {bool(DUAL_HASH_PATTERN.match(receipt.get('payload_hash', '')))}")
 
@@ -362,7 +360,7 @@ class TestP4QueryAsProof:
             if count > 0:
                 found_caches.append((name, count, refs[:3]))
 
-        print(f"\n=== P4: Pre-computed Storage Check ===")
+        print("\n=== P4: Pre-computed Storage Check ===")
         print(f"Checked patterns: {len(cache_patterns)}")
         print(f"Found pre-computed storage: {len(found_caches)}")
 
@@ -389,7 +387,7 @@ class TestP4QueryAsProof:
         # Check ledger query module
         query_file = PROOFPACK_ROOT / "proofpack" / "ledger" / "query.py"
 
-        print(f"\n=== P4: Query Derivation Check ===")
+        print("\n=== P4: Query Derivation Check ===")
 
         if not query_file.exists():
             pytest.skip("Query module not found")
@@ -400,7 +398,7 @@ class TestP4QueryAsProof:
         has_receipt_query = "receipts" in content or "receipt" in content
         has_filter = "filter" in content or "query" in content
 
-        print(f"Query module exists: True")
+        print("Query module exists: True")
         print(f"References receipts: {has_receipt_query}")
         print(f"Has filtering: {has_filter}")
 
@@ -424,7 +422,7 @@ class TestP4QueryAsProof:
             if count > 0:
                 found_tables.extend(refs)
 
-        print(f"\n=== P4: Result Database Check ===")
+        print("\n=== P4: Result Database Check ===")
         print(f"SQL result tables found: {len(found_tables)}")
 
         if found_tables:
@@ -447,7 +445,7 @@ class TestP5ThermodynamicGovernance:
 
     def test_entropy_calculation(self):
         """Verify Shannon entropy calculation exists."""
-        print(f"\n=== P5: Entropy Calculation ===")
+        print("\n=== P5: Entropy Calculation ===")
 
         try:
             from proofpack.loop.entropy import system_entropy
@@ -462,7 +460,7 @@ class TestP5ThermodynamicGovernance:
 
             entropy = system_entropy(receipts)
 
-            print(f"system_entropy function exists: True")
+            print("system_entropy function exists: True")
             print(f"Test entropy value: {entropy:.4f} bits")
 
             # Entropy should be positive for diverse types
@@ -479,7 +477,7 @@ class TestP5ThermodynamicGovernance:
 
     def test_entropy_conservation(self):
         """Verify entropy conservation checks exist."""
-        print(f"\n=== P5: Entropy Conservation ===")
+        print("\n=== P5: Entropy Conservation ===")
 
         try:
             from proofpack.loop.entropy import entropy_conservation
@@ -492,7 +490,7 @@ class TestP5ThermodynamicGovernance:
 
             result = entropy_conservation(cycle_receipts)
 
-            print(f"entropy_conservation function exists: True")
+            print("entropy_conservation function exists: True")
             print(f"Result keys: {list(result.keys())}")
             print(f"Conservation valid: {result.get('valid')}")
             print(f"Entropy in: {result.get('entropy_in', 0):.4f}")
@@ -508,7 +506,7 @@ class TestP5ThermodynamicGovernance:
 
     def test_stoprule_implementation(self):
         """Verify StopRule exists and is used on violations."""
-        print(f"\n=== P5: StopRule Implementation ===")
+        print("\n=== P5: StopRule Implementation ===")
 
         from proofpack.core.receipt import StopRule
 
@@ -521,7 +519,7 @@ class TestP5ThermodynamicGovernance:
 
         count, refs = count_pattern_in_files(py_files, stoprule_pattern)
 
-        print(f"StopRule class exists: True")
+        print("StopRule class exists: True")
         print(f"StopRule raises in codebase: {count}")
         print(f"Sample locations: {refs[:5]}")
 
@@ -536,7 +534,7 @@ class TestP5ThermodynamicGovernance:
         # Check for entropy-related StopRule patterns
         entropy_file = PROOFPACK_ROOT / "proofpack" / "loop" / "entropy.py"
 
-        print(f"\n=== P5: Entropy-StopRule Integration ===")
+        print("\n=== P5: Entropy-StopRule Integration ===")
 
         if not entropy_file.exists():
             print("WARNING: entropy.py not found, checking for related patterns")
@@ -575,7 +573,7 @@ class TestP6ReceiptsGatedProgress:
 
     def test_gate_scripts_or_functions(self):
         """Verify gate enforcement exists (scripts or code)."""
-        print(f"\n=== P6: Gate Enforcement Check ===")
+        print("\n=== P6: Gate Enforcement Check ===")
 
         # Check for gate bash scripts
         gate_scripts = [
@@ -612,7 +610,7 @@ class TestP6ReceiptsGatedProgress:
 
     def test_stoprule_defined(self):
         """Verify StopRule class is defined."""
-        print(f"\n=== P6: StopRule Definition ===")
+        print("\n=== P6: StopRule Definition ===")
 
         from proofpack.core.receipt import StopRule
 
@@ -629,7 +627,7 @@ class TestP6ReceiptsGatedProgress:
 
     def test_stoprule_usage(self):
         """Verify StopRule is used to block progress."""
-        print(f"\n=== P6: StopRule Usage ===")
+        print("\n=== P6: StopRule Usage ===")
 
         py_files = get_python_files(SRC_DIRS)
 
@@ -651,7 +649,7 @@ class TestP6ReceiptsGatedProgress:
 
     def test_slo_thresholds(self):
         """Verify SLO thresholds are defined and enforced."""
-        print(f"\n=== P6: SLO Thresholds ===")
+        print("\n=== P6: SLO Thresholds ===")
 
         py_files = get_python_files(SRC_DIRS)
 

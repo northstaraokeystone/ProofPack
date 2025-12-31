@@ -89,7 +89,7 @@ def verify_chain(receipts: list[dict]) -> dict:
 
         # Recompute hash
         payload_bytes = json.dumps(payload_data, sort_keys=True).encode("utf-8")
-        computed_hash = dual_hash(payload_bytes)
+        _computed_hash = dual_hash(payload_bytes)  # noqa: F841 - reserved for future hash comparison
         stored_hash = receipt.get("payload_hash", "")
 
         # Note: payload_hash includes ALL data at emit time, so we check

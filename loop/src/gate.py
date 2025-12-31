@@ -24,7 +24,6 @@ from typing import Literal
 from ledger.core import emit_receipt, StopRule
 from loop.src.quantum import (
     FitnessDistribution,
-    Superposition,
     collapse_state,
     sample_from_distributions,
     exponential_decay

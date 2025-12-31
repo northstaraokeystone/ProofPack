@@ -27,27 +27,22 @@ from proofpack.loop import (
     agent_fitness,
 )
 from proofpack.loop.sense import sense, query_by_level, RECEIPT_LEVEL_MAP
-from proofpack.loop.analyze import analyze, run_hunter, detect_patterns, detect_drift
-from proofpack.loop.harvest import rank_patterns, group_by_type, calculate_automation_score
+from proofpack.loop.analyze import analyze, detect_drift
+from proofpack.loop.harvest import rank_patterns, group_by_type
 from proofpack.loop.genesis import synthesize_helper, validate_blueprint, backtest
 from proofpack.loop.gate import (
-    calculate_risk,
     request_approval,
-    check_approval_status,
     auto_decline_stale,
     clear_pending_approvals,
-    RISK_THRESHOLDS,
 )
 from proofpack.loop.actuate import (
     execute_action,
     deploy_helper,
-    rollback_helper,
     is_protected,
     clear_helpers,
 )
 from proofpack.loop.effectiveness import (
     measure_effectiveness,
-    track_helper,
     retire_helper,
     calculate_multi_dimensional_fitness,
     clear_effectiveness_history,
@@ -57,7 +52,7 @@ from proofpack.loop.completeness import (
     calculate_level_coverage,
     clear_feedback_events,
 )
-from proofpack.loop.entropy import entropy_conservation, entropy_delta
+from proofpack.loop.entropy import entropy_conservation
 from proofpack.core.receipt import StopRule
 
 

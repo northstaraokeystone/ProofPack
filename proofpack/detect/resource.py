@@ -10,7 +10,7 @@ Constants:
     COST_WARNING_THRESHOLD: 0.7
     COST_CRITICAL_THRESHOLD: 0.9
 """
-from proofpack.core.receipt import emit_receipt, StopRule
+from proofpack.core.receipt import emit_receipt
 
 
 # Threshold constants

@@ -4,11 +4,8 @@ Manages the transition from offline to online state,
 detecting and resolving conflicts when local receipts
 may conflict with main ledger state.
 """
-import json
-from datetime import datetime
-from typing import Optional
 
-from proofpack.core.receipt import dual_hash, emit_receipt
+from proofpack.core.receipt import emit_receipt
 from proofpack.offline.queue import get_all_queued, get_sync_status
 from proofpack.offline.sync import is_connected, full_sync
 

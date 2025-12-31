@@ -12,8 +12,7 @@ from typing import Optional
 
 from proofpack.core.receipt import emit_receipt
 
-from .backend import GraphNode, GraphEdge, get_backend
-from .query import lineage
+from .backend import get_backend
 
 
 @dataclass

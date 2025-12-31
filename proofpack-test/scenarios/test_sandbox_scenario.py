@@ -17,7 +17,6 @@ success_criteria:
 """
 
 import random
-import pytest
 from dataclasses import dataclass, field
 from typing import Callable
 

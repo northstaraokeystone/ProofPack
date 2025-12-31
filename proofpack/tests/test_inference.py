@@ -3,7 +3,6 @@
 Per DELIVERABLE 4: Tests for inference/wrapper.py
 """
 
-import pytest
 import time
 
 from proofpack.core.receipt import emit_receipt, dual_hash
