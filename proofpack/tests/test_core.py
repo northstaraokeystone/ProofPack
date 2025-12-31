@@ -2,7 +2,7 @@
 import pytest
 
 from proofpack.core.receipt import dual_hash, emit_receipt, merkle, StopRule
-from proofpack.core.schemas import validate_receipt, REQUIRED_FIELDS
+from proofpack.core.schemas import validate_receipt
 
 
 class TestDualHash:

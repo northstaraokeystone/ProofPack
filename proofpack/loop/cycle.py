@@ -28,10 +28,9 @@ from .sense import sense
 from .analyze import analyze
 from .harvest import harvest_wounds
 from .genesis import synthesize_helper, validate_blueprint
-from .gate import request_approval, check_approval_status, auto_decline_stale
-from .actuate import execute_action, get_active_helpers
+from .gate import request_approval, auto_decline_stale
+from .actuate import execute_action
 from .completeness import measure_completeness
-from .entropy import system_entropy, entropy_delta, entropy_conservation
 
 # Import plan proposal components
 try:
@@ -39,14 +38,11 @@ try:
         Plan,
         PlanStep,
         RiskLevel,
-        generate_plan,
         emit_plan_proposal_receipt,
         await_plan_approval,
         requires_plan_proposal,
     )
     from proofpack.src.workflow.graph import (
-        load_graph,
-        hash_graph,
         emit_workflow_receipt,
     )
     PLAN_PROPOSAL_AVAILABLE = True
@@ -92,12 +88,11 @@ def run_cycle(
     workflow_graph_hash = ""
 
     status = "complete"
-    emitted_receipts = []
 
     try:
         # Check ledger availability first
         try:
-            test_receipts = ledger_query_fn(tenant_id=tenant_id, since="2000-01-01T00:00:00Z")
+            _test_receipts = ledger_query_fn(tenant_id=tenant_id, since="2000-01-01T00:00:00Z")  # noqa: F841
         except Exception as e:
             emit_receipt(
                 "anomaly",
@@ -336,7 +331,6 @@ def run_cycle(
         completeness_levels = {f"L{i}": 0.0 for i in range(5)}
 
     # Calculate entropy delta
-    all_receipts = sensed.get("all_receipts", []) if 'sensed' in dir() else []
     entropy_before = analysis.get("entropy_before", 0.0) if 'analysis' in dir() else 0.0
     entropy_after = analysis.get("entropy_after", 0.0) if 'analysis' in dir() else 0.0
     entropy_d = entropy_after - entropy_before

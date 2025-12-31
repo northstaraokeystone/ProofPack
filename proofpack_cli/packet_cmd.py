@@ -20,7 +20,6 @@ def build(brief_id: str, receipts: tuple):
     t0 = time.perf_counter()
     try:
         from packet.build import build as do_build
-        from ledger.core import dual_hash
 
         # Mock brief for CLI
         brief_data = {
@@ -83,7 +82,7 @@ def audit(packet_id: str):
         slo_status = "PASS" if elapsed_ms <= 1000 else "WARN"
 
         if status == "pass" and match_rate >= 0.999:
-            success_box(f"Packet Audit: PASS", [
+            success_box("Packet Audit: PASS", [
                 ("Packet", packet_id),
                 ("Match rate", f"{match_rate:.4%}"),
                 ("Threshold", "99.9%"),

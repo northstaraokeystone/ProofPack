@@ -8,15 +8,12 @@ Backend selection:
     2. SQLite with recursive CTEs - medium complexity, good for <1M nodes
     3. Neo4j/ArangoDB - external dependency, only if scale demands
 """
-import json
 import pickle
-import time
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Callable, Iterator, Optional
+from typing import Callable, Iterator, Optional
 
-from proofpack.core.receipt import emit_receipt
 
 # Try to import NetworkX
 try:

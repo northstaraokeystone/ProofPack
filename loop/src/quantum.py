@@ -10,7 +10,7 @@ Research anchors:
 """
 import math
 import random
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Literal
 
 from ledger.core import emit_receipt, StopRule

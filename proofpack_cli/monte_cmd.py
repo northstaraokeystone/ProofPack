@@ -3,7 +3,7 @@ import sys
 import time
 import click
 
-from .output import success_box, error_box, table, progress_bar
+from .output import success_box, error_box
 
 
 @click.group()

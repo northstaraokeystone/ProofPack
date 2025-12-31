@@ -9,7 +9,6 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import time
-import pytest
 from conftest import SimConfig, SimState
 from sim import run_simulation, simulate_genesis
 

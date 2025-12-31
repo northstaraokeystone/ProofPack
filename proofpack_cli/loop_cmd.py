@@ -3,7 +3,7 @@ import sys
 import time
 import click
 
-from .output import success_box, error_box, table, progress_bar
+from .output import success_box, error_box, progress_bar
 
 
 @click.group()
@@ -27,11 +27,9 @@ def status():
 
             result, _ = run_cycle(receipts, state)
 
-            entropy = result.get("entropy", 0.0)
             entropy_delta = result.get("entropy_delta", 0.0)
         except StopRule:
             # Empty receipt stream triggers stoprule - use defaults
-            entropy = 0.0
             entropy_delta = 0.0
 
         elapsed_ms = int((time.perf_counter() - t0) * 1000)
@@ -61,7 +59,6 @@ def status():
 @click.option('--type', 'gap_type', help='Filter by problem type')
 def gaps(resolved: bool, gap_type: str | None):
     """List automation gaps."""
-    t0 = time.perf_counter()
     try:
         # Mock gaps data
         all_gaps = [
@@ -76,8 +73,6 @@ def gaps(resolved: bool, gap_type: str | None):
         gaps_list = [g for g in all_gaps if g["resolved"] == resolved]
         if gap_type:
             gaps_list = [g for g in gaps_list if g["type"] == gap_type]
-
-        elapsed_ms = int((time.perf_counter() - t0) * 1000)
 
         title = "Resolved Gaps" if resolved else "Open Gaps"
         print(f"\u256d\u2500 {title}: {len(gaps_list)} " + "\u2500" * 40 + "\u256e")
@@ -99,7 +94,6 @@ def gaps(resolved: bool, gap_type: str | None):
 @click.option('--active', is_flag=True, help='Active only')
 def helpers(proposed: bool, active: bool):
     """List automation helpers."""
-    t0 = time.perf_counter()
     try:
         # Mock helpers data
         all_helpers = [
@@ -115,8 +109,6 @@ def helpers(proposed: bool, active: bool):
             helpers_list = [h for h in all_helpers if h["state"] == "proposed"]
         elif active:
             helpers_list = [h for h in all_helpers if h["state"] == "active"]
-
-        elapsed_ms = int((time.perf_counter() - t0) * 1000)
 
         title = "Proposed" if proposed else "Active" if active else "All"
         print(f"\u256d\u2500 Helpers: {len(helpers_list)} {title} " + "\u2500" * 35 + "\u256e")
@@ -185,7 +177,6 @@ def approve(helper_id: str, rationale: str):
 @loop.command()
 def completeness():
     """Check loop completeness across all levels."""
-    t0 = time.perf_counter()
     try:
         from loop.src.completeness import CompletenessState, compute_self_verification_probability
 
@@ -203,8 +194,6 @@ def completeness():
 
         p_self_verify = compute_self_verification_probability(state)
         self_verifying = p_self_verify > 0.5
-
-        elapsed_ms = int((time.perf_counter() - t0) * 1000)
 
         print("\u256d\u2500 LOOP Completeness " + "\u2500" * 40 + "\u256e")
         print(f"\u2502 L0 Events:     {l0*100:5.2f}%  {progress_bar(l0)}")

@@ -4,7 +4,6 @@ Per DELIVERABLE 2: Tests for workflow_graph.json and graph.py
 """
 
 import json
-import pytest
 from pathlib import Path
 
 from proofpack.core.receipt import dual_hash
@@ -106,7 +105,7 @@ def test_workflow_graph_hash():
         MockNode("b", "type", "ref")
     ]
     edges = [MockEdge("a", "b")]
-    graph = MockWorkflowGraph(nodes, edges, "a", ["b"])
+    _graph = MockWorkflowGraph(nodes, edges, "a", ["b"])  # noqa: F841 - reserved for future graph operations
 
     # Hash the structure
     canonical = {

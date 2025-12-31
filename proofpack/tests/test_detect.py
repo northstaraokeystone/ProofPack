@@ -3,7 +3,6 @@
 Coverage target: 80% minimum.
 """
 import pytest
-from unittest.mock import patch
 
 from proofpack.detect import (
     scan,
@@ -22,7 +21,6 @@ from proofpack.detect import (
     aggregate_resources,
     DETECT_SCHEMAS,
 )
-from proofpack.core.receipt import StopRule, dual_hash
 
 
 # ============================================================================
@@ -481,7 +479,7 @@ class TestResource:
         track_resources("memory", 95, 100, "1h")
         captured = capsys.readouterr()
         # Should only have resource receipt, not anomaly
-        lines = [l for l in captured.out.strip().split('\n') if l]
+        lines = [line for line in captured.out.strip().split('\n') if line]
         assert len(lines) == 1
         assert '"receipt_type": "resource"' in lines[0]
 

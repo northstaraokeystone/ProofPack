@@ -15,7 +15,6 @@ BASELINE ASSUMPTIONS BROKEN:
 - Dormancy is exponential decay P(active) = e^(-λt), not a cliff
 """
 import time
-import math
 from dataclasses import dataclass, field
 
 from ledger.core import emit_receipt, StopRule

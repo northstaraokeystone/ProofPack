@@ -4,7 +4,6 @@ Compaction aggregates receipts by receipt_type per day while preserving
 count and sum invariants. Hash continuity is verified to ensure no data loss.
 """
 from collections import defaultdict
-from datetime import datetime
 
 from ..core.receipt import emit_receipt, merkle, StopRule
 from .store import LedgerStore

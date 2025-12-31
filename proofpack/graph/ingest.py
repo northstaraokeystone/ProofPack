@@ -124,10 +124,8 @@ def _add_parent_edges(receipt: dict, node_id: str, tenant_id: str) -> None:
     # Handle special receipt types with multiple relationships
     if receipt_type == "spawn":
         # Child agents point to parent spawn receipt
-        child_agents = receipt.get("child_agents", [])
-        for child_id in child_agents:
-            child_short = child_id[:16] if len(child_id) > 16 else child_id
-            # Note: children are added later, edge will be created then
+        # Note: children are added later, edge will be created then
+        pass
 
     if receipt_type == "attach":
         # Create edges to attached receipts

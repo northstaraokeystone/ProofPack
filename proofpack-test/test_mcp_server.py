@@ -2,8 +2,7 @@
 
 Validates that MCP server starts, exposes tools, and handles auth.
 """
-import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 
 class TestMCPConfig:

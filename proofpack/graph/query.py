@@ -9,9 +9,8 @@ Query patterns:
 """
 import time
 from dataclasses import dataclass
-from typing import Callable, Optional
 
-from proofpack.core.receipt import emit_receipt, StopRule
+from proofpack.core.receipt import emit_receipt
 
 from .backend import GraphNode, get_backend
 

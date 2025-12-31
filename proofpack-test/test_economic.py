@@ -1,5 +1,4 @@
 """Tests for economic module."""
-import pytest
 from proofpack.economic import (
     evaluate_slo,
     calculate_payment,

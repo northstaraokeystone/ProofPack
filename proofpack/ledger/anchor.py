@@ -8,7 +8,7 @@ import time
 from ..anchor import merkle_proof as _merkle_proof
 from ..anchor import merkle_root
 from ..anchor import verify_proof as _verify_proof
-from ..core.receipt import emit_receipt, StopRule
+from ..core.receipt import emit_receipt
 
 
 def anchor_batch(

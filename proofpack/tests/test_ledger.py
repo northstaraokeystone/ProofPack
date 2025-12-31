@@ -13,9 +13,7 @@ from proofpack.ledger import (
     generate_proof,
     verify_proof,
 )
-from proofpack.ledger.ingest import set_store as set_ingest_store
 from proofpack.ledger.query import set_store as set_query_store
-from proofpack.ledger.compact import set_store as set_compact_store
 from proofpack.core.receipt import StopRule
 
 

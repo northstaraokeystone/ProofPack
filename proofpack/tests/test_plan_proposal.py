@@ -3,7 +3,6 @@
 Per DELIVERABLE 5: Tests for gate/plan_proposal.py
 """
 
-import pytest
 import uuid
 
 from proofpack.core.receipt import emit_receipt, dual_hash

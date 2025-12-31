@@ -9,11 +9,9 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-import pytest
 
 from loop.src.spawn import calculate_helpers_to_spawn, should_spawn, spawn_helpers
 from constants import (
-    WOUND_SPAWN_THRESHOLD,
     SPAWN_CONVERGENCE_THRESHOLD,
     SPAWN_CONVERGENCE_MULTIPLIER
 )
@@ -95,4 +93,4 @@ class TestSpawn:
         at_threshold = calculate_helpers_to_spawn(wounds, convergence_proof=SPAWN_CONVERGENCE_THRESHOLD)
 
         assert at_threshold > base, \
-            f"Convergence at threshold should apply bonus"
+            "Convergence at threshold should apply bonus"

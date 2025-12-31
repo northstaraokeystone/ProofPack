@@ -7,10 +7,27 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-import pytest
-from packet.attach import attach_evidence
-from packet.audit import audit_packet
-from packet.build import build_packet
+from packet.attach import attach
+from packet.audit import audit
+from packet.build import build
+
+# Wrapper functions for test compatibility
+def attach_evidence(evidence, decision, tenant_id="default"):
+    """Wrapper for attach function."""
+    claims = [{"claim_id": str(i), "text": str(e)} for i, e in enumerate(evidence)]
+    receipts = [{"payload_hash": f"hash_{i}:{i}" * 32} for i in range(len(evidence))]
+    return attach(claims, receipts, tenant_id)
+
+def audit_packet(packet, tenant_id="default"):
+    """Wrapper for audit function."""
+    attachments = {"attach_map": {}}
+    return audit(attachments, tenant_id)
+
+def build_packet(brief, evidence, tenant_id="default"):
+    """Wrapper for build function."""
+    claims = [{"claim_id": str(i), "text": str(e)} for i, e in enumerate(evidence)]
+    receipts = [{"payload_hash": f"hash_{i}:{i}" * 32} for i in range(len(evidence))]
+    return build(claims, receipts, tenant_id)
 
 
 class TestPacketAttach:

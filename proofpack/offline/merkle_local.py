@@ -6,7 +6,7 @@ enabling proof of inclusion even before sync to main ledger.
 import json
 from typing import Optional
 
-from proofpack.core.receipt import dual_hash, merkle
+from proofpack.core.receipt import dual_hash
 
 
 def build_local_merkle(receipts: list[dict]) -> dict:

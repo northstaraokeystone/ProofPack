@@ -8,7 +8,6 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-import pytest
 
 
 class TestDepthLimit:
@@ -39,7 +38,7 @@ class TestDepthLimit:
         monkeypatch.setattr("config.features.FEATURE_AGENT_SPAWNING_ENABLED", True)
         monkeypatch.setattr("config.features.FEATURE_RED_HELPERS_ENABLED", True)
 
-        from spawner.registry import register_agent, AgentType, get_agent
+        from spawner.registry import register_agent, AgentType
         from spawner.recursion import can_spawn_child
 
         # Create agent chain: root -> child -> grandchild

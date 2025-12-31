@@ -19,8 +19,6 @@ Privacy Levels:
 """
 import copy
 import json
-from datetime import datetime
-from typing import Optional
 
 from proofpack.core.receipt import dual_hash, emit_receipt
 

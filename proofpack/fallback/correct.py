@@ -7,7 +7,7 @@ Strategies:
 """
 import time
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import List
 
 from proofpack.core.receipt import emit_receipt
 

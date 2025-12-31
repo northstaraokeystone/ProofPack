@@ -3,7 +3,7 @@ import json
 import click
 
 from proofpack.privacy import check_rnes_compliance, prepare_for_audit
-from .output import print_json, print_table, print_error, print_success
+from .output import print_json, print_error, print_success
 
 
 @click.group()

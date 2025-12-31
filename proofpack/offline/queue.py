@@ -11,8 +11,6 @@ Design constraints:
 - Works on constrained devices
 """
 import json
-import os
-import time
 from datetime import datetime
 from pathlib import Path
 from typing import Optional

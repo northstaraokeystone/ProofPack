@@ -4,7 +4,6 @@ Validates that consolidated proof.py matches original module behavior
 for BRIEF, PACKET, and DETECT modes.
 """
 import pytest
-import json
 from io import StringIO
 from unittest.mock import patch
 

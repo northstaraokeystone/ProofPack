@@ -1,8 +1,5 @@
 """Tests for offline module."""
 import pytest
-import tempfile
-import os
-from pathlib import Path
 
 from proofpack.offline.queue import (
     enqueue_receipt,
@@ -10,7 +7,6 @@ from proofpack.offline.queue import (
     get_local_merkle_root,
     peek_queue,
     clear_queue,
-    _load_state,
 )
 from proofpack.offline.merkle_local import (
     build_local_merkle,

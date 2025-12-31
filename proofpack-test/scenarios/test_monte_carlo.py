@@ -9,7 +9,6 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-import pytest
 import time
 
 from monte_carlo.simulate import simulate_action, Action
@@ -17,7 +16,6 @@ from monte_carlo.variance import calculate_variance
 from monte_carlo.threshold import is_stable, check_stability
 from constants import (
     MONTE_CARLO_DEFAULT_SIMS,
-    MONTE_CARLO_VARIANCE_THRESHOLD,
     MONTE_CARLO_LATENCY_BUDGET_MS
 )
 

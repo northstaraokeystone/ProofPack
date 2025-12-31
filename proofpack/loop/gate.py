@@ -8,7 +8,6 @@ Calculate risk and route to appropriate gate:
 """
 
 from datetime import datetime, timedelta, timezone
-from typing import Any
 
 from proofpack.core.receipt import emit_receipt
 

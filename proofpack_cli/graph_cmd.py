@@ -52,7 +52,6 @@ def status():
 def query(query_text: str, query_type: str, receipt_id: str,
           start_time: str, end_time: str, depth: int):
     """Run temporal query on the graph."""
-    t0 = time.perf_counter()
     try:
         from proofpack.graph import query as graph_query
 
@@ -86,8 +85,6 @@ def query(query_text: str, query_type: str, receipt_id: str,
         else:
             error_box("Query Error", f"Unknown query type: {query_type}")
             sys.exit(1)
-
-        elapsed_ms = (time.perf_counter() - t0) * 1000
 
         print(f"\n╭─ Graph Query Results ({query_type}) " + "─" * 30 + "╮")
         print(f"│ Query: {query_text[:50]:<52} │")
@@ -152,7 +149,7 @@ def backfill(ledger: str):
 def episode(receipt_id: str, no_ancestors: bool, no_descendants: bool, no_siblings: bool):
     """Extract episode subgraph containing a receipt."""
     try:
-        from proofpack.graph.episodic import extract_episode, episode_to_dict
+        from proofpack.graph.episodic import extract_episode
 
         ep = extract_episode(
             receipt_id,

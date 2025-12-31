@@ -9,11 +9,10 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-import pytest
 import time
 
 from gate.confidence import ActionPlan, ContextState, ReasoningHistory, calculate_confidence
-from gate.decision import gate_decision, GateThresholds, GateDecision
+from gate.decision import gate_decision, GateDecision
 from constants import GATE_GREEN_THRESHOLD
 
 

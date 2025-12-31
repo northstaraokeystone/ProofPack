@@ -3,7 +3,7 @@ import sys
 import time
 import click
 
-from .output import success_box, error_box, table, progress_bar
+from .output import success_box, error_box
 
 
 @click.group()
@@ -25,7 +25,6 @@ def check(action_id: str):
             calculate_confidence
         )
         from gate.decision import gate_decision, GateThresholds
-        from constants import GATE_GREEN_THRESHOLD, GATE_YELLOW_THRESHOLD
 
         # Mock action data (would load from ledger in production)
         mock_plan = ActionPlan(

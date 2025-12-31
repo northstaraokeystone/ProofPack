@@ -21,7 +21,7 @@ from pathlib import Path
 # Add proofpack to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from proofpack.core.receipt import dual_hash, emit_receipt, merkle
+from proofpack.core.receipt import dual_hash, merkle
 
 # Configuration
 NUM_FRAUD_CASES = 10
@@ -51,7 +51,7 @@ def generate_fraud_case(case_id: int) -> dict:
     """Generate a fraudulent claim with highly repetitive patterns."""
     # Fraudulent claims often have repetitive billing codes and amounts
     base_amount = random.randint(1000, 5000)
-    base_code = f"CPT99213"  # Same code across all fraud cases
+    base_code = "CPT99213"  # Same code across all fraud cases
 
     # Repeat same procedure many times (fraud pattern)
     repeat_count = random.randint(10, 15)
@@ -61,7 +61,7 @@ def generate_fraud_case(case_id: int) -> dict:
     return {
         "case_id": f"FRAUD_{case_id:03d}",
         "claim_type": "fraud",
-        "provider_id": f"PRV_999",  # Same provider (fraud ring)
+        "provider_id": "PRV_999",  # Same provider (fraud ring)
         "patient_id": f"PAT_{10000 + case_id}",
         "procedures": procedures,
         "amounts": amounts,
@@ -289,7 +289,7 @@ def main():
     print("\n=== Results ===")
     print(f"Total receipts: {len(captured_receipts)}")
     print(f"Merkle root: {merkle_root}")
-    print(f"\nPerformance:")
+    print("\nPerformance:")
     print(f"  Recall: {recall:.2%}")
     print(f"  Precision: {precision:.2%}")
     print(f"  True Positives: {true_positives}")

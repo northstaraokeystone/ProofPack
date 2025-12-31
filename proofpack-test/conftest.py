@@ -6,7 +6,6 @@ Fixtures: pytest fixtures for unit and scenario tests
 """
 import random
 from dataclasses import dataclass, field
-from typing import Any
 from unittest.mock import MagicMock
 
 import pytest

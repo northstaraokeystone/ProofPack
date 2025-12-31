@@ -22,14 +22,13 @@ import json
 import logging
 import sys
 import time
-from dataclasses import asdict
 from typing import Optional
 
 from proofpack.core.receipt import emit_receipt
 
-from .auth import AuthHandler, AuthResult
+from .auth import AuthHandler
 from .config import MCPConfig, DEFAULT_CONFIG
-from .tools import list_tools, execute_tool, ToolResult
+from .tools import list_tools, execute_tool
 
 # Configure logging
 logging.basicConfig(

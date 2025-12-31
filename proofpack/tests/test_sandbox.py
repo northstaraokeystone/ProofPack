@@ -4,7 +4,6 @@ Per DELIVERABLE 3: Tests for sandbox/executor.py
 """
 
 import json
-import pytest
 from pathlib import Path
 
 

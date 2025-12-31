@@ -9,7 +9,7 @@ Based on the Corrective RAG paper (arXiv:2401.15884v2).
 """
 from enum import Enum
 from dataclasses import dataclass
-from typing import Optional, Tuple
+from typing import Tuple
 
 from proofpack.core.receipt import emit_receipt
 

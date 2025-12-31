@@ -1,9 +1,8 @@
 """MCP commands: start, stop, status, tools."""
 import sys
-import time
 import click
 
-from .output import success_box, error_box, table
+from .output import success_box, error_box
 
 
 @click.group()

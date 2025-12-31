@@ -100,7 +100,7 @@ def validate(config: str):
             error_box("Compose Validate: INVALID", "\n".join(errors))
             sys.exit(2)
         elif warnings:
-            print(f"\u256d\u2500 Compose Validate: WARNINGS " + "\u2500" * 30 + "\u256e")
+            print("\u256d\u2500 Compose Validate: WARNINGS " + "\u2500" * 30 + "\u256e")
             print(f"\u2502 Config: {config}")
             for w in warnings:
                 print(f"\u2502 WARN: {w}")

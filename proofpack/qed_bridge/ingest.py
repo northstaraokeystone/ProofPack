@@ -4,7 +4,6 @@ Ingests QED compressed windows and batches into the ledger with anchor support.
 SLO: Single window ingest <= 50ms p95, Batch of 100 windows <= 1s p95.
 """
 import json
-import time
 
 from ..core.receipt import dual_hash, emit_receipt, StopRule
 from ..ledger import ingest as ledger_ingest
@@ -110,8 +109,6 @@ def ingest_qed_output(window: dict, hook: str) -> dict:
     Raises:
         StopRule: If hook invalid, ingest fails, or recall < 0.999 for safety
     """
-    start_time = time.perf_counter()
-
     try:
         # 1. Validate hook (raises StopRule if invalid)
         validate_hook(hook)
@@ -182,8 +179,6 @@ def batch_windows(windows: list[dict], hook: str) -> dict:
     Raises:
         StopRule: If hook invalid, any window fails, or anchor fails
     """
-    start_time = time.perf_counter()
-
     try:
         # 1. Validate hook once (raises StopRule if invalid)
         validate_hook(hook)
