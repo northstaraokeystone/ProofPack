@@ -1,0 +1,95 @@
+{
+  "version": "1.0",
+  "description": "ProofPack 7-module pipeline DAG",
+  "nodes": [
+    {
+      "id": "ledger",
+      "type": "ingestion",
+      "function_ref": "proofpack.ledger.ingest.ingest_receipt",
+      "description": "Receipt ingestion and storage"
+    },
+    {
+      "id": "brief",
+      "type": "summarization",
+      "function_ref": "proofpack.packet.build.summarize_evidence",
+      "description": "Evidence summarization"
+    },
+    {
+      "id": "packet",
+      "type": "packaging",
+      "function_ref": "proofpack.packet.build.build_packet",
+      "description": "Proof packaging"
+    },
+    {
+      "id": "detect",
+      "type": "detection",
+      "function_ref": "proofpack.detect.scan.scan_anomalies",
+      "description": "Anomaly/fraud detection"
+    },
+    {
+      "id": "anchor",
+      "type": "anchoring",
+      "function_ref": "proofpack.anchor.merkle.anchor_batch",
+      "description": "Merkle tree anchoring"
+    },
+    {
+      "id": "loop",
+      "type": "orchestration",
+      "function_ref": "proofpack.loop.cycle.run_cycle",
+      "description": "META-LOOP integration"
+    },
+    {
+      "id": "mcp_server",
+      "type": "exposure",
+      "function_ref": "proofpack.mcp.server.handle_request",
+      "description": "External tool exposure via MCP"
+    }
+  ],
+  "edges": [
+    {
+      "from": "ledger",
+      "to": "brief",
+      "condition": null,
+      "type": "sequential"
+    },
+    {
+      "from": "ledger",
+      "to": "detect",
+      "condition": null,
+      "type": "parallel"
+    },
+    {
+      "from": "brief",
+      "to": "packet",
+      "condition": null,
+      "type": "sequential"
+    },
+    {
+      "from": "detect",
+      "to": "packet",
+      "condition": "anomaly_score > threshold",
+      "type": "conditional"
+    },
+    {
+      "from": "packet",
+      "to": "anchor",
+      "condition": null,
+      "type": "sequential"
+    },
+    {
+      "from": "anchor",
+      "to": "loop",
+      "condition": null,
+      "type": "sequential"
+    },
+    {
+      "from": "loop",
+      "to": "mcp_server",
+      "condition": null,
+      "type": "sequential"
+    }
+  ],
+  "entry_node": "ledger",
+  "exit_nodes": ["mcp_server", "anchor"],
+  "graph_hash": "COMPUTE_ON_LOAD"
+}

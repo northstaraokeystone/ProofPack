@@ -1,13 +1,19 @@
 """Cycle Module - Main loop orchestrator.
 
 Executes SENSE→EMIT cycle every 60 seconds:
-1. SENSE    - Query L0-L3 receipts
-2. ANALYZE  - Pattern detection (HUNTER)
-3. HARVEST  - Collect wounds
-4. HYPOTHESIZE - Synthesize helpers (ARCHITECT)
-5. GATE     - Route to approval
-6. ACTUATE  - Deploy approved
-7. EMIT     - Emit loop_cycle receipt (L4)
+1. SENSE         - Query L0-L3 receipts
+2. ANALYZE       - Pattern detection (HUNTER)
+3. HARVEST       - Collect wounds
+4. HYPOTHESIZE   - Synthesize helpers (ARCHITECT)
+5. GATE          - Route to approval
+6. PLAN_PROPOSAL - Show human execution plan (HITL visibility)
+7. ACTUATE       - Deploy approved
+8. EMIT          - Emit loop_cycle receipt (L4)
+
+Per DELIVERABLE 6: PLAN_PROPOSAL phase added between GATE and ACTUATE.
+- CRITICAL/HIGH risk: mandatory plan approval
+- MEDIUM risk: auto-approved after 60s
+- LOW risk: no plan proposal, direct to ACTUATE
 """
 
 import signal
@@ -26,6 +32,26 @@ from .gate import request_approval, check_approval_status, auto_decline_stale
 from .actuate import execute_action, get_active_helpers
 from .completeness import measure_completeness
 from .entropy import system_entropy, entropy_delta, entropy_conservation
+
+# Import plan proposal components
+try:
+    from proofpack.src.gate.plan_proposal import (
+        Plan,
+        PlanStep,
+        RiskLevel,
+        generate_plan,
+        emit_plan_proposal_receipt,
+        await_plan_approval,
+        requires_plan_proposal,
+    )
+    from proofpack.src.workflow.graph import (
+        load_graph,
+        hash_graph,
+        emit_workflow_receipt,
+    )
+    PLAN_PROPOSAL_AVAILABLE = True
+except ImportError:
+    PLAN_PROPOSAL_AVAILABLE = False
 
 # Constants
 CYCLE_INTERVAL_S = 60
@@ -56,8 +82,14 @@ def run_cycle(
         "harvest": {"wounds_found": 0, "candidates": 0, "duration_ms": 0, "status": "pending"},
         "hypothesize": {"blueprints_proposed": 0, "duration_ms": 0, "status": "pending"},
         "gate": {"approved": 0, "deferred": 0, "rejected": 0, "duration_ms": 0, "status": "pending"},
+        "plan_proposal": {"plans_proposed": 0, "plans_approved": 0, "plans_rejected": 0, "duration_ms": 0, "status": "pending"},
         "actuate": {"deployed": 0, "failed": 0, "duration_ms": 0, "status": "pending"},
     }
+
+    # Workflow tracking
+    planned_path = []
+    actual_path = []
+    workflow_graph_hash = ""
 
     status = "complete"
     emitted_receipts = []
@@ -164,12 +196,86 @@ def run_cycle(
             status = "partial"
             raise StopRule("Cycle timeout after gate phase")
 
-        # Phase 6: ACTUATE
+        # Phase 6: PLAN_PROPOSAL (new per DELIVERABLE 6)
+        phase_start = time.perf_counter()
+        plans_proposed = 0
+        plans_approved = 0
+        plans_rejected = 0
+        final_approved_blueprints = []
+
+        if PLAN_PROPOSAL_AVAILABLE and approved_blueprints:
+            for blueprint in approved_blueprints:
+                # Determine risk level from blueprint
+                risk_score = blueprint.get("risk_score", 0.0)
+                if risk_score >= 0.8:
+                    risk_level = RiskLevel.CRITICAL
+                elif risk_score >= 0.6:
+                    risk_level = RiskLevel.HIGH
+                elif risk_score >= 0.3:
+                    risk_level = RiskLevel.MEDIUM
+                else:
+                    risk_level = RiskLevel.LOW
+
+                # Check if plan proposal is required
+                if requires_plan_proposal(risk_level):
+                    # Create plan steps from blueprint
+                    steps = [
+                        PlanStep(
+                            step_id=f"deploy_{blueprint.get('helper_id', 'unknown')}",
+                            node_id="actuate",
+                            action="deploy",
+                            tool=blueprint.get("function_ref", ""),
+                            params=blueprint.get("params", {}),
+                            estimated_duration_ms=1000,
+                            requires_sandbox=blueprint.get("requires_sandbox", False),
+                            requires_network=blueprint.get("requires_network", False),
+                        )
+                    ]
+                    plan = Plan.new(steps, risk_score)
+                    plans_proposed += 1
+
+                    # Emit plan proposal receipt
+                    emit_plan_proposal_receipt(plan, tenant_id=tenant_id)
+
+                    # Await approval (timeout based on risk level)
+                    timeout = 300 if risk_level in (RiskLevel.CRITICAL, RiskLevel.HIGH) else 60
+                    approval_result = await_plan_approval(plan, timeout=timeout, tenant_id=tenant_id)
+
+                    if approval_result.approved:
+                        plans_approved += 1
+                        final_approved_blueprints.append(blueprint)
+
+                        # Track planned path
+                        planned_path.append("plan_proposal")
+                        actual_path.append("plan_proposal")
+                    else:
+                        plans_rejected += 1
+                        # Track deviation if rejected
+                        planned_path.append("plan_proposal")
+                        actual_path.append("plan_rejected")
+                else:
+                    # LOW risk - skip plan proposal
+                    final_approved_blueprints.append(blueprint)
+        else:
+            # Plan proposal not available - pass through all approved
+            final_approved_blueprints = approved_blueprints
+
+        phases["plan_proposal"]["duration_ms"] = int((time.perf_counter() - phase_start) * 1000)
+        phases["plan_proposal"]["plans_proposed"] = plans_proposed
+        phases["plan_proposal"]["plans_approved"] = plans_approved
+        phases["plan_proposal"]["plans_rejected"] = plans_rejected
+        phases["plan_proposal"]["status"] = "complete"
+
+        if _check_timeout(cycle_start):
+            status = "partial"
+            raise StopRule("Cycle timeout after plan_proposal phase")
+
+        # Phase 7: ACTUATE
         phase_start = time.perf_counter()
         deployed = 0
         failed = 0
 
-        for blueprint in approved_blueprints:
+        for blueprint in final_approved_blueprints:
             try:
                 result = execute_action(
                     {**blueprint, "action_type": "deploy"},
@@ -235,6 +341,26 @@ def run_cycle(
     entropy_after = analysis.get("entropy_after", 0.0) if 'analysis' in dir() else 0.0
     entropy_d = entropy_after - entropy_before
 
+    # Emit workflow receipt if available (per DELIVERABLE 6)
+    workflow_deviations = []
+    if planned_path != actual_path:
+        for i, (p, a) in enumerate(zip(planned_path, actual_path)):
+            if p != a:
+                workflow_deviations.append({
+                    "expected": p,
+                    "actual": a,
+                    "reason": f"Deviation at step {i}"
+                })
+
+    if PLAN_PROPOSAL_AVAILABLE and (planned_path or actual_path):
+        emit_workflow_receipt(
+            graph_hash=workflow_graph_hash or "cycle_workflow",
+            planned_path=planned_path,
+            actual_path=actual_path,
+            deviations=workflow_deviations,
+            tenant_id=tenant_id
+        )
+
     # Build result
     result = {
         "receipt_type": "loop_cycle",
@@ -246,6 +372,11 @@ def run_cycle(
         "entropy_delta": entropy_d,
         "cycle_duration_ms": cycle_duration_ms,
         "status": status,
+        "workflow": {
+            "planned_path": planned_path,
+            "actual_path": actual_path,
+            "deviations": workflow_deviations
+        }
     }
 
     # Emit loop_cycle receipt (L4)
