@@ -1,0 +1,25 @@
+{
+  "receipt_type": "fraud_bundle_anchor",
+  "ts": "2025-12-31T00:14:24.216347Z",
+  "bundle_version": "v1.0",
+  "receipt_count": 297,
+  "time_range": {
+    "start": "2025-12-31T00:14:24.187302Z",
+    "end": "2025-12-31T00:14:24.211438Z"
+  },
+  "dataset": {
+    "fraud_cases": 10,
+    "legit_cases": 137,
+    "total": 147
+  },
+  "merkle_root": "f8e5edaba5a8eaea317f6499c5d8e8e096e107a9cb03490cb66a46a20bb12e9e:faa3d5e062a83304b247f5f7e315883334bd40a7efb07c7772eb1897d6c99978",
+  "performance": {
+    "recall": 1.0,
+    "precision": 1.0,
+    "true_positives": 10,
+    "true_negatives": 137,
+    "false_positives": 0,
+    "false_negatives": 0
+  },
+  "payload_hash": "2376d8ac104611e45d8617aeff7482cc53089a31d671f0c55086ddbbe8c07347:2f8ca90bde006f359d80d97f23dc985e1d0dbaaffd8e2868cd61c71a8d717ec7"
+}
