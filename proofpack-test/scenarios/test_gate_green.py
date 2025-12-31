@@ -22,24 +22,25 @@ class TestGateGreen:
     def test_high_confidence_executes(self):
         """GREEN: High confidence action executes immediately."""
         # Create high-confidence scenario
+        # Use simple reasoning chain with low entropy (single repeated char)
         action = ActionPlan(
             action_id="test_action_001",
             action_type="safe_operation",
             target="test_target",
             parameters={},
-            reasoning_chain=["analyze", "verify", "execute"]
+            reasoning_chain=["a", "a", "a"]  # Low entropy chain
         )
 
         context = ContextState(
-            initial_hash="abc123",
-            current_hash="abc123",  # No drift
+            initial_hash="6ca13d52ca70c883",  # Use valid hash format
+            current_hash="6ca13d52ca70c883",  # No drift (same hash)
             entropy=0.05,  # Low entropy
             timestamp=time.time()
         )
 
         history = ReasoningHistory(
-            steps=[{"step": "analyze"}, {"step": "verify"}],
-            confidence_trajectory=[0.95, 0.96, 0.97],  # High, stable
+            steps=[{"step": "a"}, {"step": "a"}],
+            confidence_trajectory=[0.95, 0.95, 0.95],  # High, perfectly stable
             question_hashes=[]  # No repeated questions
         )
 

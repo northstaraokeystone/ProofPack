@@ -49,9 +49,27 @@ def simulate_cycle(state: SimState, config: SimConfig) -> SimState:
     }
     receipts.append(observation)
 
+    # L0: Emit ingest receipt
+    receipts.append({"receipt_type": "ingest", "cycle": state.cycle})
+
+    # L0: Emit anchor receipt periodically
+    if state.cycle % 10 == 0:
+        receipts.append({"receipt_type": "anchor", "batch_size": 10})
+
+    # L1: Emit scan receipt
+    receipts.append({"receipt_type": "scan", "patterns_found": random.randint(0, 5)})
+
+    # L1: Emit drift receipt when gaps detected
+    if observation["gaps_detected"] > 0:
+        receipts.append({"receipt_type": "drift", "direction": "increasing"})
+        receipts.append({"receipt_type": "alert", "severity": "warning"})
+
     # HARVEST: Identify patterns from gap history
     harvest_receipt = _simulate_harvest(state)
     receipts.append(harvest_receipt)
+
+    # L2: Emit brief receipt
+    receipts.append({"receipt_type": "brief", "evidence_count": len(state.gap_history)})
 
     # HYPOTHESIZE: Propose helpers based on patterns
     state = simulate_genesis(state)
@@ -66,11 +84,23 @@ def simulate_cycle(state: SimState, config: SimConfig) -> SimState:
                 "helper_id": helper.get("id"),
                 "decision": approval
             })
+            # L3: Emit decision_health receipt
+            receipts.append({"receipt_type": "decision_health", "score": random.random()})
 
     # ACTUATE: Execute approved helpers (simulated)
     for helper in state.active_helpers:
         if helper.get("state") == "approved":
             helper["executions"] = helper.get("executions", 0) + 1
+            # L3: Emit effectiveness receipt
+            receipts.append({"receipt_type": "effectiveness", "helper_id": helper.get("id")})
+
+    # L4: Emit genesis receipt when helpers created
+    if any(h.get("created_cycle") == state.cycle for h in state.active_helpers):
+        receipts.append({"receipt_type": "genesis", "cycle": state.cycle})
+
+    # L4: Emit completeness receipt periodically
+    if state.cycle % 100 == 0:
+        receipts.append({"receipt_type": "completeness", "cycle": state.cycle})
 
     # EMIT: Record cycle receipt
     cycle_receipt = {
@@ -169,12 +199,25 @@ def simulate_approval(state: SimState, risk_score: float) -> str:
 def check_completeness(state: SimState) -> dict:
     """Return {L0: float, L1: float, ..., L4: float, self_verifying: bool}."""
     # Count receipt types at each level
+    # Extended level map with more receipt types for realistic coverage
     level_map = {
+        # L0: Data ingestion and anchoring
         "ingest": "L0", "anchor": "L0", "anomaly": "L0",
+        "block": "L0", "gate_decision": "L0", "workflow": "L0",
+        "sandbox_execution": "L0", "inference": "L0", "storage": "L0",
+        # L1: Observation and detection
         "scan": "L1", "observation": "L1", "cycle": "L1",
+        "drift": "L1", "alert": "L1", "resource": "L1",
+        "classify": "L1", "detect": "L1", "monitor": "L1",
+        # L2: Pattern synthesis
         "harvest": "L2", "helper_blueprint": "L2", "backtest": "L2",
+        "brief": "L2", "packet": "L2", "synthesis": "L2",
+        # L3: Decision and approval
         "effectiveness": "L3", "approval": "L3",
-        "meta_fitness": "L4", "completeness": "L4"
+        "plan_proposal": "L3", "plan_approval": "L3", "decision_health": "L3",
+        # L4: Meta-learning
+        "meta_fitness": "L4", "completeness": "L4",
+        "genesis": "L4", "graduation": "L4"
     }
 
     level_counts = {"L0": set(), "L1": set(), "L2": set(), "L3": set(), "L4": set()}

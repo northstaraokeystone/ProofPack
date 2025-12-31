@@ -95,3 +95,29 @@ def mock_loop() -> MagicMock:
 def seed_random(sim_config: SimConfig):
     """Seed random for deterministic tests."""
     random.seed(sim_config.random_seed)
+
+
+@pytest.fixture(autouse=True)
+def enable_gate_features(monkeypatch):
+    """Enable gate features for testing.
+
+    Feature flags are disabled by default (shadow mode).
+    Tests require them enabled to validate gate behavior.
+
+    Note: Must patch both the config module AND the importing modules
+    since Python copies the values on import.
+    """
+    import config.features as features
+    monkeypatch.setattr(features, 'FEATURE_GATE_ENABLED', True)
+    monkeypatch.setattr(features, 'FEATURE_GATE_YELLOW_ONLY', False)
+    monkeypatch.setattr(features, 'FEATURE_MONTE_CARLO_ENABLED', True)
+    monkeypatch.setattr(features, 'FEATURE_WOUND_DETECTION_ENABLED', True)
+
+    # Also patch the gate.decision module which imports these values
+    try:
+        import gate.decision as gate_decision
+        monkeypatch.setattr(gate_decision, 'FEATURE_GATE_ENABLED', True)
+        monkeypatch.setattr(gate_decision, 'FEATURE_GATE_YELLOW_ONLY', False)
+        monkeypatch.setattr(gate_decision, 'FEATURE_AGENT_SPAWNING_ENABLED', False)
+    except ImportError:
+        pass  # gate module not available in all test contexts

@@ -99,12 +99,17 @@ def run_workflow_scenario(
                 actual_path[idx] = f"{actual_path[idx]}_deviated"
             state.minor_deviations += 1
         else:  # major
-            # Major deviation: >2 nodes different
+            # Major deviation: >2 nodes different (at least 3 unique nodes)
             actual_path = planned_path.copy()
-            for _ in range(3):
-                if len(actual_path) > 0:
-                    idx = random.randint(0, len(actual_path) - 1)
-                    actual_path[idx] = f"{actual_path[idx]}_deviated"
+            # Pick 3 unique indices to deviate
+            if len(actual_path) >= 3:
+                indices_to_deviate = random.sample(range(len(actual_path)), 3)
+                for idx in indices_to_deviate:
+                    actual_path[idx] = f"{planned_path[idx]}_deviated"
+            else:
+                # If path is short, deviate all nodes
+                for idx in range(len(actual_path)):
+                    actual_path[idx] = f"{planned_path[idx]}_deviated"
             state.major_deviations += 1
 
         # Detect deviations
