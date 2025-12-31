@@ -388,6 +388,188 @@ def compact(receipts: list, span: tuple) -> dict:
         })
 ```
 
+## 4.9 workflow_receipt (CLAUDEME §12)
+```python
+# --- SCHEMA ---
+{
+        "receipt_type": "workflow",
+        "tenant_id": "str",
+        "graph_hash": "str",                # Dual-hash of graph structure
+        "planned_path": ["str"],            # Expected node sequence
+        "actual_path": ["str"],             # Actual node sequence
+        "deviations": [{
+                "expected": "str",
+                "actual": "str",
+                "reason": "str"
+        }]
+}
+
+# --- EMIT ---
+def emit_workflow_receipt(graph_hash: str, planned: list, actual: list, tenant_id: str) -> dict:
+        deviations = detect_deviations(planned, actual)
+        return emit_receipt("workflow", {
+                "tenant_id": tenant_id,
+                "graph_hash": graph_hash,
+                "planned_path": planned,
+                "actual_path": actual,
+                "deviations": deviations
+        })
+
+# --- TEST ---
+def test_workflow_deviation():
+        r = emit_workflow_receipt("hash", ["a","b"], ["a","x"], "t")
+        assert len(r["deviations"]) == 1
+
+# --- STOPRULE ---
+def stoprule_workflow_deviation(deviation):
+        emit_receipt("anomaly", {"metric":"workflow","classification":"deviation","action":"halt"})
+        raise StopRule(f"Unauthorized deviation: {deviation}")
+```
+
+## 4.10 sandbox_execution_receipt (CLAUDEME §13)
+```python
+# --- SCHEMA ---
+{
+        "receipt_type": "sandbox_execution",
+        "tenant_id": "str",
+        "tool_name": "str",
+        "container_id": "str",
+        "input_hash": "str",
+        "output_hash": "str",
+        "exit_code": "int",
+        "duration_ms": "int",
+        "network_calls": [{
+                "domain": "str",
+                "allowed": "bool"
+        }]
+}
+
+# --- EMIT ---
+def emit_sandbox_receipt(result: SandboxResult, tenant_id: str) -> dict:
+        return emit_receipt("sandbox_execution", {
+                "tenant_id": tenant_id,
+                "tool_name": result.tool_name,
+                "container_id": result.container_id,
+                "input_hash": result.input_hash,
+                "output_hash": result.output_hash,
+                "exit_code": result.exit_code,
+                "duration_ms": result.duration_ms,
+                "network_calls": result.network_calls
+        })
+
+# --- TEST ---
+def test_sandbox_receipt():
+        r = emit_sandbox_receipt(mock_result, "t")
+        assert r["exit_code"] == 0
+
+# --- STOPRULE ---
+def stoprule_network_violation(domain: str):
+        emit_receipt("anomaly", {"metric":"network","classification":"violation","action":"halt"})
+        raise StopRule(f"Non-allowlisted domain: {domain}")
+```
+
+## 4.11 inference_receipt (CLAUDEME §14)
+```python
+# --- SCHEMA ---
+{
+        "receipt_type": "inference",
+        "tenant_id": "str",
+        "model_id": "str",
+        "model_version": "str",
+        "model_hash": "str",                # Dual-hash of weights+config
+        "input_hash": "str",
+        "output_hash": "str",
+        "latency_ms": "int",
+        "token_count": {"input": "int", "output": "int"},
+        "quantization": "str"
+}
+
+# --- EMIT ---
+def emit_inference_receipt(model_id: str, model_version: str, model_hash: str,
+                            input_data: bytes, output_data: bytes, latency_ms: int,
+                            tokens: dict, quantization: str, tenant_id: str) -> dict:
+        return emit_receipt("inference", {
+                "tenant_id": tenant_id,
+                "model_id": model_id,
+                "model_version": model_version,
+                "model_hash": model_hash,
+                "input_hash": dual_hash(input_data),
+                "output_hash": dual_hash(output_data),
+                "latency_ms": latency_ms,
+                "token_count": tokens,
+                "quantization": quantization
+        })
+
+# --- TEST ---
+def test_inference_receipt():
+        r = emit_inference_receipt("m", "v1", "hash", b"in", b"out", 100, {}, "fp16", "t")
+        assert "model_hash" in r
+
+# --- STOPRULE ---
+def stoprule_inference_tampering(expected: str, actual: str):
+        emit_receipt("anomaly", {"metric":"inference","classification":"violation","action":"halt"})
+        raise StopRule(f"Tampering detected: {expected} != {actual}")
+```
+
+## 4.12 plan_proposal_receipt
+```python
+# --- SCHEMA ---
+{
+        "receipt_type": "plan_proposal",
+        "tenant_id": "str",
+        "plan_id": "uuid",
+        "steps": [{
+                "step_id": "str",
+                "action": "str",
+                "tool": "str"
+        }],
+        "risk_assessment": {
+                "score": "float 0-1",
+                "level": "critical|high|medium|low"
+        },
+        "editable_until": "ISO8601"
+}
+
+# --- EMIT ---
+def emit_plan_proposal_receipt(plan: Plan, tenant_id: str) -> dict:
+        return emit_receipt("plan_proposal", {
+                "tenant_id": tenant_id,
+                "plan_id": plan.plan_id,
+                "steps": [{"step_id": s.step_id, "action": s.action, "tool": s.tool} for s in plan.steps],
+                "risk_assessment": {"score": plan.risk_score, "level": plan.risk_level},
+                "editable_until": plan.editable_until.isoformat() + "Z"
+        })
+```
+
+## 4.13 plan_approval_receipt
+```python
+# --- SCHEMA ---
+{
+        "receipt_type": "plan_approval",
+        "tenant_id": "str",
+        "plan_id": "uuid",
+        "decision": "approved|rejected|timeout",
+        "modifier_id": "str|null",
+        "reason": "str|null"
+}
+
+# --- EMIT ---
+def emit_plan_approval_receipt(plan_id: str, decision: str, modifier_id: str,
+                                 reason: str, tenant_id: str) -> dict:
+        return emit_receipt("plan_approval", {
+                "tenant_id": tenant_id,
+                "plan_id": plan_id,
+                "decision": decision,
+                "modifier_id": modifier_id,
+                "reason": reason
+        })
+
+# --- STOPRULE ---
+def stoprule_plan_rejected(plan_id: str):
+        emit_receipt("anomaly", {"metric":"plan","classification":"deviation","action":"halt"})
+        raise StopRule(f"Plan rejected: {plan_id}")
+```
+
 ---
 
 # §5 GLYPHS (State Objects)
@@ -728,7 +910,11 @@ assert understand(RNES) == True, "Re-read from §0"
 ---
 
 **Hash of this document:** `COMPUTE_ON_SAVE`
-**Version:** 1.0
+**Version:** 1.1
 **Status:** PROPOSED STANDARD
+
+**Changelog:**
+- v1.1 (2025-01-01): Added §4.9-4.13 for workflow, sandbox, inference, plan proposal/approval receipts (CLAUDEME §12-14)
+- v1.0 (2024-12-31): Initial release
 
 *No receipt → not real. Ship at T+48h or kill.*

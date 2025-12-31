@@ -121,6 +121,238 @@ MONTE_CARLO_LATENCY_BUDGET_MS = 200
 
 ---
 
+## System 4: Workflow Visibility (CLAUDEME §12)
+
+### Purpose
+
+Explicit DAG-based execution with deviation detection and HALT on unauthorized deviations.
+
+### Components
+
+| Component | Location | Function |
+|-----------|----------|----------|
+| workflow_graph.json | proofpack/ | 7-node execution DAG definition |
+| graph.py | src/workflow/ | DAG traversal engine |
+
+### Workflow Nodes
+
+```
+ledger → brief → packet → detect → anchor
+                                      ↓
+                              loop ← mcp_server
+```
+
+| Node | Type | Function |
+|------|------|----------|
+| ledger | ingestion | Receipt ingest and storage |
+| brief | summarization | Evidence synthesis |
+| packet | packaging | Claim-to-receipt mapping |
+| detect | detection | Anomaly and drift detection |
+| anchor | anchoring | Merkle proof generation |
+| loop | orchestration | Self-improvement coordination |
+| mcp_server | exposure | External API interface |
+
+### Deviation Detection
+
+```python
+# Deviation levels
+MINOR_DEVIATION = "alert"    # Different path, valid reason
+MAJOR_DEVIATION = "halt"     # Unauthorized path, no approval
+```
+
+### Receipt Emission
+
+```json
+{
+  "receipt_type": "workflow",
+  "graph_hash": "sha256:blake3",
+  "planned_path": ["ledger", "brief", "packet"],
+  "actual_path": ["ledger", "brief", "packet"],
+  "deviations": []
+}
+```
+
+---
+
+## System 5: Sandbox Execution (CLAUDEME §13)
+
+### Purpose
+
+Network-restricted containerized tool execution with allowlist enforcement.
+
+### Components
+
+| Component | Location | Function |
+|-----------|----------|----------|
+| executor.py | src/sandbox/ | Docker container management |
+| Dockerfile.tool | src/sandbox/ | Non-root container template |
+| allowlist.json | config/ | Allowed domains/protocols |
+
+### Network Allowlist
+
+```json
+{
+  "domains": ["api.usaspending.gov", "api.sam.gov", "data.treasury.gov"],
+  "protocols": ["https"],
+  "require_tls": true,
+  "timeout_seconds": 30,
+  "max_request_size_bytes": 10485760
+}
+```
+
+### Security Model
+
+- Docker isolation with `--network=none` by default
+- Explicit allowlist for external network calls
+- Non-root container execution
+- HALT on non-allowlisted domain access
+
+### Receipt Emission
+
+```json
+{
+  "receipt_type": "sandbox_execution",
+  "tool_name": "http_fetch",
+  "container_id": "sandbox-abc123",
+  "input_hash": "sha256:blake3",
+  "output_hash": "sha256:blake3",
+  "exit_code": 0,
+  "network_calls": [{"domain": "api.usaspending.gov", "allowed": true}]
+}
+```
+
+---
+
+## System 6: Inference Tracking (CLAUDEME §14)
+
+### Purpose
+
+Track ML model calls with version hashing and tampering detection.
+
+### Components
+
+| Component | Location | Function |
+|-----------|----------|----------|
+| wrapper.py | src/inference/ | Inference wrapping and receipt emission |
+
+### Model Hash Computation
+
+```python
+def compute_model_hash(model_weights, model_config) -> str:
+    """Dual-hash of model weights + config for reproducibility."""
+    combined = model_weights + json.dumps(model_config).encode()
+    return dual_hash(combined)
+```
+
+### Tampering Detection
+
+If the output hash doesn't match the expected hash for given input, tampering is detected:
+
+```python
+if actual_output_hash != expected_output_hash:
+    emit_receipt("anomaly", {
+        "metric": "inference_tampering",
+        "classification": "violation",
+        "action": "halt"
+    })
+```
+
+### Receipt Emission
+
+```json
+{
+  "receipt_type": "inference",
+  "model_id": "llm-v3",
+  "model_version": "v1.2.3",
+  "model_hash": "sha256:blake3",
+  "input_hash": "sha256:blake3",
+  "output_hash": "sha256:blake3",
+  "latency_ms": 150,
+  "token_count": {"input": 100, "output": 500},
+  "quantization": "fp16"
+}
+```
+
+---
+
+## System 7: Plan Proposal (HITL Visibility)
+
+### Purpose
+
+Human-in-the-loop approval workflow for high-risk actions.
+
+### Components
+
+| Component | Location | Function |
+|-----------|----------|----------|
+| plan_proposal.py | src/gate/ | Plan generation and approval workflow |
+| cycle.py | loop/ | META-LOOP integration (PLAN_PROPOSAL phase) |
+
+### Risk Levels
+
+| Level | Auto-Approve | Timeout Behavior |
+|-------|--------------|------------------|
+| CRITICAL | Never | HALT (no auto-reject) |
+| HIGH | Never | Auto-reject after timeout |
+| MEDIUM | If confidence > 0.9 | Auto-reject after timeout |
+| LOW | Always | N/A |
+
+### Approval Workflow
+
+```
+Plan Generated → plan_proposal_receipt
+       ↓
+Human Review (editable window)
+       ↓
+┌──────┴──────┬──────────┬──────────┐
+↓             ↓          ↓          ↓
+Approved   Modified   Rejected   Timeout
+    ↓          ↓          ↓          ↓
+Execute    Execute    HALT      Auto-Reject
+           (modified)
+```
+
+### Receipt Types
+
+**plan_proposal** (emitted when plan is generated):
+```json
+{
+  "receipt_type": "plan_proposal",
+  "plan_id": "plan-uuid",
+  "steps": [{"step_id": "1", "action": "fetch", "tool": "http"}],
+  "risk_assessment": {"score": 0.75, "level": "high"},
+  "editable_until": "2024-01-01T00:05:00Z"
+}
+```
+
+**plan_approval** (emitted when human responds):
+```json
+{
+  "receipt_type": "plan_approval",
+  "plan_id": "plan-uuid",
+  "decision": "approved|rejected|timeout",
+  "modifier_id": "human_reviewer_1",
+  "reason": "Security improvement"
+}
+```
+
+**plan_modification** (emitted when plan is edited):
+```json
+{
+  "receipt_type": "plan_modification",
+  "original_plan_id": "plan-uuid",
+  "modified_plan_id": "plan-uuid-modified",
+  "modifier_id": "human_reviewer_1",
+  "diff": {
+    "steps_added": [],
+    "steps_removed": [],
+    "steps_changed": ["step_1"]
+  }
+}
+```
+
+---
+
 ## Integration Flow
 
 ```

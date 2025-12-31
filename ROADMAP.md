@@ -15,6 +15,13 @@
 - [x] Compliance tests (6/6 pass)
 - [x] Receipt bundle published
 - [x] Honest documentation (LIMITATIONS.md, ROADMAP.md)
+- [x] **Enterprise Integration v1.0** (CLAUDEME §12-14)
+  - [x] Workflow DAG with 7-node execution graph
+  - [x] Sandbox executor with Docker isolation + network allowlist
+  - [x] Inference wrapper with model versioning + tampering detection
+  - [x] Plan proposal module with HITL approval workflow
+  - [x] META-LOOP PLAN_PROPOSAL phase integration
+  - [x] Monte Carlo scenarios (WORKFLOW, SANDBOX, INFERENCE, PLAN_APPROVAL)
 - [ ] Working group first meeting (Feb 3)
 - [ ] 2-3 steering members recruited
 
@@ -163,6 +170,10 @@ See [standards/CONTRIBUTE.md](standards/CONTRIBUTE.md)
 | 2024-12-31 | Research-grade honest framing | Transparency builds trust |
 | 2024-12-31 | 6/6 compliance target | Full RNES alignment |
 | 2024-12-31 | Q2 2025 enterprise target | Post-seed runway |
+| 2025-01-01 | Enterprise Integration v1.0 | CLAUDEME §12-14 compliance |
+| 2025-01-01 | 7-node workflow DAG | Explicit execution visibility |
+| 2025-01-01 | Sandbox network allowlist | Government API security |
+| 2025-01-01 | Plan proposal HITL workflow | Human oversight for high-risk actions |
 
 ---
 
