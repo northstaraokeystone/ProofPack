@@ -21,7 +21,7 @@ import time
 from dataclasses import dataclass, field
 from typing import Literal
 
-from ledger.core import emit_receipt, StopRule
+from core.receipt import emit_receipt, StopRule
 from loop.src.quantum import (
     FitnessDistribution,
     collapse_state,

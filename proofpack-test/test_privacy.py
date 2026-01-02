@@ -1,6 +1,6 @@
 """Tests for privacy module."""
 import pytest
-from proofpack.privacy import (
+from privacy import (
     redact_receipt,
     verify_redaction,
     get_public_view,

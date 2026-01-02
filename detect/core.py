@@ -2,7 +2,7 @@
 import time
 from collections import defaultdict
 
-from ledger.core import emit_receipt, dual_hash
+from core.receipt import emit_receipt, dual_hash
 
 
 def scan(stream: list, tenant_id: str = "default") -> dict:

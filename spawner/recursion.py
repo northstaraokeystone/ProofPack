@@ -9,7 +9,7 @@ At depth 3, no further spawning is allowed (prune instead).
 
 from dataclasses import dataclass
 
-from proofpack.core.receipt import emit_receipt
+from core.receipt import emit_receipt
 
 from .registry import Agent, get_agent, get_agents_by_parent, MAX_DEPTH
 

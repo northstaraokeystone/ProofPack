@@ -4,7 +4,7 @@ Target SLO: <50ms per receipt generation.
 """
 import time
 
-from proofpack.core.receipt import dual_hash, emit_receipt
+from core.receipt import dual_hash, emit_receipt
 
 
 class TestReceiptGenerationLatency:

@@ -6,7 +6,7 @@ import math
 import time
 from dataclasses import dataclass
 
-from ledger.core import emit_receipt
+from core.receipt import emit_receipt
 
 
 @dataclass

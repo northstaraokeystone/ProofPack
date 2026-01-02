@@ -131,8 +131,8 @@ Explicit DAG-based execution with deviation detection and HALT on unauthorized d
 
 | Component | Location | Function |
 |-----------|----------|----------|
-| workflow_graph.json | proofpack/ | 7-node execution DAG definition |
-| graph.py | src/workflow/ | DAG traversal engine |
+| workflow_graph.json | config/ | 7-node execution DAG definition |
+| graph.py | enterprise/workflow/ | DAG traversal engine |
 
 ### Workflow Nodes
 
@@ -184,8 +184,8 @@ Network-restricted containerized tool execution with allowlist enforcement.
 
 | Component | Location | Function |
 |-----------|----------|----------|
-| executor.py | src/sandbox/ | Docker container management |
-| Dockerfile.tool | src/sandbox/ | Non-root container template |
+| executor.py | enterprise/sandbox/ | Docker container management |
+| Dockerfile.tool | enterprise/sandbox/ | Non-root container template |
 | allowlist.json | config/ | Allowed domains/protocols |
 
 ### Network Allowlist
@@ -233,7 +233,7 @@ Track ML model calls with version hashing and tampering detection.
 
 | Component | Location | Function |
 |-----------|----------|----------|
-| wrapper.py | src/inference/ | Inference wrapping and receipt emission |
+| wrapper.py | enterprise/inference/ | Inference wrapping and receipt emission |
 
 ### Model Hash Computation
 
@@ -285,7 +285,7 @@ Human-in-the-loop approval workflow for high-risk actions.
 
 | Component | Location | Function |
 |-----------|----------|----------|
-| plan_proposal.py | src/gate/ | Plan generation and approval workflow |
+| plan_proposal.py | enterprise/gate/ | Plan generation and approval workflow |
 | cycle.py | loop/ | META-LOOP integration (PLAN_PROPOSAL phase) |
 
 ### Risk Levels

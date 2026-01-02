@@ -13,7 +13,7 @@ import time
 import uuid
 from dataclasses import dataclass
 
-from proofpack.core.receipt import emit_receipt
+from core.receipt import emit_receipt
 
 
 # Pattern storage file (append-only JSONL like receipts)

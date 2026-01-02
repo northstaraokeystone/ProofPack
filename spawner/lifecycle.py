@@ -8,7 +8,7 @@ Single state machine for agent lifecycle. No ad-hoc state tracking.
 import time
 from dataclasses import dataclass
 
-from proofpack.core.receipt import emit_receipt
+from core.receipt import emit_receipt
 
 from .registry import (
     AgentState,

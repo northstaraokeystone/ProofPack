@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 # Import from core modules
-from ledger.core import merkle, emit_receipt, StopRule
+from core.receipt import merkle, emit_receipt, StopRule
 from ledger.ingest import ingest
 from ledger.anchor import anchor as anchor_batch  # alias for test compatibility
 from brief.retrieve import retrieve

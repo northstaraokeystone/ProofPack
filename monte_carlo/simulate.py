@@ -6,8 +6,8 @@ import random
 import time
 from dataclasses import dataclass, field
 
-from ledger.core import emit_receipt
-from anchor import dual_hash
+from core.receipt import emit_receipt
+from core.receipt import dual_hash
 from constants import (
     MONTE_CARLO_DEFAULT_SIMS,
     MONTE_CARLO_DEFAULT_NOISE,

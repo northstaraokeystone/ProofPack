@@ -4,7 +4,7 @@ Target SLO: <1000ms for 1000 receipts.
 """
 import time
 
-from proofpack.core.receipt import merkle
+from core.receipt import merkle
 
 
 class TestMerkleAnchorPerformance:

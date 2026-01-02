@@ -1,6 +1,6 @@
 """Decision health scoring using Decision Health V2 formula."""
 import time
-from ledger.core import emit_receipt, StopRule
+from core.receipt import emit_receipt, StopRule
 
 HEALTH_SCHEMA = {
     "receipt_type": "health",

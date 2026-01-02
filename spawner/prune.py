@@ -12,7 +12,7 @@ import time
 from dataclasses import dataclass
 from enum import Enum
 
-from proofpack.core.receipt import emit_receipt
+from core.receipt import emit_receipt
 
 from .registry import (
     AgentState,

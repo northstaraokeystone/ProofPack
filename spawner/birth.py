@@ -12,7 +12,7 @@ import time
 import uuid
 from dataclasses import dataclass
 
-from proofpack.core.receipt import emit_receipt, merkle
+from core.receipt import emit_receipt, merkle
 
 from .registry import (
     Agent,

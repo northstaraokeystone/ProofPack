@@ -3,8 +3,8 @@
 Measures how much context has changed since reasoning started.
 """
 import time
-from ledger.core import emit_receipt
-from anchor import dual_hash
+from core.receipt import emit_receipt
+from core.receipt import dual_hash
 
 
 def measure_drift(

@@ -7,8 +7,8 @@ import time
 from dataclasses import dataclass, field
 from enum import Enum
 
-from ledger.core import emit_receipt
-from anchor import dual_hash
+from core.receipt import emit_receipt
+from core.receipt import dual_hash
 from constants import GATE_GREEN_THRESHOLD, GATE_YELLOW_THRESHOLD
 from config.features import (
     FEATURE_GATE_ENABLED,

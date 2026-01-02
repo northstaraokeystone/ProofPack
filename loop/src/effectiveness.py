@@ -17,7 +17,7 @@ BASELINE ASSUMPTIONS BROKEN:
 import time
 from dataclasses import dataclass, field
 
-from ledger.core import emit_receipt, StopRule
+from core.receipt import emit_receipt, StopRule
 from loop.src.quantum import FitnessDistribution, exponential_decay
 from loop.src.genesis import HelperBlueprint
 

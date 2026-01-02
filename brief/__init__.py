@@ -1,5 +1,5 @@
 """Brief module: evidence synthesis with decision health scoring."""
-from ledger.core import emit_receipt, dual_hash, StopRule
+from core.receipt import emit_receipt, dual_hash, StopRule
 
 from .retrieve import retrieve, RETRIEVAL_SCHEMA
 from .compose import compose, BRIEF_SCHEMA

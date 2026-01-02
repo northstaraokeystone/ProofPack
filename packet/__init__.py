@@ -1,5 +1,5 @@
 """Packet module: decision packaging with consistency auditing."""
-from ledger.core import emit_receipt, dual_hash, merkle, StopRule
+from core.receipt import emit_receipt, dual_hash, merkle, StopRule
 
 from .attach import attach, ATTACH_SCHEMA
 from .audit import audit, CONSISTENCY_SCHEMA, HALT_SCHEMA

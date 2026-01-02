@@ -14,7 +14,7 @@ class TestGraphBackend:
     def test_networkx_backend_creation(self):
         """Test NetworkX backend can be created."""
         pytest.importorskip("networkx")
-        from proofpack.graph.backend import NetworkXBackend
+        from graph.backend import NetworkXBackend
 
         backend = NetworkXBackend()
 
@@ -24,7 +24,7 @@ class TestGraphBackend:
     def test_add_node(self):
         """Test adding nodes to graph."""
         pytest.importorskip("networkx")
-        from proofpack.graph.backend import NetworkXBackend, GraphNode
+        from graph.backend import NetworkXBackend, GraphNode
 
         backend = NetworkXBackend()
         node = GraphNode(
@@ -43,7 +43,7 @@ class TestGraphBackend:
     def test_add_duplicate_node_fails(self):
         """Test adding duplicate node returns False."""
         pytest.importorskip("networkx")
-        from proofpack.graph.backend import NetworkXBackend, GraphNode
+        from graph.backend import NetworkXBackend, GraphNode
 
         backend = NetworkXBackend()
         node = GraphNode(
@@ -62,7 +62,7 @@ class TestGraphBackend:
     def test_add_edge(self):
         """Test adding edges between nodes."""
         pytest.importorskip("networkx")
-        from proofpack.graph.backend import NetworkXBackend, GraphNode, GraphEdge
+        from graph.backend import NetworkXBackend, GraphNode, GraphEdge
 
         backend = NetworkXBackend()
 
@@ -86,7 +86,7 @@ class TestGraphBackend:
     def test_get_ancestors(self):
         """Test ancestor traversal."""
         pytest.importorskip("networkx")
-        from proofpack.graph.backend import NetworkXBackend, GraphNode, GraphEdge
+        from graph.backend import NetworkXBackend, GraphNode, GraphEdge
 
         backend = NetworkXBackend()
 
@@ -110,8 +110,8 @@ class TestGraphIngest:
     def test_add_receipt_to_graph(self):
         """Test adding receipt as node."""
         pytest.importorskip("networkx")
-        from proofpack.graph.backend import reset_backend
-        from proofpack.graph.ingest import add_node
+        from graph.backend import reset_backend
+        from graph.ingest import add_node
 
         reset_backend()
 
@@ -131,8 +131,8 @@ class TestGraphIngest:
     def test_bulk_ingest(self):
         """Test bulk ingestion of receipts."""
         pytest.importorskip("networkx")
-        from proofpack.graph.backend import reset_backend
-        from proofpack.graph.ingest import bulk_ingest
+        from graph.backend import reset_backend
+        from graph.ingest import bulk_ingest
 
         reset_backend()
 
@@ -156,7 +156,7 @@ class TestGraphQuery:
     def setup_graph(self):
         """Set up test graph with sample data."""
         pytest.importorskip("networkx")
-        from proofpack.graph.backend import reset_backend, get_backend, GraphNode, GraphEdge
+        from graph.backend import reset_backend, get_backend, GraphNode, GraphEdge
 
         reset_backend()
         backend = get_backend()
@@ -182,7 +182,7 @@ class TestGraphQuery:
 
     def test_lineage_query(self):
         """Test lineage query."""
-        from proofpack.graph.query import lineage
+        from graph.query import lineage
 
         with patch('sys.stdout', new=StringIO()):
             result = lineage("node00020000", depth=5)
@@ -192,7 +192,7 @@ class TestGraphQuery:
 
     def test_temporal_query(self):
         """Test temporal range query."""
-        from proofpack.graph.query import temporal
+        from graph.query import temporal
 
         with patch('sys.stdout', new=StringIO()):
             result = temporal(
@@ -205,7 +205,7 @@ class TestGraphQuery:
 
     def test_match_query(self):
         """Test pattern matching query."""
-        from proofpack.graph.query import match
+        from graph.query import match
 
         with patch('sys.stdout', new=StringIO()):
             result = match({"receipt_type": "test"})
@@ -220,8 +220,8 @@ class TestGraphPerformance:
     def test_lineage_slo(self):
         """Test lineage query meets <100ms SLO."""
         pytest.importorskip("networkx")
-        from proofpack.graph.backend import reset_backend, get_backend, GraphNode
-        from proofpack.graph.query import lineage
+        from graph.backend import reset_backend, get_backend, GraphNode
+        from graph.query import lineage
 
         reset_backend()
         backend = get_backend()
@@ -245,8 +245,8 @@ class TestGraphPerformance:
     def test_temporal_slo(self):
         """Test temporal query meets <150ms SLO."""
         pytest.importorskip("networkx")
-        from proofpack.graph.backend import reset_backend, get_backend, GraphNode
-        from proofpack.graph.query import temporal
+        from graph.backend import reset_backend, get_backend, GraphNode
+        from graph.query import temporal
 
         reset_backend()
         backend = get_backend()

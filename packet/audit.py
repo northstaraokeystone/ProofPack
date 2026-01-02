@@ -1,6 +1,6 @@
 """Consistency auditing with 99.9% threshold gate."""
 from datetime import datetime, timedelta
-from ledger.core import emit_receipt, StopRule
+from core.receipt import emit_receipt, StopRule
 
 CONSISTENCY_SCHEMA = {
     "receipt_type": "consistency",

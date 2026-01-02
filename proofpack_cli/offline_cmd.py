@@ -1,8 +1,8 @@
 """Offline mode CLI commands."""
 import click
 
-from proofpack.offline import queue, sync
-from proofpack.offline.merkle_local import build_local_merkle
+from offline import queue, sync
+from offline.merkle_local import build_local_merkle
 from .output import print_json, print_error, print_success
 
 

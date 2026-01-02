@@ -21,7 +21,7 @@ from pathlib import Path
 # Add proofpack to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from proofpack.core.receipt import dual_hash, merkle
+from core.receipt import dual_hash, merkle
 
 # Configuration
 NUM_FRAUD_CASES = 10

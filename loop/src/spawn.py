@@ -9,8 +9,8 @@ import math
 import time
 from dataclasses import dataclass
 
-from ledger.core import emit_receipt, merkle
-from anchor import dual_hash
+from core.receipt import emit_receipt, merkle
+from core.receipt import dual_hash
 from constants import (
     SPAWN_BASE_FORMULA,
     SPAWN_CONVERGENCE_MULTIPLIER,

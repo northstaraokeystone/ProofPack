@@ -8,7 +8,7 @@ import time
 import uuid
 from dataclasses import dataclass
 
-from proofpack.core.receipt import emit_receipt
+from core.receipt import emit_receipt
 
 from .registry import AgentState, get_agent
 from .lifecycle import transition_agent
