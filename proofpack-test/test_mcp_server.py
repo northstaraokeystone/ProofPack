@@ -10,7 +10,7 @@ class TestMCPConfig:
 
     def test_default_config(self):
         """Test default configuration values."""
-        from proofpack.mcp.config import MCPConfig
+        from mcp.config import MCPConfig
 
         config = MCPConfig()
 
@@ -22,7 +22,7 @@ class TestMCPConfig:
 
     def test_config_from_env(self):
         """Test loading config from environment."""
-        from proofpack.mcp.config import MCPConfig
+        from mcp.config import MCPConfig
 
         with patch.dict('os.environ', {'PROOFPACK_MCP_PORT': '9000'}):
             config = MCPConfig.from_env()
@@ -31,7 +31,7 @@ class TestMCPConfig:
 
     def test_config_validation(self):
         """Test configuration validation."""
-        from proofpack.mcp.config import MCPConfig
+        from mcp.config import MCPConfig
 
         config = MCPConfig(port=0)
         errors = config.validate()
@@ -41,7 +41,7 @@ class TestMCPConfig:
 
     def test_auth_required_needs_token(self):
         """Test that auth_required needs token."""
-        from proofpack.mcp.config import MCPConfig
+        from mcp.config import MCPConfig
 
         config = MCPConfig(auth_required=True, auth_token="")
         errors = config.validate()
@@ -54,8 +54,8 @@ class TestMCPAuth:
 
     def test_auth_disabled_allows_all(self):
         """Test that disabled auth allows all requests."""
-        from proofpack.mcp.auth import AuthHandler
-        from proofpack.mcp.config import MCPConfig
+        from mcp.auth import AuthHandler
+        from mcp.config import MCPConfig
 
         config = MCPConfig(auth_required=False)
         handler = AuthHandler(config)
@@ -68,8 +68,8 @@ class TestMCPAuth:
 
     def test_auth_required_rejects_empty_token(self):
         """Test that empty token is rejected when auth required."""
-        from proofpack.mcp.auth import AuthHandler
-        from proofpack.mcp.config import MCPConfig
+        from mcp.auth import AuthHandler
+        from mcp.config import MCPConfig
 
         config = MCPConfig(auth_required=True, auth_token="secret")
         handler = AuthHandler(config)
@@ -82,8 +82,8 @@ class TestMCPAuth:
 
     def test_auth_valid_token(self):
         """Test that valid token is accepted."""
-        from proofpack.mcp.auth import AuthHandler
-        from proofpack.mcp.config import MCPConfig
+        from mcp.auth import AuthHandler
+        from mcp.config import MCPConfig
 
         config = MCPConfig(auth_required=True, auth_token="secret123")
         handler = AuthHandler(config)
@@ -95,7 +95,7 @@ class TestMCPAuth:
 
     def test_rate_limiting(self):
         """Test rate limiting enforcement."""
-        from proofpack.mcp.auth import RateLimiter
+        from mcp.auth import RateLimiter
 
         limiter = RateLimiter(requests_per_minute=2, burst=1)
 
@@ -120,7 +120,7 @@ class TestMCPTools:
 
     def test_list_tools(self):
         """Test that tools are listed correctly."""
-        from proofpack.mcp.tools import list_tools
+        from mcp.tools import list_tools
 
         tools = list_tools()
 
@@ -136,7 +136,7 @@ class TestMCPTools:
 
     def test_get_tool(self):
         """Test getting individual tool."""
-        from proofpack.mcp.tools import get_tool
+        from mcp.tools import get_tool
 
         tool = get_tool("query_receipts")
 
@@ -146,7 +146,7 @@ class TestMCPTools:
 
     def test_execute_unknown_tool(self):
         """Test executing unknown tool returns error."""
-        from proofpack.mcp.tools import execute_tool
+        from mcp.tools import execute_tool
 
         result = execute_tool("unknown_tool", {})
 
@@ -159,8 +159,8 @@ class TestMCPServer:
 
     def test_server_initialization(self):
         """Test server can be initialized."""
-        from proofpack.mcp.server import MCPServer
-        from proofpack.mcp.config import MCPConfig
+        from mcp.server import MCPServer
+        from mcp.config import MCPConfig
 
         config = MCPConfig(auth_required=False)
         server = MCPServer(config)
@@ -171,8 +171,8 @@ class TestMCPServer:
     def test_handle_initialize(self):
         """Test initialize request handling."""
         import asyncio
-        from proofpack.mcp.server import MCPServer
-        from proofpack.mcp.config import MCPConfig
+        from mcp.server import MCPServer
+        from mcp.config import MCPConfig
 
         config = MCPConfig(auth_required=False)
         server = MCPServer(config)
@@ -194,8 +194,8 @@ class TestMCPServer:
     def test_handle_list_tools(self):
         """Test tools/list request handling."""
         import asyncio
-        from proofpack.mcp.server import MCPServer
-        from proofpack.mcp.config import MCPConfig
+        from mcp.server import MCPServer
+        from mcp.config import MCPConfig
 
         config = MCPConfig(auth_required=False)
         server = MCPServer(config)
@@ -214,8 +214,8 @@ class TestMCPServer:
     def test_handle_unknown_method(self):
         """Test unknown method returns error."""
         import asyncio
-        from proofpack.mcp.server import MCPServer
-        from proofpack.mcp.config import MCPConfig
+        from mcp.server import MCPServer
+        from mcp.config import MCPConfig
 
         config = MCPConfig(auth_required=False)
         server = MCPServer(config)

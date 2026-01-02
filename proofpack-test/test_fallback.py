@@ -11,7 +11,7 @@ class TestFallbackEvaluate:
 
     def test_high_confidence_correct(self):
         """Test high confidence is classified as CORRECT."""
-        from proofpack.fallback.evaluate import score, Classification
+        from fallback.evaluate import score, Classification
 
         synthesis = {
             "supporting_evidence": [
@@ -31,7 +31,7 @@ class TestFallbackEvaluate:
 
     def test_medium_confidence_ambiguous(self):
         """Test medium confidence is classified as AMBIGUOUS."""
-        from proofpack.fallback.evaluate import score, Classification
+        from fallback.evaluate import score, Classification
 
         synthesis = {
             "supporting_evidence": [
@@ -50,7 +50,7 @@ class TestFallbackEvaluate:
 
     def test_low_confidence_incorrect(self):
         """Test low confidence is classified as INCORRECT."""
-        from proofpack.fallback.evaluate import score, Classification
+        from fallback.evaluate import score, Classification
 
         synthesis = {
             "supporting_evidence": [],
@@ -68,7 +68,7 @@ class TestFallbackEvaluate:
 
     def test_should_fallback(self):
         """Test should_fallback convenience function."""
-        from proofpack.fallback.evaluate import should_fallback
+        from fallback.evaluate import should_fallback
 
         high_confidence = {
             "supporting_evidence": [{"chunk_id": "c1", "confidence": 0.95}],
@@ -90,7 +90,7 @@ class TestFallbackCorrect:
 
     def test_reformulate_query(self):
         """Test query reformulation."""
-        from proofpack.fallback.correct import reformulate
+        from fallback.correct import reformulate
 
         with patch('sys.stdout', new=StringIO()):
             reformulations = reformulate("What is the error cause?")
@@ -100,7 +100,7 @@ class TestFallbackCorrect:
 
     def test_decompose_complex_query(self):
         """Test query decomposition."""
-        from proofpack.fallback.correct import decompose
+        from fallback.correct import decompose
 
         with patch('sys.stdout', new=StringIO()):
             sub_queries = decompose("Find the error and fix it")
@@ -110,7 +110,7 @@ class TestFallbackCorrect:
 
     def test_web_search_mock(self):
         """Test web search with mock provider."""
-        from proofpack.fallback.correct import with_web
+        from fallback.correct import with_web
 
         with patch('sys.stdout', new=StringIO()):
             result = with_web(
@@ -129,7 +129,7 @@ class TestFallbackWeb:
 
     def test_mock_search(self):
         """Test mock search provider."""
-        from proofpack.fallback.web import search
+        from fallback.web import search
 
         with patch('sys.stdout', new=StringIO()):
             results = search("test query", max_results=3, provider="mock")
@@ -139,7 +139,7 @@ class TestFallbackWeb:
 
     def test_available_providers(self):
         """Test listing available providers."""
-        from proofpack.fallback.web import get_available_providers
+        from fallback.web import get_available_providers
 
         providers = get_available_providers()
 
@@ -151,8 +151,8 @@ class TestFallbackMerge:
 
     def test_augment_strategy(self):
         """Test AUGMENT merge strategy."""
-        from proofpack.fallback.merge import combine, MergeStrategy
-        from proofpack.fallback.web import WebResult
+        from fallback.merge import combine, MergeStrategy
+        from fallback.web import WebResult
 
         synthesis = {
             "executive_summary": "Internal summary",
@@ -182,8 +182,8 @@ class TestFallbackMerge:
 
     def test_replace_strategy(self):
         """Test REPLACE merge strategy."""
-        from proofpack.fallback.merge import combine, MergeStrategy
-        from proofpack.fallback.web import WebResult
+        from fallback.merge import combine, MergeStrategy
+        from fallback.web import WebResult
 
         synthesis = {"executive_summary": "Low quality internal"}
 
@@ -209,7 +209,7 @@ class TestFallbackMerge:
 
     def test_strategy_selection(self):
         """Test automatic strategy selection."""
-        from proofpack.fallback.merge import select_strategy, MergeStrategy
+        from fallback.merge import select_strategy, MergeStrategy
 
         # High confidence -> AUGMENT
         strategy = select_strategy("CORRECT", 0.9, 5)
@@ -229,9 +229,9 @@ class TestCRAGFlow:
 
     def test_full_crag_flow(self):
         """Test complete CRAG: evaluate -> correct -> merge."""
-        from proofpack.fallback.evaluate import score, Classification
-        from proofpack.fallback.correct import with_web
-        from proofpack.fallback.merge import combine_with_auto_strategy
+        from fallback.evaluate import score, Classification
+        from fallback.correct import with_web
+        from fallback.merge import combine_with_auto_strategy
 
         # Start with low-confidence synthesis
         synthesis = {

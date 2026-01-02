@@ -1,6 +1,6 @@
 """Brief composition with executive summary."""
 import time
-from ledger.core import emit_receipt, StopRule
+from core.receipt import emit_receipt, StopRule
 
 BRIEF_SCHEMA = {
     "receipt_type": "brief",

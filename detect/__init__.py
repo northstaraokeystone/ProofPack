@@ -1,5 +1,5 @@
 """Detect module: pattern finding with anomaly classification."""
-from ledger.core import emit_receipt, dual_hash, StopRule
+from core.receipt import emit_receipt, dual_hash, StopRule
 
 from .core import scan
 from .anomaly import classify, emit_anomaly, CLASSIFICATIONS, ACTIONS

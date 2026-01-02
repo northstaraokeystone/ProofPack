@@ -17,9 +17,9 @@ def graph():
 def status():
     """Show node/edge counts and last sync."""
     try:
-        from proofpack.graph.backend import get_backend
-        from proofpack.graph.sync import sync_status
-        from proofpack.graph.index import get_index_stats
+        from graph.backend import get_backend
+        from graph.sync import sync_status
+        from graph.index import get_index_stats
 
         backend = get_backend()
         sync = sync_status()
@@ -53,7 +53,7 @@ def query(query_text: str, query_type: str, receipt_id: str,
           start_time: str, end_time: str, depth: int):
     """Run temporal query on the graph."""
     try:
-        from proofpack.graph import query as graph_query
+        from graph import query as graph_query
 
         if query_type == 'lineage':
             if not receipt_id:
@@ -116,7 +116,7 @@ def backfill(ledger: str):
     """Ingest historical receipts from ledger."""
     t0 = time.perf_counter()
     try:
-        from proofpack.graph.sync import backfill as do_backfill
+        from graph.sync import backfill as do_backfill
 
         click.echo(f"Backfilling from {ledger}...")
 
@@ -149,7 +149,7 @@ def backfill(ledger: str):
 def episode(receipt_id: str, no_ancestors: bool, no_descendants: bool, no_siblings: bool):
     """Extract episode subgraph containing a receipt."""
     try:
-        from proofpack.graph.episodic import extract_episode
+        from graph.episodic import extract_episode
 
         ep = extract_episode(
             receipt_id,
@@ -196,7 +196,7 @@ def visualize(output_format: str, output: str, receipt_id: str):
     try:
         if receipt_id:
             # Export specific episode
-            from proofpack.graph.episodic import extract_episode, episode_to_dot, episode_to_dict
+            from graph.episodic import extract_episode, episode_to_dot, episode_to_dict
 
             ep = extract_episode(receipt_id)
             if not ep:
@@ -210,7 +210,7 @@ def visualize(output_format: str, output: str, receipt_id: str):
 
         else:
             # Export entire graph
-            from proofpack.graph.backend import get_backend
+            from graph.backend import get_backend
 
             backend = get_backend()
 

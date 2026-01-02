@@ -13,7 +13,7 @@ from loop.src.harvest import harvest_patterns, PatternEvidence
 from loop.src.genesis import create_blueprint, HelperBlueprint
 from loop.src.gate import evaluate_approval, ApprovalGate
 from loop.src.completeness import update_completeness, CompletenessState
-from ledger.core import emit_receipt
+from core.receipt import emit_receipt
 
 # Wrapper function for test compatibility
 def compute_effectiveness(helpers, tenant_id="default"):

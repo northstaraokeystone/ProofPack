@@ -1,5 +1,5 @@
 """Anomaly classification per CLAUDEME.txt:344."""
-from ledger.core import emit_receipt
+from core.receipt import emit_receipt
 
 # Classification types per CLAUDEME.txt:344
 CLASSIFICATIONS = ("drift", "degradation", "violation", "deviation", "anti_pattern")

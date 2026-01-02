@@ -9,7 +9,7 @@ import uuid
 from dataclasses import dataclass, field
 from enum import Enum
 
-from proofpack.core.receipt import emit_receipt
+from core.receipt import emit_receipt
 
 # Population limits
 MAX_AGENTS = 50

@@ -1,5 +1,5 @@
 """Tests for economic module."""
-from proofpack.economic import (
+from economic import (
     evaluate_slo,
     calculate_payment,
     export_for_payment_system,

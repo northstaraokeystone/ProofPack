@@ -13,7 +13,7 @@ import random
 from dataclasses import dataclass
 from typing import Literal
 
-from ledger.core import emit_receipt, StopRule
+from core.receipt import emit_receipt, StopRule
 
 
 # === STATE ENUM - Probability amplitudes until measured ===

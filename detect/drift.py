@@ -1,5 +1,5 @@
 """Alert generation from classified anomalies per QED v7:289-290."""
-from ledger.core import emit_receipt, dual_hash
+from core.receipt import emit_receipt, dual_hash
 
 # Severity levels per QED v7:289-290
 SEVERITIES = ("low", "medium", "high", "critical")

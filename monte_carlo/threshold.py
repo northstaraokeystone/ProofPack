@@ -5,7 +5,7 @@ Stable = good to proceed. Unstable = needs more exploration.
 import time
 from dataclasses import dataclass
 
-from ledger.core import emit_receipt
+from core.receipt import emit_receipt
 from constants import MONTE_CARLO_VARIANCE_THRESHOLD
 from config.features import FEATURE_MONTE_CARLO_ENABLED
 

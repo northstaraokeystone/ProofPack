@@ -22,8 +22,8 @@ def test(query: str, provider: str, max_results: int):
     """Test fallback without execution."""
     t0 = time.perf_counter()
     try:
-        from proofpack.fallback.evaluate import score, Classification
-        from proofpack.fallback.web import search, get_available_providers
+        from fallback.evaluate import score, Classification
+        from fallback.web import search, get_available_providers
 
         # Show available providers
         available = get_available_providers()
@@ -92,7 +92,7 @@ def stats():
             FALLBACK_WEB_PROVIDER,
             FALLBACK_MAX_WEB_RESULTS,
         )
-        from proofpack.fallback.web import get_available_providers
+        from fallback.web import get_available_providers
 
         available = get_available_providers()
 
@@ -116,7 +116,7 @@ def stats():
 def sources(limit: int):
     """List recent web sources used."""
     try:
-        from proofpack.ledger import query_receipts
+        from ledger import query_receipts
 
         # Query for web_retrieval receipts
         try:
@@ -168,7 +168,7 @@ def evaluate(synthesis_file: str, query: str):
         with open(synthesis_file) as f:
             synthesis = json.load(f)
 
-        from proofpack.fallback.evaluate import evaluate_with_details
+        from fallback.evaluate import evaluate_with_details
 
         result = evaluate_with_details(synthesis, query or "")
 

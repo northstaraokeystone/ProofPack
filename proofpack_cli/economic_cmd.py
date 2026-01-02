@@ -2,7 +2,7 @@
 import json
 import click
 
-from proofpack.economic import (
+from economic import (
     evaluate_slo,
     calculate_payment,
     generate_payment_receipt,

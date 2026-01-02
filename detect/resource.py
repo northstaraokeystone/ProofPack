@@ -2,7 +2,7 @@
 import time
 from datetime import datetime, timezone
 
-from ledger.core import emit_receipt
+from core.receipt import emit_receipt
 
 # Track last measurement time for cycle duration
 _last_measurement = None

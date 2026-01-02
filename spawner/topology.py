@@ -9,7 +9,7 @@ Agents are patterns. Apply the same topology rules:
 from dataclasses import dataclass
 from enum import Enum
 
-from proofpack.core.receipt import emit_receipt
+from core.receipt import emit_receipt
 
 
 # Topology thresholds (from constants.py)

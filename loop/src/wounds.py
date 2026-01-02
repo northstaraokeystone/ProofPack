@@ -8,8 +8,8 @@ When wound count exceeds threshold, triggers spawn evaluation.
 import time
 from dataclasses import dataclass, field
 
-from ledger.core import emit_receipt
-from anchor import dual_hash
+from core.receipt import emit_receipt
+from core.receipt import dual_hash
 from constants import WOUND_DROP_THRESHOLD, WOUND_SPAWN_THRESHOLD
 from config.features import FEATURE_WOUND_DETECTION_ENABLED, FEATURE_AGENT_SPAWNING_ENABLED
 

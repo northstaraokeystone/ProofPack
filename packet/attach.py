@@ -1,5 +1,5 @@
 """Claim-to-receipt mapping for decision fusion."""
-from ledger.core import emit_receipt, dual_hash
+from core.receipt import emit_receipt, dual_hash
 
 ATTACH_SCHEMA = {
     "receipt_type": "attach",

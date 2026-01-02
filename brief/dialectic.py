@@ -1,5 +1,5 @@
 """PRO/CON synthesis with resolution status classification."""
-from ledger.core import emit_receipt
+from core.receipt import emit_receipt
 
 DIALECTIC_SCHEMA = {
     "receipt_type": "dialectic",

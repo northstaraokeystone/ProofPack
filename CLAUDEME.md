@@ -512,27 +512,31 @@ def merkle(items: list) -> str:
 # §9 FILE STRUCTURE
 
 ```
-project/
-├── spec.md               # T+2h
-├── ledger_schema.json    # T+2h
-├── cli.py                # T+2h (stub)
-├── receipts.jsonl        # append-only ledger
-├── src/
-│   ├── __init__.py
-│   ├── core.py           # dual_hash, emit_receipt, StopRule, merkle
-│   ├── provenance.py     # ingest, anchor, compact
-│   ├── reasoning.py      # route, retrieve, score
-│   └── fusion.py         # attach, verify, halt
-├── tests/
-│   ├── test_slo_latency.py
-│   ├── test_slo_bias.py
-│   ├── test_slo_entanglement.py
-│   └── conftest.py
-├── watchdog.py           # T+48h daemon
-├── gate_t2h.sh
-├── gate_t24h.sh
-├── gate_t48h.sh
-└── MANIFEST.anchor       # deploy artifact (AnchorGlyph)
+ProofPack/
+├── core/                 # Receipt primitives (dual_hash, emit_receipt, merkle, StopRule)
+├── ledger/               # Receipts storage and anchoring
+├── anchor/               # Cryptographic proofs (Merkle trees)
+├── detect/               # Pattern finding and anomaly detection
+├── loop/                 # Self-improvement layer (META-LOOP)
+├── brief/                # Evidence synthesis and decision health
+├── packet/               # Claim-to-receipt mapping
+├── gate/                 # Pre-execution confidence gating
+├── proof.py              # Unified proof interface (BRIEF/PACKET/DETECT)
+├── graph/                # Temporal knowledge graph
+├── fallback/             # Web fallback for low-confidence queries
+├── mcp/                  # MCP server for Claude Desktop integration
+├── offline/              # Disconnected operation and local sync
+├── privacy.py            # Privacy controls and redaction
+├── economic.py           # SLO evaluation and payment triggers
+├── spawner/              # Agent lifecycle and graduation
+├── monte_carlo/          # Variance reduction via simulation
+├── enterprise/           # Enterprise features (workflow, sandbox, inference, gate)
+├── config/               # Feature flags and allowlists
+├── constants.py          # Shared constants
+├── proofpack_cli/        # CLI entry point
+├── tests/                # Compliance tests
+├── receipts/             # Receipt bundles
+└── MANIFEST.anchor       # Deploy artifact (AnchorGlyph)
 ```
 
 ---

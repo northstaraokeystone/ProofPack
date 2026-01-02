@@ -12,7 +12,7 @@ from brief.retrieve import retrieve
 from brief.compose import compose as compose_brief_raw
 from brief.health import score_health as compute_decision_health
 from brief.dialectic import dialectic as run_dialectic
-from ledger.core import StopRule
+from core.receipt import StopRule
 
 def compose_brief(evidence, tenant):
     """Wrapper that catches StopRule for empty evidence."""

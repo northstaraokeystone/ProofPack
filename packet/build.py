@@ -1,6 +1,6 @@
 """Decision packet assembly for sign-off."""
 import uuid
-from ledger.core import emit_receipt, dual_hash, merkle
+from core.receipt import emit_receipt, dual_hash, merkle
 
 PACKET_SCHEMA = {
     "receipt_type": "packet",

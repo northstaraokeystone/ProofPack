@@ -18,8 +18,8 @@ def mcp():
 def start(port: int, no_auth: bool, allow_spawn: bool):
     """Start the MCP server."""
     try:
-        from proofpack.mcp.config import MCPConfig
-        from proofpack.mcp.server import start_server
+        from mcp.config import MCPConfig
+        from mcp.server import start_server
 
         config = MCPConfig.from_env()
         config.port = port
@@ -57,7 +57,7 @@ def start(port: int, no_auth: bool, allow_spawn: bool):
 def stop():
     """Stop the MCP server."""
     try:
-        from proofpack.mcp.server import stop_server
+        from mcp.server import stop_server
 
         stop_server()
         success_box("MCP Server", [("Status", "Stopped")], "proof mcp status")
@@ -71,7 +71,7 @@ def stop():
 def status():
     """Show server status and connected clients."""
     try:
-        from proofpack.mcp.server import get_server_status
+        from mcp.server import get_server_status
 
         status_data = get_server_status()
 
@@ -98,7 +98,7 @@ def status():
 def tools():
     """List exposed MCP tools."""
     try:
-        from proofpack.mcp.tools import list_tools
+        from mcp.tools import list_tools
 
         tools_list = list_tools()
 
@@ -128,7 +128,7 @@ def tools():
 def test():
     """Test server configuration without starting."""
     try:
-        from proofpack.mcp.server import test_server
+        from mcp.server import test_server
 
         if test_server():
             success_box("MCP Config Test", [("Status", "Valid")], "proof mcp start")

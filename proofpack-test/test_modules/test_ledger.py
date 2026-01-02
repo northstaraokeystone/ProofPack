@@ -8,7 +8,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 import time
-from ledger.core import emit_receipt, dual_hash, merkle
+from core.receipt import emit_receipt, dual_hash, merkle
 from ledger.ingest import ingest
 from ledger.anchor import anchor as anchor_batch_raw
 from ledger.compact import compact

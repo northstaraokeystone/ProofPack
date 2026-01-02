@@ -1,6 +1,6 @@
 """Adaptive-k retrieval with budget constraints."""
 import time
-from ledger.core import emit_receipt, StopRule
+from core.receipt import emit_receipt, StopRule
 
 RETRIEVAL_SCHEMA = {
     "receipt_type": "retrieval",
