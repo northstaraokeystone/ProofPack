@@ -14,6 +14,7 @@ from enum import Enum
 
 from proofpack.core.receipt import emit_receipt
 
+from .lifecycle import transition_agent
 from .registry import (
     AgentState,
     get_agent,
@@ -21,7 +22,6 @@ from .registry import (
     get_expired_agents,
     remove_agent,
 )
-from .lifecycle import transition_agent
 
 
 class PruneReason(Enum):

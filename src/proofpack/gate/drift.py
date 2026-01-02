@@ -3,8 +3,8 @@
 Measures how much context has changed since reasoning started.
 """
 import time
-from proofpack.core.receipt import emit_receipt
-from proofpack.core.receipt import dual_hash
+
+from proofpack.core.receipt import dual_hash, emit_receipt
 
 
 def measure_drift(

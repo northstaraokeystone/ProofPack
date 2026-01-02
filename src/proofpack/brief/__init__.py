@@ -1,10 +1,10 @@
 """Brief module: evidence synthesis with decision health scoring."""
-from proofpack.core.receipt import emit_receipt, dual_hash, StopRule
+from proofpack.core.receipt import StopRule, dual_hash, emit_receipt
 
-from .retrieve import retrieve, RETRIEVAL_SCHEMA
-from .compose import compose, BRIEF_SCHEMA
-from .health import score_health, HEALTH_SCHEMA
-from .dialectic import dialectic, DIALECTIC_SCHEMA
+from .compose import BRIEF_SCHEMA, compose
+from .dialectic import DIALECTIC_SCHEMA, dialectic
+from .health import HEALTH_SCHEMA, score_health
+from .retrieve import RETRIEVAL_SCHEMA, retrieve
 
 RECEIPT_SCHEMA = {
     "retrieval_receipt": RETRIEVAL_SCHEMA,

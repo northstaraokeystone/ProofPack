@@ -6,13 +6,14 @@ Pass criteria:
 - block_receipt emitted
 - Human approval required
 """
-import sys
 import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 
-from proofpack.gate.decision import gate_decision, GateDecision
 from proofpack.core.constants import GATE_YELLOW_THRESHOLD
+from proofpack.gate.decision import GateDecision, gate_decision
 
 
 class TestGateRed:

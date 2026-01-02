@@ -1,5 +1,5 @@
 """Claim-to-receipt mapping for decision fusion."""
-from proofpack.core.receipt import emit_receipt, dual_hash
+from proofpack.core.receipt import dual_hash, emit_receipt
 
 ATTACH_SCHEMA = {
     "receipt_type": "attach",

@@ -6,8 +6,7 @@ import math
 import time
 from dataclasses import dataclass
 
-from proofpack.core.receipt import emit_receipt
-from proofpack.core.receipt import dual_hash
+from proofpack.core.receipt import dual_hash, emit_receipt
 
 
 @dataclass

@@ -5,8 +5,9 @@ Tools follow the MCP tool specification with name, description, and parameters.
 """
 import json
 import time
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Any, Callable, Optional
+from typing import Any
 
 from proofpack.core.receipt import dual_hash, emit_receipt
 
@@ -35,8 +36,8 @@ class ToolResult:
     """Result from tool execution."""
     success: bool
     data: Any
-    error: Optional[str] = None
-    receipt_id: Optional[str] = None
+    error: str | None = None
+    receipt_id: str | None = None
 
 
 # ============================================================================
@@ -341,8 +342,8 @@ def handle_check_confidence(
         ToolResult with gate color, confidence, and spawn preview
     """
     try:
-        from gate.decision import get_spawn_preview
         from constants import GATE_GREEN_THRESHOLD, GATE_YELLOW_THRESHOLD
+        from gate.decision import get_spawn_preview
 
         # Extract confidence from proposal
         confidence = action_proposal.get("confidence", 0.5)
@@ -435,7 +436,7 @@ def handle_agent_status(tenant_id: str = "default") -> ToolResult:
         ToolResult with active agents, depths, TTLs
     """
     try:
-        from spawner.registry import get_active_agents, get_population_count, MAX_AGENTS
+        from spawner.registry import MAX_AGENTS, get_active_agents, get_population_count
 
         agents = get_active_agents()
         population = get_population_count()
@@ -550,7 +551,7 @@ TOOLS: dict[str, ToolDefinition] = {
 }
 
 
-def get_tool(name: str) -> Optional[ToolDefinition]:
+def get_tool(name: str) -> ToolDefinition | None:
     """Get tool definition by name."""
     return TOOLS.get(name)
 

@@ -6,14 +6,13 @@ SENSE → ANALYZE → HARVEST → HYPOTHESIZE → GATE → ACTUATE → EMIT
 import random
 import time
 import uuid
-from typing import Optional
 
 from conftest import SimConfig, SimState
 
 
 def run_simulation(
     config: SimConfig,
-    initial_state: Optional[SimState] = None
+    initial_state: SimState | None = None
 ) -> SimState:
     """Execute n_cycles, return final state."""
     random.seed(config.random_seed)

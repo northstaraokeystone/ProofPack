@@ -1,9 +1,9 @@
 """Packet module: decision packaging with consistency auditing."""
-from proofpack.core.receipt import emit_receipt, dual_hash, merkle, StopRule
+from proofpack.core.receipt import StopRule, dual_hash, emit_receipt, merkle
 
-from .attach import attach, ATTACH_SCHEMA
-from .audit import audit, CONSISTENCY_SCHEMA, HALT_SCHEMA
-from .build import build, PACKET_SCHEMA
+from .attach import ATTACH_SCHEMA, attach
+from .audit import CONSISTENCY_SCHEMA, HALT_SCHEMA, audit
+from .build import PACKET_SCHEMA, build
 
 RECEIPT_SCHEMA = {
     "attach_receipt": ATTACH_SCHEMA,

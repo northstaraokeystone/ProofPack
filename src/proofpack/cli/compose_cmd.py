@@ -1,10 +1,11 @@
 """Compose commands: run, validate."""
+import json
 import sys
 import time
-import json
+
 import click
 
-from .output import success_box, error_box
+from .output import error_box, success_box
 
 
 @click.group()
@@ -20,7 +21,7 @@ def run(config: str):
     t0 = time.perf_counter()
     try:
         # Load config
-        with open(config, 'r') as f:
+        with open(config) as f:
             cfg = json.load(f)
 
         modules = cfg.get("modules", ["ledger", "brief", "packet", "detect", "loop"])
@@ -73,7 +74,7 @@ def validate(config: str):
     t0 = time.perf_counter()
     try:
         # Load and validate config
-        with open(config, 'r') as f:
+        with open(config) as f:
             cfg = json.load(f)
 
         warnings = []

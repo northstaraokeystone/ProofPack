@@ -13,12 +13,13 @@ Works with any inference function (local, API, Triton, etc.)
 import hashlib
 import json
 import time
+from collections.abc import Callable
 from dataclasses import dataclass
 from functools import wraps
 from pathlib import Path
-from typing import Callable, Any
+from typing import Any
 
-from proofpack.core.receipt import emit_receipt, dual_hash
+from proofpack.core.receipt import dual_hash, emit_receipt
 
 
 @dataclass

@@ -7,7 +7,6 @@ import hashlib
 import hmac
 import time
 from dataclasses import dataclass
-from typing import Optional
 
 from proofpack.core.receipt import emit_receipt
 
@@ -19,7 +18,7 @@ class AuthResult:
     """Result of authentication attempt."""
     authenticated: bool
     client_id: str
-    error: Optional[str] = None
+    error: str | None = None
     scopes: list[str] = None
 
     def __post_init__(self):
@@ -210,7 +209,7 @@ class AuthHandler:
 
         return session_id
 
-    def validate_session(self, session_id: str) -> Optional[str]:
+    def validate_session(self, session_id: str) -> str | None:
         """Validate a session and return client_id if valid."""
         session = self._active_sessions.get(session_id)
         if not session:

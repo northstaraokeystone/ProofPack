@@ -5,11 +5,11 @@ The bridge acts as first-line anomaly detector - proving data consistency
 before downstream processing.
 """
 import json
+from collections.abc import Callable
 from pathlib import Path
-from typing import Callable
 
-from ..core.receipt import dual_hash, emit_receipt, StopRule
-from .hooks import validate_hook, get_tenant_id
+from ..core.receipt import StopRule, dual_hash, emit_receipt
+from .hooks import get_tenant_id, validate_hook
 
 # Required fields in QED manifest
 REQUIRED_MANIFEST_FIELDS = {

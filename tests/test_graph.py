@@ -2,10 +2,11 @@
 
 Validates graph ingestion, queries, and performance SLOs.
 """
-import pytest
 import time
-from unittest.mock import patch
 from io import StringIO
+from unittest.mock import patch
+
+import pytest
 
 
 class TestGraphBackend:
@@ -24,7 +25,7 @@ class TestGraphBackend:
     def test_add_node(self):
         """Test adding nodes to graph."""
         pytest.importorskip("networkx")
-        from proofpack.graph.backend import NetworkXBackend, GraphNode
+        from proofpack.graph.backend import GraphNode, NetworkXBackend
 
         backend = NetworkXBackend()
         node = GraphNode(
@@ -43,7 +44,7 @@ class TestGraphBackend:
     def test_add_duplicate_node_fails(self):
         """Test adding duplicate node returns False."""
         pytest.importorskip("networkx")
-        from proofpack.graph.backend import NetworkXBackend, GraphNode
+        from proofpack.graph.backend import GraphNode, NetworkXBackend
 
         backend = NetworkXBackend()
         node = GraphNode(
@@ -62,7 +63,7 @@ class TestGraphBackend:
     def test_add_edge(self):
         """Test adding edges between nodes."""
         pytest.importorskip("networkx")
-        from proofpack.graph.backend import NetworkXBackend, GraphNode, GraphEdge
+        from proofpack.graph.backend import GraphEdge, GraphNode, NetworkXBackend
 
         backend = NetworkXBackend()
 
@@ -86,7 +87,7 @@ class TestGraphBackend:
     def test_get_ancestors(self):
         """Test ancestor traversal."""
         pytest.importorskip("networkx")
-        from proofpack.graph.backend import NetworkXBackend, GraphNode, GraphEdge
+        from proofpack.graph.backend import GraphEdge, GraphNode, NetworkXBackend
 
         backend = NetworkXBackend()
 
@@ -156,7 +157,7 @@ class TestGraphQuery:
     def setup_graph(self):
         """Set up test graph with sample data."""
         pytest.importorskip("networkx")
-        from proofpack.graph.backend import reset_backend, get_backend, GraphNode, GraphEdge
+        from proofpack.graph.backend import GraphEdge, GraphNode, get_backend, reset_backend
 
         reset_backend()
         backend = get_backend()
@@ -220,7 +221,7 @@ class TestGraphPerformance:
     def test_lineage_slo(self):
         """Test lineage query meets <100ms SLO."""
         pytest.importorskip("networkx")
-        from proofpack.graph.backend import reset_backend, get_backend, GraphNode
+        from proofpack.graph.backend import GraphNode, get_backend, reset_backend
         from proofpack.graph.query import lineage
 
         reset_backend()
@@ -245,7 +246,7 @@ class TestGraphPerformance:
     def test_temporal_slo(self):
         """Test temporal query meets <150ms SLO."""
         pytest.importorskip("networkx")
-        from proofpack.graph.backend import reset_backend, get_backend, GraphNode
+        from proofpack.graph.backend import GraphNode, get_backend, reset_backend
         from proofpack.graph.query import temporal
 
         reset_backend()

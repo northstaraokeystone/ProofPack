@@ -5,8 +5,9 @@ Pass criteria:
 - Total 1000 cycles
 - Ledger continuity preserved
 """
-import sys
 import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from conftest import SimConfig, SimState

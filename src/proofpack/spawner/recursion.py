@@ -11,7 +11,7 @@ from dataclasses import dataclass
 
 from proofpack.core.receipt import emit_receipt
 
-from .registry import Agent, get_agent, get_agents_by_parent, MAX_DEPTH
+from .registry import MAX_DEPTH, Agent, get_agent, get_agents_by_parent
 
 
 @dataclass

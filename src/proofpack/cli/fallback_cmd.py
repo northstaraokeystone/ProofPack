@@ -1,9 +1,10 @@
 """Fallback commands: test, stats, sources."""
 import sys
 import time
+
 import click
 
-from .output import success_box, error_box
+from .output import error_box, success_box
 
 
 @click.group()
@@ -22,8 +23,8 @@ def test(query: str, provider: str, max_results: int):
     """Test fallback without execution."""
     t0 = time.perf_counter()
     try:
-        from fallback.evaluate import score, Classification
-        from fallback.web import search, get_available_providers
+        from fallback.evaluate import Classification, score
+        from fallback.web import get_available_providers, search
 
         # Show available providers
         available = get_available_providers()
@@ -82,17 +83,18 @@ def stats():
         # In production, this would query the ledger for fallback receipts
         # For now, show configuration
 
-        from config.features import (
+        from fallback.web import get_available_providers
+
+        from proofpack.config.fallback import (
+            FALLBACK_CONFIDENCE_THRESHOLD,
+            FALLBACK_MAX_WEB_RESULTS,
+            FALLBACK_WEB_PROVIDER,
+        )
+        from proofpack.config.features import (
+            FEATURE_FALLBACK_AUTO_TRIGGER,
             FEATURE_FALLBACK_ENABLED,
             FEATURE_FALLBACK_WEB_SEARCH,
-            FEATURE_FALLBACK_AUTO_TRIGGER,
         )
-        from config.fallback import (
-            FALLBACK_CONFIDENCE_THRESHOLD,
-            FALLBACK_WEB_PROVIDER,
-            FALLBACK_MAX_WEB_RESULTS,
-        )
-        from fallback.web import get_available_providers
 
         available = get_available_providers()
 

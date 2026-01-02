@@ -1,15 +1,17 @@
 """Economic integration CLI commands."""
 import json
+
 import click
 
 from proofpack.economic import (
-    evaluate_slo,
     calculate_payment,
-    generate_payment_receipt,
+    evaluate_slo,
     export_for_payment_system,
+    generate_payment_receipt,
     get_pending_payments,
 )
-from .output import print_json, print_error, print_success
+
+from .output import print_error, print_json, print_success
 
 
 @click.group()
@@ -28,12 +30,12 @@ def evaluate(receipt_file: str, config: str):
     RECEIPT_FILE: Path to receipt JSON file
     """
     try:
-        with open(receipt_file, 'r') as f:
+        with open(receipt_file) as f:
             receipt = json.load(f)
 
         slo_config = None
         if config:
-            with open(config, 'r') as f:
+            with open(config) as f:
                 slo_config = json.load(f)
 
         status = evaluate_slo(receipt, slo_config)
@@ -65,7 +67,7 @@ def export(receipts_file: str, file_format: str, output: str):
     """
     try:
         receipts = []
-        with open(receipts_file, 'r') as f:
+        with open(receipts_file) as f:
             if file_format == 'jsonl':
                 for line in f:
                     if line.strip():
@@ -100,7 +102,7 @@ def pending(receipts_file: str, file_format: str):
     """
     try:
         receipts = []
-        with open(receipts_file, 'r') as f:
+        with open(receipts_file) as f:
             if file_format == 'jsonl':
                 for line in f:
                     if line.strip():
@@ -141,7 +143,7 @@ def summary(receipts_file: str, file_format: str):
     """
     try:
         receipts = []
-        with open(receipts_file, 'r') as f:
+        with open(receipts_file) as f:
             if file_format == 'jsonl':
                 for line in f:
                     if line.strip():
@@ -189,7 +191,7 @@ def generate(receipt_file: str, output: str):
     RECEIPT_FILE: Path to receipt JSON file
     """
     try:
-        with open(receipt_file, 'r') as f:
+        with open(receipt_file) as f:
             receipt = json.load(f)
 
         evaluation = calculate_payment(receipt)

@@ -5,14 +5,15 @@ Pass criteria:
 - wound_receipt emitted
 - Wound tracking accumulates
 """
-import sys
 import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 import pytest
 
-from proofpack.loop.src.wounds import WoundTracker, track_confidence, get_wound_summary
 from proofpack.core.constants import WOUND_DROP_THRESHOLD
+from proofpack.loop.src.wounds import WoundTracker, get_wound_summary, track_confidence
 
 
 class TestWounds:

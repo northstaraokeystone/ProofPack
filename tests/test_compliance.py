@@ -272,7 +272,7 @@ class TestP3VerifiableCausality:
 
     def test_decision_receipt_structure(self):
         """Verify decision-type receipts include input references."""
-        from proofpack.proof import proof, ProofMode
+        from proofpack.proof import ProofMode, proof
 
         # Create a decision packet with receipts
         evidence = ["evidence1", "evidence2", "evidence3"]
@@ -299,7 +299,7 @@ class TestP3VerifiableCausality:
 
     def test_packet_attached_receipts(self):
         """Verify decision packets attach receipt hashes."""
-        from proofpack.proof import proof, ProofMode
+        from proofpack.proof import ProofMode, proof
 
         # Create receipts
         receipts = [

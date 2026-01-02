@@ -13,10 +13,8 @@ Design constraints:
 import json
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
 
 from proofpack.core.receipt import dual_hash, emit_receipt, merkle
-
 
 # Default queue location
 DEFAULT_QUEUE_PATH = Path.home() / ".proofpack" / "offline_queue.jsonl"
@@ -31,7 +29,7 @@ def _ensure_queue_dir():
 def _load_state() -> dict:
     """Load queue state from disk."""
     if DEFAULT_STATE_PATH.exists():
-        with open(DEFAULT_STATE_PATH, "r") as f:
+        with open(DEFAULT_STATE_PATH) as f:
             return json.load(f)
     return {
         "local_sequence_id": 0,
@@ -115,14 +113,14 @@ def get_queue_size() -> int:
         return 0
 
     count = 0
-    with open(DEFAULT_QUEUE_PATH, "r") as f:
+    with open(DEFAULT_QUEUE_PATH) as f:
         for line in f:
             if line.strip():
                 count += 1
     return count
 
 
-def get_local_merkle_root() -> Optional[str]:
+def get_local_merkle_root() -> str | None:
     """Compute Merkle root of all queued receipts.
 
     Returns:
@@ -132,7 +130,7 @@ def get_local_merkle_root() -> Optional[str]:
         return None
 
     receipts = []
-    with open(DEFAULT_QUEUE_PATH, "r") as f:
+    with open(DEFAULT_QUEUE_PATH) as f:
         for line in f:
             if line.strip():
                 receipts.append(json.loads(line))
@@ -156,7 +154,7 @@ def peek_queue(n: int = 10) -> list[dict]:
         return []
 
     receipts = []
-    with open(DEFAULT_QUEUE_PATH, "r") as f:
+    with open(DEFAULT_QUEUE_PATH) as f:
         for i, line in enumerate(f):
             if i >= n:
                 break
@@ -203,7 +201,7 @@ def get_all_queued() -> list[dict]:
         return []
 
     receipts = []
-    with open(DEFAULT_QUEUE_PATH, "r") as f:
+    with open(DEFAULT_QUEUE_PATH) as f:
         for line in f:
             if line.strip():
                 receipts.append(json.loads(line))

@@ -7,7 +7,7 @@ may conflict with main ledger state.
 
 from proofpack.core.receipt import emit_receipt
 from proofpack.offline.queue import get_all_queued, get_sync_status
-from proofpack.offline.sync import is_connected, full_sync
+from proofpack.offline.sync import full_sync, is_connected
 
 
 class ConflictType:

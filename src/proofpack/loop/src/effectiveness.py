@@ -17,9 +17,9 @@ BASELINE ASSUMPTIONS BROKEN:
 import time
 from dataclasses import dataclass, field
 
-from proofpack.core.receipt import emit_receipt, StopRule
-from proofpack.loop.src.quantum import FitnessDistribution, exponential_decay
+from proofpack.core.receipt import StopRule, emit_receipt
 from proofpack.loop.src.genesis import HelperBlueprint
+from proofpack.loop.src.quantum import FitnessDistribution, exponential_decay
 
 
 @dataclass

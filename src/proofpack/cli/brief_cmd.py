@@ -1,9 +1,10 @@
 """Brief commands: generate, health."""
 import sys
 import time
+
 import click
 
-from .output import success_box, error_box
+from .output import error_box, success_box
 
 
 @click.group()
@@ -20,8 +21,8 @@ def generate(query: str, k: int, budget: int):
     """Generate evidence brief from query."""
     t0 = time.perf_counter()
     try:
-        from brief.retrieve import retrieve
         from brief.compose import compose
+        from brief.retrieve import retrieve
 
         # Retrieve evidence
         retrieval = retrieve(query, {"tokens": budget, "ms": 1000})

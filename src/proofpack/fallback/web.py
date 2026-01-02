@@ -9,9 +9,8 @@ Provider selection via config. All results are receipted.
 """
 import time
 from dataclasses import dataclass
-from typing import List, Optional
 
-from proofpack.core.receipt import emit_receipt, dual_hash
+from proofpack.core.receipt import dual_hash, emit_receipt
 
 
 @dataclass
@@ -30,7 +29,7 @@ class WebResult:
 class WebSearchResult:
     """Complete web search response."""
     query: str
-    results: List[WebResult]
+    results: list[WebResult]
     provider: str
     elapsed_ms: float
     total_results: int = 0
@@ -42,7 +41,7 @@ def search(
     timeout_ms: int = 2000,
     provider: str = "tavily",
     tenant_id: str = "default",
-) -> List[WebResult]:
+) -> list[WebResult]:
     """Search the web using configured provider.
 
     Args:
@@ -95,13 +94,14 @@ def _search_tavily(
     query: str,
     max_results: int,
     timeout_ms: int,
-) -> List[WebResult]:
+) -> list[WebResult]:
     """Search using Tavily AI search API.
 
     Requires TAVILY_API_KEY environment variable.
     """
     try:
         import os
+
         from tavily import TavilyClient
 
         api_key = os.environ.get("TAVILY_API_KEY")
@@ -138,13 +138,14 @@ def _search_serpapi(
     query: str,
     max_results: int,
     timeout_ms: int,
-) -> List[WebResult]:
+) -> list[WebResult]:
     """Search using SerpAPI Google search.
 
     Requires SERPAPI_API_KEY environment variable.
     """
     try:
         import os
+
         from serpapi import GoogleSearch
 
         api_key = os.environ.get("SERPAPI_API_KEY")
@@ -180,13 +181,14 @@ def _search_brave(
     query: str,
     max_results: int,
     timeout_ms: int,
-) -> List[WebResult]:
+) -> list[WebResult]:
     """Search using Brave Search API.
 
     Requires BRAVE_API_KEY environment variable.
     """
     try:
         import os
+
         import requests
 
         api_key = os.environ.get("BRAVE_API_KEY")
@@ -224,7 +226,7 @@ def _search_brave(
         return _search_mock(query, max_results)
 
 
-def _search_mock(query: str, max_results: int) -> List[WebResult]:
+def _search_mock(query: str, max_results: int) -> list[WebResult]:
     """Mock search for testing when no provider is configured.
 
     Returns placeholder results.
@@ -248,7 +250,7 @@ def fetch_content(
     url: str,
     timeout_ms: int = 5000,
     tenant_id: str = "default",
-) -> Optional[str]:
+) -> str | None:
     """Fetch full content from a URL.
 
     Args:
@@ -287,7 +289,7 @@ def fetch_content(
         return None
 
 
-def get_available_providers() -> List[str]:
+def get_available_providers() -> list[str]:
     """Get list of available web search providers.
 
     Checks for required environment variables.

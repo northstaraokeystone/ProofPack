@@ -18,8 +18,8 @@ __author__ = "Northstar AO Keystone Research Lab"
 # to be imported even during installation before submodules exist
 
 try:
-    from proofpack.core.receipt import dual_hash, emit_receipt, merkle, StopRule
-    from proofpack.core.schemas import validate_receipt, RECEIPT_SCHEMAS
+    from proofpack.core.receipt import StopRule, dual_hash, emit_receipt, merkle
+    from proofpack.core.schemas import RECEIPT_SCHEMAS, validate_receipt
 
     __all__ = [
         "dual_hash",

@@ -2,7 +2,7 @@
 
 All magic numbers live here. No exceptions.
 """
-from typing import Callable
+from collections.abc import Callable
 
 # Gate thresholds
 GATE_GREEN_THRESHOLD = 0.9

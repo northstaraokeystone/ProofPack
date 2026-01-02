@@ -5,8 +5,9 @@ Pass criteria:
 - Types: drift_watcher, wound_watcher, success_watcher
 - TTL is action_duration + 30 seconds
 """
-import sys
 import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 
@@ -16,12 +17,12 @@ class TestYellowSpawn:
 
     def setup_method(self):
         """Clear registry before each test."""
-        from spawner.registry import clear_registry
+        from proofpack.spawner.registry import clear_registry
         clear_registry()
 
     def test_yellow_spawns_three_watchers(self):
         """YELLOW: spawns exactly 3 watchers."""
-        from spawner.birth import simulate_spawn
+        from proofpack.spawner.birth import simulate_spawn
 
         result = simulate_spawn("YELLOW", 0.82)
 
@@ -32,11 +33,11 @@ class TestYellowSpawn:
 
     def test_yellow_watcher_types(self, monkeypatch):
         """YELLOW: spawns correct watcher types."""
-        monkeypatch.setattr("config.features.FEATURE_AGENT_SPAWNING_ENABLED", True)
-        monkeypatch.setattr("config.features.FEATURE_YELLOW_WATCHERS_ENABLED", True)
+        monkeypatch.setattr("proofpack.config.features.FEATURE_AGENT_SPAWNING_ENABLED", True)
+        monkeypatch.setattr("proofpack.config.features.FEATURE_YELLOW_WATCHERS_ENABLED", True)
 
-        from spawner.birth import spawn_for_gate
-        from spawner.registry import get_agent, AgentType
+        from proofpack.spawner.birth import spawn_for_gate
+        from proofpack.spawner.registry import AgentType, get_agent
 
         result, _ = spawn_for_gate("YELLOW", 0.82)
 
@@ -53,11 +54,11 @@ class TestYellowSpawn:
 
     def test_yellow_ttl_includes_action_duration(self, monkeypatch):
         """YELLOW: TTL = action_duration + 30s buffer."""
-        monkeypatch.setattr("config.features.FEATURE_AGENT_SPAWNING_ENABLED", True)
-        monkeypatch.setattr("config.features.FEATURE_YELLOW_WATCHERS_ENABLED", True)
+        monkeypatch.setattr("proofpack.config.features.FEATURE_AGENT_SPAWNING_ENABLED", True)
+        monkeypatch.setattr("proofpack.config.features.FEATURE_YELLOW_WATCHERS_ENABLED", True)
 
-        from spawner.birth import spawn_for_gate, YELLOW_WATCHER_TTL_BUFFER
-        from spawner.registry import get_agent
+        from proofpack.spawner.birth import YELLOW_WATCHER_TTL_BUFFER, spawn_for_gate
+        from proofpack.spawner.registry import get_agent
 
         action_duration = 120  # 2 minutes
 
@@ -73,11 +74,11 @@ class TestYellowSpawn:
 
     def test_yellow_with_feature_disabled(self, monkeypatch):
         """YELLOW: no spawn when feature disabled."""
-        monkeypatch.setattr("config.features.FEATURE_AGENT_SPAWNING_ENABLED", True)
-        monkeypatch.setattr("config.features.FEATURE_YELLOW_WATCHERS_ENABLED", False)
+        monkeypatch.setattr("proofpack.config.features.FEATURE_AGENT_SPAWNING_ENABLED", True)
+        monkeypatch.setattr("proofpack.config.features.FEATURE_YELLOW_WATCHERS_ENABLED", False)
 
-        from spawner.birth import spawn_for_gate
-        from spawner.registry import get_population_count
+        from proofpack.spawner.birth import spawn_for_gate
+        from proofpack.spawner.registry import get_population_count
 
         result, _ = spawn_for_gate("YELLOW", 0.82)
 
@@ -86,11 +87,11 @@ class TestYellowSpawn:
 
     def test_yellow_watcher_metadata(self, monkeypatch):
         """YELLOW: watchers have correct purpose metadata."""
-        monkeypatch.setattr("config.features.FEATURE_AGENT_SPAWNING_ENABLED", True)
-        monkeypatch.setattr("config.features.FEATURE_YELLOW_WATCHERS_ENABLED", True)
+        monkeypatch.setattr("proofpack.config.features.FEATURE_AGENT_SPAWNING_ENABLED", True)
+        monkeypatch.setattr("proofpack.config.features.FEATURE_YELLOW_WATCHERS_ENABLED", True)
 
-        from spawner.birth import spawn_for_gate
-        from spawner.registry import get_agent
+        from proofpack.spawner.birth import spawn_for_gate
+        from proofpack.spawner.registry import get_agent
 
         result, _ = spawn_for_gate("YELLOW", 0.82)
 

@@ -90,7 +90,7 @@ target-version = "py310"
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "N", "UP"]
-ignore = ["E501"]
+ignore = ["E501", "N818"]  # N818: StopRule naming is project convention per CLAUDEME
 
 [tool.mypy]
 python_version = "3.10"

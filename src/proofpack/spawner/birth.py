@@ -14,14 +14,14 @@ from dataclasses import dataclass
 
 from proofpack.core.receipt import emit_receipt, merkle
 
+from .lifecycle import activate_agent
 from .registry import (
+    DEFAULT_TTL_SECONDS,
     Agent,
     AgentType,
-    register_agent,
     can_spawn,
-    DEFAULT_TTL_SECONDS,
+    register_agent,
 )
-from .lifecycle import activate_agent
 
 # Spawn limits
 MIN_HELPERS = 1
@@ -81,7 +81,7 @@ def spawn_for_gate(
         (SpawnResult, spawn_receipt) or (None, None) if spawning disabled/failed
     """
     # Import feature flag here to avoid circular import
-    from config.features import FEATURE_AGENT_SPAWNING_ENABLED
+    from proofpack.config.features import FEATURE_AGENT_SPAWNING_ENABLED
 
     if not FEATURE_AGENT_SPAWNING_ENABLED:
         # Shadow mode - log what would happen
@@ -162,7 +162,7 @@ def _spawn_green(
 ) -> list[Agent]:
     """GREEN gate: spawn 1 success_learner."""
     # Check feature flag
-    from config.features import FEATURE_GREEN_LEARNERS_ENABLED
+    from proofpack.config.features import FEATURE_GREEN_LEARNERS_ENABLED
     if not FEATURE_GREEN_LEARNERS_ENABLED:
         return []
 
@@ -192,7 +192,7 @@ def _spawn_yellow(
 ) -> list[Agent]:
     """YELLOW gate: spawn 3 watchers (drift, wound, success)."""
     # Check feature flag
-    from config.features import FEATURE_YELLOW_WATCHERS_ENABLED
+    from proofpack.config.features import FEATURE_YELLOW_WATCHERS_ENABLED
     if not FEATURE_YELLOW_WATCHERS_ENABLED:
         return []
 
@@ -235,7 +235,7 @@ def _spawn_red(
 ) -> list[Agent]:
     """RED gate: spawn (wound_count // 2) + 1 helpers."""
     # Check feature flag
-    from config.features import FEATURE_RED_HELPERS_ENABLED
+    from proofpack.config.features import FEATURE_RED_HELPERS_ENABLED
     if not FEATURE_RED_HELPERS_ENABLED:
         return []
 

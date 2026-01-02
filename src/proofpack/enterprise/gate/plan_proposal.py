@@ -18,12 +18,12 @@ Risk levels:
 import json
 import time
 import uuid
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta, timezone
 from enum import Enum
-from typing import Callable
 
-from proofpack.core.receipt import emit_receipt, dual_hash
+from proofpack.core.receipt import dual_hash, emit_receipt
 
 
 class PlanStatus(Enum):

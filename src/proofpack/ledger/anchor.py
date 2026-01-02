@@ -1,5 +1,5 @@
 """Merkle batching for tamper-proof receipt anchoring."""
-from .core import dual_hash, emit_receipt, merkle, StopRule
+from .core import StopRule, dual_hash, emit_receipt, merkle
 
 ANCHOR_SCHEMA = {
     "receipt_type": "anchor_receipt",

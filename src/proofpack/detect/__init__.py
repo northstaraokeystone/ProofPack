@@ -1,9 +1,9 @@
 """Detect module: pattern finding with anomaly classification."""
-from proofpack.core.receipt import emit_receipt, dual_hash, StopRule
+from proofpack.core.receipt import StopRule, dual_hash, emit_receipt
 
+from .anomaly import ACTIONS, CLASSIFICATIONS, classify, emit_anomaly
 from .core import scan
-from .anomaly import classify, emit_anomaly, CLASSIFICATIONS, ACTIONS
-from .drift import alert, SEVERITIES
+from .drift import SEVERITIES, alert
 from .resource import track_resources
 
 # Schema definitions for all receipt types

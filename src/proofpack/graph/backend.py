@@ -10,10 +10,9 @@ Backend selection:
 """
 import pickle
 from abc import ABC, abstractmethod
+from collections.abc import Callable, Iterator
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Callable, Iterator, Optional
-
 
 # Try to import NetworkX
 try:
@@ -56,7 +55,7 @@ class GraphBackend(ABC):
         pass
 
     @abstractmethod
-    def get_node(self, node_id: str) -> Optional[GraphNode]:
+    def get_node(self, node_id: str) -> GraphNode | None:
         """Get a node by ID."""
         pass
 
@@ -151,7 +150,7 @@ class NetworkXBackend(GraphBackend):
         )
         return True
 
-    def get_node(self, node_id: str) -> Optional[GraphNode]:
+    def get_node(self, node_id: str) -> GraphNode | None:
         """Get a node by ID."""
         return self._node_index.get(node_id)
 
@@ -307,7 +306,7 @@ class NetworkXBackend(GraphBackend):
 
 
 # Global backend instance
-_backend: Optional[GraphBackend] = None
+_backend: GraphBackend | None = None
 
 
 def get_backend() -> GraphBackend:

@@ -10,12 +10,10 @@ Relationship types:
     - GRADUATED_TO: Agent pattern was graduated to permanent pattern
 """
 import time
-from typing import Optional
 
 from proofpack.core.receipt import emit_receipt
 
-from .backend import GraphNode, GraphEdge, get_backend
-
+from .backend import GraphEdge, GraphNode, get_backend
 
 # Receipt fields that indicate parent relationships
 PARENT_FIELDS = [
@@ -38,7 +36,7 @@ RECEIPT_TO_EDGE_TYPE = {
 }
 
 
-def add_node(receipt: dict, tenant_id: str = "default") -> Optional[str]:
+def add_node(receipt: dict, tenant_id: str = "default") -> str | None:
     """Add a receipt as a node in the knowledge graph.
 
     Args:

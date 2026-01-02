@@ -14,12 +14,12 @@ The interval adapts based on entropy gradient.
 import time
 from dataclasses import dataclass, field
 
-from proofpack.core.receipt import emit_receipt, StopRule
+from proofpack.core.receipt import StopRule, emit_receipt
 from proofpack.loop.src.quantum import (
     FitnessDistribution,
-    shannon_entropy,
     entropy_delta,
-    stoprule_entropy_violation
+    shannon_entropy,
+    stoprule_entropy_violation,
 )
 
 
@@ -35,8 +35,8 @@ class CycleState:
         default_factory=lambda: FitnessDistribution(alpha=2, beta=2)
     )
 
-    # Entropy tracking
-    prev_entropy: float = 1.0
+    # Entropy tracking (start at 0.0 to avoid initial degradation detection)
+    prev_entropy: float = 0.0
     entropy_history: list[float] = field(default_factory=list)
 
     # Adaptive parameters (themselves distributions!)

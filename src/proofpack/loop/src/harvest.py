@@ -14,7 +14,7 @@ The signal-to-noise ratio of a gap pattern is the true measure.
 import time
 from dataclasses import dataclass, field
 
-from proofpack.core.receipt import emit_receipt, StopRule
+from proofpack.core.receipt import StopRule, emit_receipt
 from proofpack.loop.src.quantum import FitnessDistribution
 
 

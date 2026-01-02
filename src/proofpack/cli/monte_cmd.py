@@ -1,9 +1,10 @@
 """Monte Carlo commands: status, simulate."""
 import sys
 import time
+
 import click
 
-from .output import success_box, error_box
+from .output import error_box, success_box
 
 
 @click.group()
@@ -17,12 +18,13 @@ def status():
     """Show Monte Carlo simulation status and stats."""
     t0 = time.perf_counter()
     try:
-        from config.features import FEATURE_MONTE_CARLO_ENABLED
         from constants import (
             MONTE_CARLO_DEFAULT_SIMS,
+            MONTE_CARLO_LATENCY_BUDGET_MS,
             MONTE_CARLO_VARIANCE_THRESHOLD,
-            MONTE_CARLO_LATENCY_BUDGET_MS
         )
+
+        from proofpack.config.features import FEATURE_MONTE_CARLO_ENABLED
 
         # Mock stats (would load from ledger in production)
         stats = {
@@ -65,9 +67,9 @@ def simulate(action_id: str, sims: int, noise: float):
     """Run Monte Carlo simulation for an action."""
     t0 = time.perf_counter()
     try:
-        from monte_carlo.simulate import simulate_action, Action
-        from monte_carlo.variance import calculate_variance
+        from monte_carlo.simulate import Action, simulate_action
         from monte_carlo.threshold import check_stability
+        from monte_carlo.variance import calculate_variance
 
         # Create action
         action = Action(

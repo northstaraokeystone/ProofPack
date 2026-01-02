@@ -4,11 +4,13 @@ Pass criteria:
 - Pre-inject 7 recurring gaps
 - ≥1 helper_blueprint proposed within 500 cycles
 """
-import sys
 import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import time
+
 from conftest import SimConfig, SimState
 from sim import run_simulation, simulate_genesis
 

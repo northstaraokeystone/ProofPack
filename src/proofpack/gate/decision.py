@@ -7,14 +7,13 @@ import time
 from dataclasses import dataclass, field
 from enum import Enum
 
-from proofpack.core.receipt import emit_receipt
-from proofpack.core.receipt import dual_hash
-from proofpack.core.constants import GATE_GREEN_THRESHOLD, GATE_YELLOW_THRESHOLD
 from proofpack.config.features import (
+    FEATURE_AGENT_SPAWNING_ENABLED,
     FEATURE_GATE_ENABLED,
     FEATURE_GATE_YELLOW_ONLY,
-    FEATURE_AGENT_SPAWNING_ENABLED,
 )
+from proofpack.core.constants import GATE_GREEN_THRESHOLD, GATE_YELLOW_THRESHOLD
+from proofpack.core.receipt import dual_hash, emit_receipt
 
 
 class GateDecision(Enum):
@@ -171,7 +170,7 @@ def _spawn_for_decision(
     """
     try:
         from spawner.birth import spawn_for_gate
-        from spawner.patterns import find_matching_pattern, apply_pattern
+        from spawner.patterns import apply_pattern, find_matching_pattern
 
         # Check for matching pattern first (for RED gate)
         if decision == GateDecision.RED:

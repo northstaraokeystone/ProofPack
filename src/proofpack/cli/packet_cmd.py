@@ -1,9 +1,10 @@
 """Packet commands: build, audit."""
 import sys
 import time
+
 import click
 
-from .output import success_box, error_box
+from .output import error_box, success_box
 
 
 @click.group()

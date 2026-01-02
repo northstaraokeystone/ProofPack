@@ -3,17 +3,20 @@
 Functions tested: run_cycle, harvest, genesis, effectiveness, gate, completeness
 SLO: cycle completes all 7 phases
 """
-import sys
 import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 import time
-from proofpack.loop.src.cycle import run_cycle, CycleState
-from proofpack.loop.src.harvest import harvest_patterns, PatternEvidence
-from proofpack.loop.src.genesis import create_blueprint, HelperBlueprint
-from proofpack.loop.src.gate import evaluate_approval, ApprovalGate
-from proofpack.loop.src.completeness import update_completeness, CompletenessState
+
 from proofpack.core.receipt import emit_receipt
+from proofpack.loop.src.completeness import CompletenessState, update_completeness
+from proofpack.loop.src.cycle import CycleState, run_cycle
+from proofpack.loop.src.gate import ApprovalGate, evaluate_approval
+from proofpack.loop.src.genesis import HelperBlueprint, create_blueprint
+from proofpack.loop.src.harvest import PatternEvidence, harvest_patterns
+
 
 # Wrapper function for test compatibility
 def compute_effectiveness(helpers, tenant_id="default"):

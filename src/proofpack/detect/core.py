@@ -2,7 +2,7 @@
 import time
 from collections import defaultdict
 
-from proofpack.core.receipt import emit_receipt, dual_hash
+from proofpack.core.receipt import dual_hash, emit_receipt
 
 
 def scan(stream: list, tenant_id: str = "default") -> dict:

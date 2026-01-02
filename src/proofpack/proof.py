@@ -30,7 +30,7 @@ from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any
 
-from proofpack.core.receipt import dual_hash, emit_receipt, merkle, StopRule
+from proofpack.core.receipt import StopRule, dual_hash, emit_receipt, merkle
 
 
 class ProofMode(Enum):

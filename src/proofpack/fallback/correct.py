@@ -7,11 +7,10 @@ Strategies:
 """
 import time
 from dataclasses import dataclass
-from typing import List
 
 from proofpack.core.receipt import emit_receipt
 
-from .web import search, WebResult
+from .web import WebResult, search
 
 
 @dataclass
@@ -19,8 +18,8 @@ class CorrectionResult:
     """Result of a correction attempt."""
     strategy: str
     original_query: str
-    corrected_queries: List[str]
-    web_results: List[WebResult]
+    corrected_queries: list[str]
+    web_results: list[WebResult]
     elapsed_ms: float
 
 
@@ -28,7 +27,7 @@ def reformulate(
     query: str,
     context: str = "",
     tenant_id: str = "default",
-) -> List[str]:
+) -> list[str]:
     """Reformulate query for better retrieval.
 
     Strategies:
@@ -92,7 +91,7 @@ def reformulate(
 def decompose(
     query: str,
     tenant_id: str = "default",
-) -> List[str]:
+) -> list[str]:
     """Decompose complex query into sub-queries.
 
     Breaks down compound questions into atomic parts.

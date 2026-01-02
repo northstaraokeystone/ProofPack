@@ -1,6 +1,7 @@
 """Brief composition with executive summary."""
 import time
-from proofpack.core.receipt import emit_receipt, StopRule
+
+from proofpack.core.receipt import StopRule, emit_receipt
 
 BRIEF_SCHEMA = {
     "receipt_type": "brief",
@@ -26,7 +27,14 @@ def compose(evidence: list, tenant_id: str = "default") -> dict:
         raise StopRule("Coverage: no evidence provided")
 
     # v1: concatenate/dedupe evidence chunks
-    unique_chunks = list(dict.fromkeys(evidence))
+    # Use list comprehension to dedupe since dicts are not hashable
+    seen = []
+    unique_chunks = []
+    for chunk in evidence:
+        chunk_key = str(chunk) if isinstance(chunk, dict) else chunk
+        if chunk_key not in seen:
+            seen.append(chunk_key)
+            unique_chunks.append(chunk)
     executive_summary = f"Brief synthesizing {len(unique_chunks)} evidence chunks: " + \
                         ", ".join(str(c) for c in unique_chunks[:5])
     if len(unique_chunks) > 5:

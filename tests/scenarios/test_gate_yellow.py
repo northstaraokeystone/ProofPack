@@ -5,13 +5,14 @@ Pass criteria:
 - Execution proceeds with watchers spawned
 - gate_decision receipt emitted
 """
-import sys
 import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 
-from proofpack.gate.decision import gate_decision, GateDecision
 from proofpack.core.constants import GATE_GREEN_THRESHOLD, GATE_YELLOW_THRESHOLD
+from proofpack.gate.decision import GateDecision, gate_decision
 
 
 class TestGateYellow:

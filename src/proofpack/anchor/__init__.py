@@ -3,7 +3,7 @@
 Standalone crypto primitives for ProofPack.
 """
 from .hash import dual_hash
-from .merkle import merkle, build_tree
+from .merkle import build_tree, merkle
 from .prove import prove
 from .verify import verify
 

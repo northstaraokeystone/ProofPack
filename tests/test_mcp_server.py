@@ -159,8 +159,8 @@ class TestMCPServer:
 
     def test_server_initialization(self):
         """Test server can be initialized."""
-        from proofpack.mcp.server import MCPServer
         from proofpack.mcp.config import MCPConfig
+        from proofpack.mcp.server import MCPServer
 
         config = MCPConfig(auth_required=False)
         server = MCPServer(config)
@@ -171,8 +171,9 @@ class TestMCPServer:
     def test_handle_initialize(self):
         """Test initialize request handling."""
         import asyncio
-        from proofpack.mcp.server import MCPServer
+
         from proofpack.mcp.config import MCPConfig
+        from proofpack.mcp.server import MCPServer
 
         config = MCPConfig(auth_required=False)
         server = MCPServer(config)
@@ -194,8 +195,9 @@ class TestMCPServer:
     def test_handle_list_tools(self):
         """Test tools/list request handling."""
         import asyncio
-        from proofpack.mcp.server import MCPServer
+
         from proofpack.mcp.config import MCPConfig
+        from proofpack.mcp.server import MCPServer
 
         config = MCPConfig(auth_required=False)
         server = MCPServer(config)
@@ -214,8 +216,9 @@ class TestMCPServer:
     def test_handle_unknown_method(self):
         """Test unknown method returns error."""
         import asyncio
-        from proofpack.mcp.server import MCPServer
+
         from proofpack.mcp.config import MCPConfig
+        from proofpack.mcp.server import MCPServer
 
         config = MCPConfig(auth_required=False)
         server = MCPServer(config)

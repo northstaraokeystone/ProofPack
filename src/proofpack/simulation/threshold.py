@@ -5,9 +5,9 @@ Stable = good to proceed. Unstable = needs more exploration.
 import time
 from dataclasses import dataclass
 
-from proofpack.core.receipt import emit_receipt
-from proofpack.core.constants import MONTE_CARLO_VARIANCE_THRESHOLD
 from proofpack.config.features import FEATURE_MONTE_CARLO_ENABLED
+from proofpack.core.constants import MONTE_CARLO_VARIANCE_THRESHOLD
+from proofpack.core.receipt import emit_receipt
 
 
 @dataclass

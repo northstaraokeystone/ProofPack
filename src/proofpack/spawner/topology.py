@@ -11,7 +11,6 @@ from enum import Enum
 
 from proofpack.core.receipt import emit_receipt
 
-
 # Topology thresholds (from constants.py)
 AGENT_ESCAPE_VELOCITY = 0.85
 AGENT_AUTONOMY_THRESHOLD = 0.75
@@ -130,7 +129,7 @@ def apply_topology_action(
         return grad_result.graduated, grad_receipt
 
     elif result.recommended_action == RecommendedAction.PRUNE:
-        from .prune import prune_agent, PruneReason
+        from .prune import PruneReason, prune_agent
 
         prune_result, prune_receipt = prune_agent(
             result.agent_id,

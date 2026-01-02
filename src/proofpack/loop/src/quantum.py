@@ -13,8 +13,7 @@ import random
 from dataclasses import dataclass
 from typing import Literal
 
-from proofpack.core.receipt import emit_receipt, StopRule
-
+from proofpack.core.receipt import StopRule, emit_receipt
 
 # === STATE ENUM - Probability amplitudes until measured ===
 StateType = Literal["SUPERPOSITION", "ACTIVE", "DORMANT", "COLLAPSED"]

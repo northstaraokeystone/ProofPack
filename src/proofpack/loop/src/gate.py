@@ -21,15 +21,14 @@ import time
 from dataclasses import dataclass, field
 from typing import Literal
 
-from proofpack.core.receipt import emit_receipt, StopRule
+from proofpack.core.receipt import StopRule, emit_receipt
+from proofpack.loop.src.genesis import HelperBlueprint
 from proofpack.loop.src.quantum import (
     FitnessDistribution,
     collapse_state,
+    exponential_decay,
     sample_from_distributions,
-    exponential_decay
 )
-from proofpack.loop.src.genesis import HelperBlueprint
-
 
 ApprovalDecision = Literal["approve", "reject", "defer", "auto_decline"]
 

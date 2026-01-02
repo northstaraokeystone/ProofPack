@@ -1,10 +1,11 @@
 """Detect commands: scan, resources."""
+import json
 import sys
 import time
-import json
+
 import click
 
-from .output import success_box, error_box
+from .output import error_box, success_box
 
 
 @click.group()
@@ -24,7 +25,7 @@ def scan(stream: str, threshold: float):
 
         # Load stream data
         receipts = []
-        with open(stream, 'r') as f:
+        with open(stream) as f:
             for line in f:
                 if line.strip():
                     try:

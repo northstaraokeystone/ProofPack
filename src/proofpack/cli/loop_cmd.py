@@ -1,9 +1,10 @@
 """Loop commands: status, gaps, helpers, approve, completeness, trace, wounds, convergence."""
 import sys
 import time
+
 import click
 
-from .output import success_box, error_box, progress_bar
+from .output import error_box, progress_bar, success_box
 
 
 @click.group()
@@ -252,7 +253,8 @@ def wounds(limit: int):
     t0 = time.perf_counter()
     try:
         from constants import WOUND_DROP_THRESHOLD, WOUND_SPAWN_THRESHOLD
-        from config.features import FEATURE_WOUND_DETECTION_ENABLED
+
+        from proofpack.config.features import FEATURE_WOUND_DETECTION_ENABLED
 
         # Mock wound data (would load from ledger in production)
         all_wounds = [

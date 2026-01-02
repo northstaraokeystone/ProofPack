@@ -4,8 +4,9 @@ Pass criteria:
 - Spawning stops at 50 total agents
 - spawn_rejected receipt emitted when at capacity
 """
-import sys
 import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 
@@ -15,18 +16,18 @@ class TestPopulationCap:
 
     def setup_method(self):
         """Clear registry before each test."""
-        from spawner.registry import clear_registry
+        from proofpack.spawner.registry import clear_registry
         clear_registry()
 
     def test_max_population_is_fifty(self):
         """POPULATION: maximum is 50 agents."""
-        from spawner.registry import MAX_AGENTS
+        from proofpack.spawner.registry import MAX_AGENTS
 
         assert MAX_AGENTS == 50
 
     def test_can_spawn_when_under_limit(self):
         """POPULATION: can spawn when under limit."""
-        from spawner.registry import can_spawn, get_population_count
+        from proofpack.spawner.registry import can_spawn, get_population_count
 
         assert get_population_count() == 0
         assert can_spawn(1) is True
@@ -34,7 +35,7 @@ class TestPopulationCap:
 
     def test_cannot_spawn_at_capacity(self, monkeypatch):
         """POPULATION: spawning blocked at capacity."""
-        from spawner.registry import register_agent, AgentType, can_spawn, MAX_AGENTS
+        from proofpack.spawner.registry import MAX_AGENTS, AgentType, can_spawn, register_agent
 
         # Fill up to capacity
         for i in range(MAX_AGENTS):
@@ -46,7 +47,7 @@ class TestPopulationCap:
 
     def test_spawn_rejected_receipt(self, monkeypatch):
         """POPULATION: spawn_rejected receipt emitted at capacity."""
-        from spawner.registry import register_agent, AgentType, MAX_AGENTS
+        from proofpack.spawner.registry import MAX_AGENTS, AgentType, register_agent
 
         # Fill up to capacity
         for i in range(MAX_AGENTS):
@@ -61,9 +62,13 @@ class TestPopulationCap:
 
     def test_population_count_accurate(self):
         """POPULATION: count excludes pruned/graduated agents."""
-        from spawner.registry import register_agent, AgentType, get_population_count
-        from spawner.lifecycle import transition_agent
-        from spawner.registry import AgentState
+        from proofpack.spawner.lifecycle import transition_agent
+        from proofpack.spawner.registry import (
+            AgentState,
+            AgentType,
+            get_population_count,
+            register_agent,
+        )
 
         agent1, _ = register_agent(AgentType.HELPER, "RED", 0.5)
         agent2, _ = register_agent(AgentType.HELPER, "RED", 0.5)

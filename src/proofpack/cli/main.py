@@ -2,23 +2,23 @@
 import click
 
 from . import __version__
-from .ledger_cmd import ledger
-from .brief_cmd import brief
-from .packet_cmd import packet
-from .detect_cmd import detect
 from .anchor_cmd import anchor
-from .loop_cmd import loop
+from .brief_cmd import brief
 from .compose_cmd import compose
-from .gate_cmd import gate
-from .monte_cmd import monte
-from .spawn_cmd import spawn
-from .mcp_cmd import mcp
-from .graph_cmd import graph
-from .fallback_cmd import fallback
-from .rnes_cmd import rnes
-from .privacy_cmd import privacy
-from .offline_cmd import offline
+from .detect_cmd import detect
 from .economic_cmd import economic
+from .fallback_cmd import fallback
+from .gate_cmd import gate
+from .graph_cmd import graph
+from .ledger_cmd import ledger
+from .loop_cmd import loop
+from .mcp_cmd import mcp
+from .monte_cmd import monte
+from .offline_cmd import offline
+from .packet_cmd import packet
+from .privacy_cmd import privacy
+from .rnes_cmd import rnes
+from .spawn_cmd import spawn
 
 
 @click.group()

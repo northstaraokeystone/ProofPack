@@ -5,8 +5,9 @@ Pass criteria:
 - CLOSED: effectiveness < 0.85
 - HYBRID: transfer_score > 0.70
 """
-import sys
 import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 
@@ -16,14 +17,14 @@ class TestTopologyClassification:
 
     def setup_method(self):
         """Clear registry before each test."""
-        from spawner.registry import clear_registry
+        from proofpack.spawner.registry import clear_registry
         clear_registry()
 
     def test_open_topology_thresholds(self):
         """TOPOLOGY: OPEN requires effectiveness >= 0.85, autonomy > 0.75."""
-        from spawner.topology import (
-            AGENT_ESCAPE_VELOCITY,
+        from proofpack.spawner.topology import (
             AGENT_AUTONOMY_THRESHOLD,
+            AGENT_ESCAPE_VELOCITY,
         )
 
         assert AGENT_ESCAPE_VELOCITY == 0.85
@@ -31,7 +32,7 @@ class TestTopologyClassification:
 
     def test_open_classification(self):
         """TOPOLOGY: high effectiveness + autonomy = OPEN."""
-        from spawner.topology import classify_topology, TopologyClass
+        from proofpack.spawner.topology import TopologyClass, classify_topology
 
         result, _ = classify_topology(
             agent_id="test",
@@ -44,7 +45,7 @@ class TestTopologyClassification:
 
     def test_closed_classification(self):
         """TOPOLOGY: low effectiveness = CLOSED."""
-        from spawner.topology import classify_topology, TopologyClass
+        from proofpack.spawner.topology import TopologyClass, classify_topology
 
         result, _ = classify_topology(
             agent_id="test",
@@ -57,7 +58,11 @@ class TestTopologyClassification:
 
     def test_hybrid_classification(self):
         """TOPOLOGY: high transfer score = HYBRID."""
-        from spawner.topology import classify_topology, TopologyClass, AGENT_TRANSFER_THRESHOLD
+        from proofpack.spawner.topology import (
+            AGENT_TRANSFER_THRESHOLD,
+            TopologyClass,
+            classify_topology,
+        )
 
         assert AGENT_TRANSFER_THRESHOLD == 0.70
 
@@ -73,7 +78,7 @@ class TestTopologyClassification:
 
     def test_topology_receipt_emitted(self):
         """TOPOLOGY: topology receipt emitted on classification."""
-        from spawner.topology import classify_topology
+        from proofpack.spawner.topology import classify_topology
 
         result, receipt = classify_topology(
             agent_id="test",
@@ -87,7 +92,7 @@ class TestTopologyClassification:
 
     def test_open_requires_both_thresholds(self):
         """TOPOLOGY: OPEN requires both effectiveness AND autonomy."""
-        from spawner.topology import classify_topology, TopologyClass
+        from proofpack.spawner.topology import TopologyClass, classify_topology
 
         # High effectiveness, low autonomy -> CLOSED
         result, _ = classify_topology(
@@ -107,7 +112,7 @@ class TestTopologyClassification:
 
     def test_batch_classification(self):
         """TOPOLOGY: batch classification works correctly."""
-        from spawner.topology import batch_classify, TopologyClass
+        from proofpack.spawner.topology import TopologyClass, batch_classify
 
         agents = [
             ("agent1", 0.90, 0.80, 0.0),  # OPEN

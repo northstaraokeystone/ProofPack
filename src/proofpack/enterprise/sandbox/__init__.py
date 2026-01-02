@@ -9,10 +9,10 @@ Provides:
 
 from .executor import (
     SandboxResult,
-    execute_in_sandbox,
-    validate_network_call,
     emit_sandbox_receipt,
+    execute_in_sandbox,
     load_allowlist,
+    validate_network_call,
 )
 
 __all__ = [

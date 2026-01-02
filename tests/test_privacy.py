@@ -1,11 +1,12 @@
 """Tests for privacy module."""
 import pytest
+
 from proofpack.privacy import (
+    check_rnes_compliance,
+    get_public_view,
+    prepare_for_audit,
     redact_receipt,
     verify_redaction,
-    get_public_view,
-    check_rnes_compliance,
-    prepare_for_audit,
 )
 
 

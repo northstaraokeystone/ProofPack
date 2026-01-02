@@ -1,9 +1,10 @@
 """Spawn commands: status, history, kill, patterns, simulate."""
 import sys
 import time
+
 import click
 
-from .output import success_box, error_box
+from .output import error_box, success_box
 
 
 @click.group()
@@ -17,14 +18,15 @@ def status():
     """Show active agents, depth, TTL remaining."""
     t0 = time.perf_counter()
     try:
+        from spawner.lifecycle import get_ttl_remaining
         from spawner.registry import (
-            get_active_agents,
-            get_population_count,
             MAX_AGENTS,
             MAX_DEPTH,
+            get_active_agents,
+            get_population_count,
         )
-        from spawner.lifecycle import get_ttl_remaining
-        from config.features import FEATURE_AGENT_SPAWNING_ENABLED
+
+        from proofpack.config.features import FEATURE_AGENT_SPAWNING_ENABLED
 
         active = get_active_agents()
         population = get_population_count()
@@ -109,7 +111,7 @@ def kill(agent_id: str):
     """Manual termination of an agent."""
     t0 = time.perf_counter()
     try:
-        from spawner.prune import prune_agent, PruneReason
+        from spawner.prune import PruneReason, prune_agent
 
         result, receipt = prune_agent(agent_id, PruneReason.MANUAL)
         elapsed_ms = int((time.perf_counter() - t0) * 1000)

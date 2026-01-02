@@ -20,9 +20,8 @@ import math
 from dataclasses import dataclass, field
 from typing import Literal
 
-from proofpack.core.receipt import emit_receipt, StopRule
+from proofpack.core.receipt import StopRule, emit_receipt
 from proofpack.loop.src.quantum import FitnessDistribution, shannon_entropy
-
 
 Level = Literal["L0", "L1", "L2", "L3", "L4"]
 

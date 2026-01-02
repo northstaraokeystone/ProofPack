@@ -4,8 +4,9 @@ Pass criteria:
 - L0, L1, L2, L3, L4 all ≥ 99.9% (asymptotic)
 - self_verifying = True
 """
-import sys
 import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import pytest

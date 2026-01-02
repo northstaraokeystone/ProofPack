@@ -25,9 +25,9 @@ Usage:
         merged = merge.combine(synthesis, web_results)
 """
 
-from .evaluate import score, Classification
-from .correct import with_web, reformulate, decompose
-from .merge import combine, MergeStrategy
+from .correct import decompose, reformulate, with_web
+from .evaluate import Classification, score
+from .merge import MergeStrategy, combine
 
 __all__ = [
     # Evaluation

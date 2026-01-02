@@ -8,13 +8,13 @@ Provides:
 """
 
 from .plan_proposal import (
+    ApprovalResult,
     Plan,
     PlanStep,
-    ApprovalResult,
-    generate_plan,
-    emit_plan_proposal_receipt,
     await_plan_approval,
     emit_plan_modification_receipt,
+    emit_plan_proposal_receipt,
+    generate_plan,
 )
 
 __all__ = [

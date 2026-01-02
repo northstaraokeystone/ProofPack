@@ -16,8 +16,7 @@ import uuid
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from proofpack.core.receipt import emit_receipt, dual_hash, StopRule
-
+from proofpack.core.receipt import StopRule, dual_hash, emit_receipt
 
 # Try to import docker, but allow graceful degradation for mock mode
 try:
@@ -74,7 +73,7 @@ def load_allowlist(path: str = "config/allowlist.json") -> Allowlist:
         return Allowlist()
 
     try:
-        with open(allowlist_path, "r") as f:
+        with open(allowlist_path) as f:
             data = json.load(f)
 
         return Allowlist(
@@ -84,7 +83,7 @@ def load_allowlist(path: str = "config/allowlist.json") -> Allowlist:
             max_request_size_bytes=data.get("max_request_size_bytes", 10485760),
             timeout_seconds=data.get("timeout_seconds", 30)
         )
-    except (json.JSONDecodeError, IOError):
+    except (OSError, json.JSONDecodeError):
         return Allowlist()
 
 

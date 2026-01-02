@@ -6,10 +6,10 @@ for distributions without making hard decisions.
 Everything observed becomes a probability update, not a state change.
 """
 import time
-from dataclasses import dataclass, field
 from collections import defaultdict
+from dataclasses import dataclass, field
 
-from proofpack.core.receipt import emit_receipt, StopRule
+from proofpack.core.receipt import StopRule, emit_receipt
 from proofpack.loop.src.quantum import FitnessDistribution, shannon_entropy
 
 

@@ -4,8 +4,9 @@ Pass criteria:
 - Stabilize ≥1 helper
 - Recover in final 100 cycles (no violations in final 100)
 """
-import sys
 import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from conftest import SimConfig, SimState

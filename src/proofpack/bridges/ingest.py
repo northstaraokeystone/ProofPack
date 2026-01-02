@@ -5,10 +5,10 @@ SLO: Single window ingest <= 50ms p95, Batch of 100 windows <= 1s p95.
 """
 import json
 
-from ..core.receipt import dual_hash, emit_receipt, StopRule
-from ..ledger import ingest as ledger_ingest
+from ..core.receipt import StopRule, dual_hash, emit_receipt
 from ..ledger import anchor_batch as ledger_anchor_batch
-from .hooks import validate_hook, get_tenant_id
+from ..ledger import ingest as ledger_ingest
+from .hooks import get_tenant_id, validate_hook
 
 # QED version constant
 QED_VERSION = "7.0"

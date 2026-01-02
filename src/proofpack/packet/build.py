@@ -1,6 +1,7 @@
 """Decision packet assembly for sign-off."""
 import uuid
-from proofpack.core.receipt import emit_receipt, dual_hash, merkle
+
+from proofpack.core.receipt import dual_hash, emit_receipt, merkle
 
 PACKET_SCHEMA = {
     "receipt_type": "packet",

@@ -7,11 +7,12 @@ Stoprule: Deviation from planned_path without human approval → HALT
 """
 
 import json
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Callable, Any
+from typing import Any
 
-from proofpack.core.receipt import emit_receipt, dual_hash, StopRule
+from proofpack.core.receipt import StopRule, dual_hash, emit_receipt
 
 
 @dataclass
@@ -99,7 +100,7 @@ def load_graph(path: str) -> WorkflowGraph:
     if not graph_path.exists():
         raise FileNotFoundError(f"Workflow graph not found: {path}")
 
-    with open(graph_path, "r") as f:
+    with open(graph_path) as f:
         data = json.load(f)
 
     # Parse nodes

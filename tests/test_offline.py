@@ -1,17 +1,17 @@
 """Tests for offline module."""
 import pytest
 
-from proofpack.offline.queue import (
-    enqueue_receipt,
-    get_queue_size,
-    get_local_merkle_root,
-    peek_queue,
-    clear_queue,
-)
 from proofpack.offline.merkle_local import (
     build_local_merkle,
     get_proof_path,
     verify_local_inclusion,
+)
+from proofpack.offline.queue import (
+    clear_queue,
+    enqueue_receipt,
+    get_local_merkle_root,
+    get_queue_size,
+    peek_queue,
 )
 from proofpack.offline.sync import is_connected
 

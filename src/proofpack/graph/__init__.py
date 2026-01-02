@@ -32,8 +32,8 @@ Performance SLOs:
 """
 
 from .backend import GraphBackend, get_backend
-from .ingest import add_node, add_edge, bulk_ingest
-from .query import lineage, temporal, match, causal_chain, episode
+from .ingest import add_edge, add_node, bulk_ingest
+from .query import causal_chain, episode, lineage, match, temporal
 
 __all__ = [
     # Backend

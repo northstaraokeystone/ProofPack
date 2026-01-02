@@ -8,7 +8,6 @@ Maintains secondary indexes for common query patterns:
 import time
 from collections import defaultdict
 from dataclasses import dataclass, field
-from typing import Optional, Set
 
 from proofpack.core.receipt import emit_receipt
 
@@ -20,20 +19,20 @@ class GraphIndex:
     """Secondary indexes for the graph."""
 
     # Type index: receipt_type -> set of node_ids
-    by_type: dict[str, Set[str]] = field(default_factory=lambda: defaultdict(set))
+    by_type: dict[str, set[str]] = field(default_factory=lambda: defaultdict(set))
 
     # Time bucket index: YYYY-MM-DD-HH -> set of node_ids
-    by_time_bucket: dict[str, Set[str]] = field(default_factory=lambda: defaultdict(set))
+    by_time_bucket: dict[str, set[str]] = field(default_factory=lambda: defaultdict(set))
 
     # Parent index: parent_id -> set of child_ids
-    by_parent: dict[str, Set[str]] = field(default_factory=lambda: defaultdict(set))
+    by_parent: dict[str, set[str]] = field(default_factory=lambda: defaultdict(set))
 
     # Reverse parent index: child_id -> parent_id
     parent_of: dict[str, str] = field(default_factory=dict)
 
 
 # Global index instance
-_index: Optional[GraphIndex] = None
+_index: GraphIndex | None = None
 
 
 def get_index() -> GraphIndex:
@@ -104,7 +103,7 @@ def remove_from_index(node_id: str) -> None:
         del idx.parent_of[node_id]
 
 
-def get_by_type(receipt_type: str) -> Set[str]:
+def get_by_type(receipt_type: str) -> set[str]:
     """Get all node IDs of a specific type.
 
     Args:
@@ -116,7 +115,7 @@ def get_by_type(receipt_type: str) -> Set[str]:
     return get_index().by_type.get(receipt_type, set())
 
 
-def get_by_time_range(start_time: str, end_time: str) -> Set[str]:
+def get_by_time_range(start_time: str, end_time: str) -> set[str]:
     """Get all node IDs within a time range.
 
     Uses hourly buckets for efficient filtering.
@@ -142,7 +141,7 @@ def get_by_time_range(start_time: str, end_time: str) -> Set[str]:
     return result
 
 
-def get_children(parent_id: str) -> Set[str]:
+def get_children(parent_id: str) -> set[str]:
     """Get all child node IDs of a parent.
 
     Args:
@@ -154,7 +153,7 @@ def get_children(parent_id: str) -> Set[str]:
     return get_index().by_parent.get(parent_id, set())
 
 
-def get_parent(child_id: str) -> Optional[str]:
+def get_parent(child_id: str) -> str | None:
     """Get the parent node ID of a child.
 
     Args:

@@ -3,9 +3,10 @@
 Validates that consolidated proof.py matches original module behavior
 for BRIEF, PACKET, and DETECT modes.
 """
-import pytest
 from io import StringIO
 from unittest.mock import patch
+
+import pytest
 
 
 class TestProofBriefMode:
@@ -13,7 +14,7 @@ class TestProofBriefMode:
 
     def test_compose_evidence(self):
         """Test evidence composition."""
-        from proofpack.proof import proof, ProofMode
+        from proofpack.proof import ProofMode, proof
 
         with patch('sys.stdout', new=StringIO()):
             result = proof(ProofMode.BRIEF, {
@@ -27,8 +28,8 @@ class TestProofBriefMode:
 
     def test_compose_empty_evidence_raises(self):
         """Test that empty evidence raises StopRule."""
-        from proofpack.proof import proof, ProofMode
         from proofpack.core.receipt import StopRule
+        from proofpack.proof import ProofMode, proof
 
         with patch('sys.stdout', new=StringIO()):
             with pytest.raises(StopRule):
@@ -39,7 +40,7 @@ class TestProofBriefMode:
 
     def test_retrieve_within_budget(self):
         """Test retrieval within budget constraints."""
-        from proofpack.proof import proof, ProofMode
+        from proofpack.proof import ProofMode, proof
 
         with patch('sys.stdout', new=StringIO()):
             result = proof(ProofMode.BRIEF, {
@@ -53,7 +54,7 @@ class TestProofBriefMode:
 
     def test_health_scoring(self):
         """Test brief health scoring."""
-        from proofpack.proof import proof, ProofMode
+        from proofpack.proof import ProofMode, proof
 
         brief = {
             "supporting_evidence": [
@@ -75,7 +76,7 @@ class TestProofBriefMode:
 
     def test_dialectic_analysis(self):
         """Test PRO/CON dialectic analysis."""
-        from proofpack.proof import proof, ProofMode
+        from proofpack.proof import ProofMode, proof
 
         with patch('sys.stdout', new=StringIO()):
             result = proof(ProofMode.BRIEF, {
@@ -94,7 +95,7 @@ class TestProofPacketMode:
 
     def test_build_packet(self):
         """Test decision packet assembly."""
-        from proofpack.proof import proof, ProofMode
+        from proofpack.proof import ProofMode, proof
 
         brief = {
             "executive_summary": "Test summary",
@@ -121,7 +122,7 @@ class TestProofPacketMode:
 
     def test_attach_claims(self):
         """Test claim-to-receipt mapping."""
-        from proofpack.proof import proof, ProofMode
+        from proofpack.proof import ProofMode, proof
 
         claims = [
             {"claim_id": "claim1", "text": "First claim"},
@@ -148,7 +149,7 @@ class TestProofDetectMode:
 
     def test_scan_patterns(self):
         """Test pattern scanning."""
-        from proofpack.proof import proof, ProofMode
+        from proofpack.proof import ProofMode, proof
 
         receipts = [
             {"receipt_type": "test", "value": 100},
@@ -175,7 +176,7 @@ class TestProofDetectMode:
 
     def test_classify_match(self):
         """Test anomaly classification."""
-        from proofpack.proof import proof, ProofMode
+        from proofpack.proof import ProofMode, proof
 
         match = {
             "pattern_id": "threshold_breach_001",

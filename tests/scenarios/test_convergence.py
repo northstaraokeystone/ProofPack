@@ -4,17 +4,18 @@ Pass criteria:
 - Same question 5+ times triggers loop detection
 - Convergence proof calculated correctly
 """
-import sys
 import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 
 from proofpack.loop.src.convergence import (
     ConvergenceState,
+    compute_convergence_proof,
+    detect_loops,
     hash_question,
     track_question,
-    detect_loops,
-    compute_convergence_proof
 )
 
 

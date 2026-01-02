@@ -5,16 +5,14 @@ Pass criteria:
 - Formula: (wounds // 2) + 1
 - Convergence bonus applies correctly
 """
-import sys
 import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 
+from proofpack.core.constants import SPAWN_CONVERGENCE_MULTIPLIER, SPAWN_CONVERGENCE_THRESHOLD
 from proofpack.loop.src.spawn import calculate_helpers_to_spawn, should_spawn, spawn_helpers
-from proofpack.core.constants import (
-    SPAWN_CONVERGENCE_THRESHOLD,
-    SPAWN_CONVERGENCE_MULTIPLIER
-)
 
 
 class TestSpawn:

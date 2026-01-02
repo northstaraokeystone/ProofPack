@@ -3,8 +3,7 @@
 Maps QED hook names to ProofPack tenant IDs per CLAUDEME Section 4.1.
 Only the 6 defined hooks are valid - all others trigger stoprule.
 """
-from ..core.receipt import emit_receipt, StopRule
-
+from ..core.receipt import StopRule, emit_receipt
 
 # Hook to tenant ID mapping - 6 defined companies only
 HOOK_TENANT_MAP: dict[str, str] = {

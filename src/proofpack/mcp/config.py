@@ -5,7 +5,6 @@ overridden via environment variables with PROOFPACK_MCP_ prefix.
 """
 import os
 from dataclasses import dataclass, field
-from typing import List
 
 
 @dataclass
@@ -26,7 +25,7 @@ class MCPConfig:
     auth_token: str = ""
 
     # Tool access control
-    allowed_tools: List[str] = field(default_factory=lambda: [
+    allowed_tools: list[str] = field(default_factory=lambda: [
         "query_receipts",
         "validate_receipt",
         "get_lineage",

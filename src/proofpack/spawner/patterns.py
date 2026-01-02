@@ -15,7 +15,6 @@ from dataclasses import dataclass
 
 from proofpack.core.receipt import emit_receipt
 
-
 # Pattern storage file (append-only JSONL like receipts)
 PATTERNS_FILE = "patterns.jsonl"
 
@@ -153,7 +152,7 @@ def load_patterns(tenant_id: str | None = None) -> list[Pattern]:
         return []
 
     patterns = []
-    with open(patterns_path, "r") as f:
+    with open(patterns_path) as f:
         for line in f:
             line = line.strip()
             if not line:
@@ -302,7 +301,7 @@ def _increment_use_count(pattern_id: str) -> None:
         return
 
     lines = []
-    with open(patterns_path, "r") as f:
+    with open(patterns_path) as f:
         for line in f:
             line = line.strip()
             if not line:

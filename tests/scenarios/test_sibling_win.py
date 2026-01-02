@@ -5,8 +5,9 @@ Pass criteria:
 - Winner declared when confidence > 0.8
 - All siblings receive termination signal
 """
-import sys
 import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 
@@ -16,20 +17,20 @@ class TestSiblingWin:
 
     def setup_method(self):
         """Clear registry before each test."""
-        from spawner.registry import clear_registry
+        from proofpack.spawner.registry import clear_registry
         clear_registry()
 
     def test_solution_threshold_is_0_8(self):
         """SIBLING: solution threshold is 0.8."""
-        from spawner.coordination import SOLUTION_CONFIDENCE_THRESHOLD
+        from proofpack.spawner.coordination import SOLUTION_CONFIDENCE_THRESHOLD
 
         assert SOLUTION_CONFIDENCE_THRESHOLD == 0.8
 
     def test_winner_declared_at_threshold(self, monkeypatch):
         """SIBLING: winner declared when confidence >= 0.8."""
-        from spawner.registry import register_agent, AgentType
-        from spawner.coordination import declare_winner
-        from spawner.lifecycle import activate_agent
+        from proofpack.spawner.coordination import declare_winner
+        from proofpack.spawner.lifecycle import activate_agent
+        from proofpack.spawner.registry import AgentType, register_agent
 
         # Create group of siblings
         group_id = "test-group"
@@ -49,9 +50,9 @@ class TestSiblingWin:
 
     def test_siblings_pruned_on_win(self, monkeypatch):
         """SIBLING: other siblings pruned when one wins."""
-        from spawner.registry import register_agent, AgentType, get_agent, AgentState
-        from spawner.coordination import declare_winner
-        from spawner.lifecycle import activate_agent
+        from proofpack.spawner.coordination import declare_winner
+        from proofpack.spawner.lifecycle import activate_agent
+        from proofpack.spawner.registry import AgentState, AgentType, get_agent, register_agent
 
         # Create group of siblings
         group_id = "test-group"
@@ -78,9 +79,9 @@ class TestSiblingWin:
 
     def test_below_threshold_not_winner(self, monkeypatch):
         """SIBLING: below threshold does not declare winner."""
-        from spawner.registry import register_agent, AgentType
-        from spawner.coordination import declare_winner
-        from spawner.lifecycle import activate_agent
+        from proofpack.spawner.coordination import declare_winner
+        from proofpack.spawner.lifecycle import activate_agent
+        from proofpack.spawner.registry import AgentType, register_agent
 
         agent, _ = register_agent(AgentType.HELPER, "RED", 0.5)
         activate_agent(agent.agent_id)
@@ -92,10 +93,11 @@ class TestSiblingWin:
 
     def test_coordination_receipt_emitted(self, monkeypatch):
         """SIBLING: coordination receipt emitted on resolution."""
-        from spawner.registry import register_agent, AgentType
-        from spawner.coordination import coordinate_siblings, SolutionEvent
-        from spawner.lifecycle import activate_agent
         import time
+
+        from proofpack.spawner.coordination import SolutionEvent, coordinate_siblings
+        from proofpack.spawner.lifecycle import activate_agent
+        from proofpack.spawner.registry import AgentType, register_agent
 
         group_id = "test-group"
         agent1, _ = register_agent(AgentType.HELPER, "RED", 0.5, group_id=group_id)

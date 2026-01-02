@@ -1,10 +1,10 @@
 """Entropy module - re-exports from quantum and cycle for convenience."""
+from proofpack.loop.src.cycle import compute_stream_entropy
 from proofpack.loop.src.quantum import (
-    shannon_entropy,
     entropy_delta,
+    shannon_entropy,
     stoprule_entropy_violation,
 )
-from proofpack.loop.src.cycle import compute_stream_entropy
 
 
 def system_entropy(receipts: list) -> float:

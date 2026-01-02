@@ -1,6 +1,7 @@
 """Consistency auditing with 99.9% threshold gate."""
 from datetime import datetime, timedelta
-from proofpack.core.receipt import emit_receipt, StopRule
+
+from proofpack.core.receipt import StopRule, emit_receipt
 
 CONSISTENCY_SCHEMA = {
     "receipt_type": "consistency",

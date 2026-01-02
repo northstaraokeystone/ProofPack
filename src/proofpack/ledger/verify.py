@@ -1,5 +1,5 @@
 """Proof verification against Merkle proof path."""
-from .core import dual_hash, emit_receipt, StopRule
+from .core import StopRule, dual_hash, emit_receipt
 
 VERIFY_SCHEMA = {
     "receipt_type": "verify_receipt",

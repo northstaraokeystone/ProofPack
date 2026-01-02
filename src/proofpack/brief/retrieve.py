@@ -1,6 +1,7 @@
 """Adaptive-k retrieval with budget constraints."""
 import time
-from proofpack.core.receipt import emit_receipt, StopRule
+
+from proofpack.core.receipt import StopRule, emit_receipt
 
 RETRIEVAL_SCHEMA = {
     "receipt_type": "retrieval",

@@ -1,10 +1,11 @@
 """Ledger commands: ingest, verify, anchor, export."""
+import json
 import sys
 import time
-import json
+
 import click
 
-from .output import success_box, error_box
+from .output import error_box, success_box
 
 
 @click.group()
@@ -24,7 +25,7 @@ def ingest(file: str, tenant: str):
 
         count = 0
         last_hash = ""
-        with open(file, 'r') as f:
+        with open(file) as f:
             for line in f:
                 if line.strip():
                     receipt = json.loads(line)

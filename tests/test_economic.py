@@ -1,9 +1,9 @@
 """Tests for economic module."""
 from proofpack.economic import (
-    evaluate_slo,
-    calculate_payment,
-    export_for_payment_system,
     attach_economic_metadata,
+    calculate_payment,
+    evaluate_slo,
+    export_for_payment_system,
 )
 
 

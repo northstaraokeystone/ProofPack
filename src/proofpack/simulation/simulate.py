@@ -6,14 +6,13 @@ import random
 import time
 from dataclasses import dataclass, field
 
-from proofpack.core.receipt import emit_receipt
-from proofpack.core.receipt import dual_hash
-from proofpack.core.constants import (
-    MONTE_CARLO_DEFAULT_SIMS,
-    MONTE_CARLO_DEFAULT_NOISE,
-    MONTE_CARLO_LATENCY_BUDGET_MS
-)
 from proofpack.config.features import FEATURE_MONTE_CARLO_ENABLED
+from proofpack.core.constants import (
+    MONTE_CARLO_DEFAULT_NOISE,
+    MONTE_CARLO_DEFAULT_SIMS,
+    MONTE_CARLO_LATENCY_BUDGET_MS,
+)
+from proofpack.core.receipt import dual_hash, emit_receipt
 
 
 @dataclass

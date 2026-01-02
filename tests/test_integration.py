@@ -6,25 +6,34 @@ Cross-module chains tested:
 3. detect → loop (alerts trigger HARVEST)
 4. Full pipeline: ingest → anchor → brief → packet → detect → loop
 """
-import sys
 import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 # Import from core modules
-from proofpack.core.receipt import merkle, emit_receipt, StopRule
-from proofpack.ledger.ingest import ingest
-from proofpack.ledger.anchor import anchor as anchor_batch  # alias for test compatibility
-from proofpack.brief.retrieve import retrieve
 from proofpack.brief.compose import compose as compose_brief_raw
-from proofpack.packet.build import build as build_packet  # alias for test compatibility
-from proofpack.packet.attach import attach as attach_evidence  # alias for test compatibility
+from proofpack.brief.retrieve import retrieve
+from proofpack.core.receipt import StopRule, emit_receipt, merkle
 from proofpack.detect.core import scan as scan_metrics_raw
-from proofpack.loop.src.cycle import run_cycle, CycleState
+from proofpack.ledger.anchor import anchor as anchor_batch  # alias for test compatibility
+from proofpack.ledger.ingest import ingest
+from proofpack.loop.src.completeness import CompletenessState, update_completeness
+from proofpack.loop.src.cycle import CycleState, run_cycle
 from proofpack.loop.src.harvest import harvest_patterns
-from proofpack.loop.src.completeness import update_completeness, CompletenessState
+from proofpack.packet.attach import attach as attach_raw  # raw function
+from proofpack.packet.build import build as build_packet  # alias for test compatibility
+
 
 # Wrapper functions for test compatibility
+def attach_evidence(evidence, decision, tenant_id="default"):
+    """Wrapper for attach function with test-compatible interface."""
+    claims = [{"claim_id": str(i), "text": str(e)} for i, e in enumerate(evidence)]
+    receipts = [{"payload_hash": f"hash_{i}:{i}" * 32} for i in range(len(evidence))]
+    return attach_raw(claims, receipts, tenant_id)
+
+
 def compose_brief(evidence, tenant_id):
     try:
         return compose_brief_raw(evidence, tenant_id)

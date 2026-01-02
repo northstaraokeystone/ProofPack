@@ -7,14 +7,14 @@ Synchronization strategies:
 """
 import json
 import time
+from collections.abc import Callable
 from pathlib import Path
-from typing import Callable, Optional
 
 from proofpack.core.receipt import emit_receipt
 
 from .backend import get_backend
-from .ingest import add_node, bulk_ingest
 from .index import rebuild_index
+from .ingest import add_node, bulk_ingest
 
 
 class GraphSyncer:
@@ -154,7 +154,7 @@ class GraphSyncer:
 
     def start_background_sync(
         self,
-        callback: Optional[Callable[[dict], None]] = None,
+        callback: Callable[[dict], None] | None = None,
         tenant_id: str = "default",
     ) -> None:
         """Start background sync loop.
@@ -202,7 +202,7 @@ class GraphSyncer:
 
 
 # Global syncer instance
-_syncer: Optional[GraphSyncer] = None
+_syncer: GraphSyncer | None = None
 
 
 def get_syncer(ledger_path: str = "receipts.jsonl") -> GraphSyncer:

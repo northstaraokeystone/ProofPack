@@ -25,7 +25,6 @@ from datetime import datetime
 
 from proofpack.core.receipt import dual_hash, emit_receipt
 
-
 # Default SLO thresholds
 DEFAULT_SLO_CONFIG = {
     "latency_p95_ms": 100,

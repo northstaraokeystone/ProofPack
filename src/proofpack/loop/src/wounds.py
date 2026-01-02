@@ -8,10 +8,12 @@ When wound count exceeds threshold, triggers spawn evaluation.
 import time
 from dataclasses import dataclass, field
 
-from proofpack.core.receipt import emit_receipt
-from proofpack.core.receipt import dual_hash
+from proofpack.config.features import (
+    FEATURE_AGENT_SPAWNING_ENABLED,
+    FEATURE_WOUND_DETECTION_ENABLED,
+)
 from proofpack.core.constants import WOUND_DROP_THRESHOLD, WOUND_SPAWN_THRESHOLD
-from proofpack.config.features import FEATURE_WOUND_DETECTION_ENABLED, FEATURE_AGENT_SPAWNING_ENABLED
+from proofpack.core.receipt import dual_hash, emit_receipt
 
 
 @dataclass

@@ -8,7 +8,6 @@ a complete interaction or workflow. Episodes are useful for:
 """
 import time
 from dataclasses import dataclass, field
-from typing import Optional
 
 from proofpack.core.receipt import emit_receipt
 
@@ -36,7 +35,7 @@ def extract_episode(
     include_siblings: bool = True,
     max_nodes: int = 100,
     tenant_id: str = "default",
-) -> Optional[Episode]:
+) -> Episode | None:
     """Extract a complete episode centered on a receipt.
 
     Args:

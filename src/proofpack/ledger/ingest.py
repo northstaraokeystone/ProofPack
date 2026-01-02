@@ -1,5 +1,5 @@
 """Receipt ingestion with tenant isolation."""
-from .core import dual_hash, emit_receipt, StopRule
+from .core import StopRule, dual_hash, emit_receipt
 
 INGEST_SCHEMA = {
     "receipt_type": "ingest_receipt",
@@ -25,13 +25,16 @@ def stoprule_ingest(e: Exception, tenant_id: str = "default") -> None:
     raise StopRule(f"Ingest stoprule triggered: {e}")
 
 
-def ingest(receipt: dict, tenant_id: str = "default", source_type: str = "api") -> dict:
-    """Accept new receipt with tenant isolation. SLO: ≤50ms p95."""
-    try:
-        if not isinstance(receipt, dict):
-            raise ValueError("Receipt must be a dict")
+def ingest(payload: bytes | str | dict, tenant_id: str = "default", source_type: str = "api") -> dict:
+    """Accept new payload with tenant isolation. SLO: ≤50ms p95.
 
-        payload_hash = dual_hash(receipt)
+    Args:
+        payload: Data to ingest (bytes, str, or dict)
+        tenant_id: Tenant isolation key
+        source_type: Source of the payload (api, file, stream, etc.)
+    """
+    try:
+        payload_hash = dual_hash(payload)
 
         return emit_receipt("ingest_receipt", {
             "payload_hash": payload_hash,

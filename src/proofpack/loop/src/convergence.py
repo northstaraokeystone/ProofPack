@@ -6,9 +6,8 @@ import hashlib
 import time
 from dataclasses import dataclass, field
 
-from proofpack.core.receipt import emit_receipt
-from proofpack.core.receipt import dual_hash
 from proofpack.core.constants import CONVERGENCE_LOOP_THRESHOLD
+from proofpack.core.receipt import dual_hash, emit_receipt
 
 
 @dataclass

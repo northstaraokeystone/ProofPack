@@ -3,16 +3,19 @@
 Functions tested: retrieve, compose, health, dialectic
 SLO: brief ≤1000ms p95
 """
-import sys
 import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 import time
-from proofpack.brief.retrieve import retrieve
+
 from proofpack.brief.compose import compose as compose_brief_raw
-from proofpack.brief.health import score_health as compute_decision_health
 from proofpack.brief.dialectic import dialectic as run_dialectic
+from proofpack.brief.health import score_health as compute_decision_health
+from proofpack.brief.retrieve import retrieve
 from proofpack.core.receipt import StopRule
+
 
 def compose_brief(evidence, tenant):
     """Wrapper that catches StopRule for empty evidence."""
@@ -105,7 +108,7 @@ class TestBriefHealth:
             {"strength": 0.9, "coverage": 0.8},
             {"strength": 0.85, "coverage": 0.75}
         ]
-        result = compute_decision_health(evidence, "tenant")
+        result = compute_decision_health(evidence, tenant_id="tenant")
 
         assert "receipt_type" in result, "Should return receipt"
         assert "strength" in result or "decision_health" in result, \
@@ -114,7 +117,7 @@ class TestBriefHealth:
     def test_health_strength_bounds(self):
         """Health strength should be bounded 0-1."""
         evidence = [{"strength": 0.9}]
-        result = compute_decision_health(evidence, "tenant")
+        result = compute_decision_health(evidence, tenant_id="tenant")
 
         strength = result.get("strength") or result.get("decision_health", {}).get("strength", 0.5)
         assert 0 <= strength <= 1, f"Strength {strength} out of bounds"

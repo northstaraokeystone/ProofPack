@@ -10,9 +10,8 @@ from dataclasses import dataclass
 
 from proofpack.core.receipt import emit_receipt
 
-from .registry import AgentState, get_agent
 from .lifecycle import transition_agent
-
+from .registry import AgentState, get_agent
 
 # Graduation thresholds (from constants.py - duplicated here for now)
 AGENT_ESCAPE_VELOCITY = 0.85

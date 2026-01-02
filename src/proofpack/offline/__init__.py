@@ -23,28 +23,28 @@ Usage:
     if sync.is_connected():
         sync.sync_queue()
 """
-from proofpack.offline.queue import (
-    enqueue_receipt,
-    get_queue_size,
-    get_local_merkle_root,
-    peek_queue,
-    get_sync_status,
-)
-from proofpack.offline.sync import (
-    is_connected,
-    sync_queue,
-    verify_sync,
-    clear_synced,
-)
 from proofpack.offline.merkle_local import (
     build_local_merkle,
     get_proof_path,
     verify_local_inclusion,
 )
+from proofpack.offline.queue import (
+    enqueue_receipt,
+    get_local_merkle_root,
+    get_queue_size,
+    get_sync_status,
+    peek_queue,
+)
 from proofpack.offline.reconnect import (
+    get_conflict_status,
     handle_reconnection,
     resolve_conflicts,
-    get_conflict_status,
+)
+from proofpack.offline.sync import (
+    clear_synced,
+    is_connected,
+    sync_queue,
+    verify_sync,
 )
 
 __all__ = [

@@ -1,6 +1,7 @@
 """Decision health scoring using Decision Health V2 formula."""
 import time
-from proofpack.core.receipt import emit_receipt, StopRule
+
+from proofpack.core.receipt import StopRule, emit_receipt
 
 HEALTH_SCHEMA = {
     "receipt_type": "health",
@@ -20,7 +21,8 @@ def _compute_strength(evidence: list) -> float:
     """Compute confidence-weighted score of supporting evidence."""
     if not evidence:
         return 0.0
-    total = sum(e.get("confidence", 0.5) for e in evidence)
+    # Check for 'confidence' first, then 'strength', default to 0.5
+    total = sum(e.get("confidence", e.get("strength", 0.5)) for e in evidence)
     return round(min(total / len(evidence), 1.0), 3)
 
 
@@ -40,12 +42,23 @@ def _compute_efficiency(brief: dict, ms_elapsed: int) -> float:
     return round(min(evidence_count / (ms_elapsed / 100), 1.0), 3)
 
 
-def score_health(brief: dict, thresholds: dict = None, tenant_id: str = "default") -> dict:
-    """Grade evidence quality using Decision Health V2."""
+def score_health(brief: dict | list, thresholds: dict = None, tenant_id: str = "default") -> dict:
+    """Grade evidence quality using Decision Health V2.
+
+    Args:
+        brief: Either a brief dict with 'supporting_evidence' key, or a list of evidence directly
+        thresholds: Optional threshold dict with min_strength, min_coverage, min_efficiency
+        tenant_id: Tenant isolation key
+    """
     t0 = time.time()
     thresholds = thresholds or DEFAULT_THRESHOLDS
 
-    evidence = brief.get("supporting_evidence", [])
+    # Handle both list (direct evidence) and dict (brief) inputs
+    if isinstance(brief, list):
+        evidence = brief
+        brief = {"supporting_evidence": evidence, "evidence_count": len(evidence)}
+    else:
+        evidence = brief.get("supporting_evidence", [])
     strength = _compute_strength(evidence)
     coverage = _compute_coverage(brief)
     ms_elapsed = int((time.time() - t0) * 1000) + 1  # Avoid division by zero

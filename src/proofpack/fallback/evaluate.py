@@ -7,9 +7,8 @@ Scores synthesis confidence and classifies as:
 
 Based on the Corrective RAG paper (arXiv:2401.15884v2).
 """
-from enum import Enum
 from dataclasses import dataclass
-from typing import Tuple
+from enum import Enum
 
 from proofpack.core.receipt import emit_receipt
 
@@ -39,7 +38,7 @@ def score(
     synthesis: dict,
     query: str = "",
     tenant_id: str = "default",
-) -> Tuple[Classification, float]:
+) -> tuple[Classification, float]:
     """Score synthesis confidence.
 
     Evaluates multiple factors:

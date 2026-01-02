@@ -3,15 +3,18 @@
 Functions tested: scan, classify, alert
 SLO: scan ≤100ms p95
 """
-import sys
 import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 import time
-from proofpack.detect.core import scan
+
 from proofpack.detect.anomaly import emit_anomaly
+from proofpack.detect.core import scan
 from proofpack.detect.drift import alert as drift_alert
 from proofpack.detect.resource import track_resources
+
 
 # Wrapper functions for test compatibility
 def scan_metrics(metrics, tenant_id="default"):

@@ -1,10 +1,11 @@
 """Anchor commands: hash, merkle, verify."""
+import json
 import sys
 import time
-import json
+
 import click
 
-from .output import success_box, error_box
+from .output import error_box, success_box
 
 
 @click.group()
@@ -52,7 +53,7 @@ def merkle(items: str | None, data: tuple):
         # Collect items
         item_list = []
         if items:
-            with open(items, 'r') as f:
+            with open(items) as f:
                 for line in f:
                     if line.strip():
                         try:
@@ -94,7 +95,7 @@ def verify(hash_value: str, root: str, proof: str | None):
         # Load proof path if provided
         proof_path = []
         if proof:
-            with open(proof, 'r') as f:
+            with open(proof) as f:
                 proof_path = json.load(f)
 
         result = verify_proof(hash_value, root, proof_path)

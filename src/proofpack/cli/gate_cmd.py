@@ -1,9 +1,10 @@
 """Gate commands: check, history."""
 import sys
 import time
+
 import click
 
-from .output import success_box, error_box
+from .output import error_box, success_box
 
 
 @click.group()
@@ -18,13 +19,8 @@ def check(action_id: str):
     """Show gate decision for an action."""
     t0 = time.perf_counter()
     try:
-        from gate.confidence import (
-            ActionPlan,
-            ContextState,
-            ReasoningHistory,
-            calculate_confidence
-        )
-        from gate.decision import gate_decision, GateThresholds
+        from gate.confidence import ActionPlan, ContextState, ReasoningHistory, calculate_confidence
+        from gate.decision import GateThresholds, gate_decision
 
         # Mock action data (would load from ledger in production)
         mock_plan = ActionPlan(

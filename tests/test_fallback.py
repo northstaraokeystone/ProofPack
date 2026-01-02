@@ -2,8 +2,8 @@
 
 Validates CRAG flow: evaluate, correct, merge.
 """
-from unittest.mock import patch
 from io import StringIO
+from unittest.mock import patch
 
 
 class TestFallbackEvaluate:
@@ -11,7 +11,7 @@ class TestFallbackEvaluate:
 
     def test_high_confidence_correct(self):
         """Test high confidence is classified as CORRECT."""
-        from proofpack.fallback.evaluate import score, Classification
+        from proofpack.fallback.evaluate import Classification, score
 
         synthesis = {
             "supporting_evidence": [
@@ -31,7 +31,7 @@ class TestFallbackEvaluate:
 
     def test_medium_confidence_ambiguous(self):
         """Test medium confidence is classified as AMBIGUOUS."""
-        from proofpack.fallback.evaluate import score, Classification
+        from proofpack.fallback.evaluate import Classification, score
 
         synthesis = {
             "supporting_evidence": [
@@ -50,7 +50,7 @@ class TestFallbackEvaluate:
 
     def test_low_confidence_incorrect(self):
         """Test low confidence is classified as INCORRECT."""
-        from proofpack.fallback.evaluate import score, Classification
+        from proofpack.fallback.evaluate import Classification, score
 
         synthesis = {
             "supporting_evidence": [],
@@ -151,7 +151,7 @@ class TestFallbackMerge:
 
     def test_augment_strategy(self):
         """Test AUGMENT merge strategy."""
-        from proofpack.fallback.merge import combine, MergeStrategy
+        from proofpack.fallback.merge import MergeStrategy, combine
         from proofpack.fallback.web import WebResult
 
         synthesis = {
@@ -182,7 +182,7 @@ class TestFallbackMerge:
 
     def test_replace_strategy(self):
         """Test REPLACE merge strategy."""
-        from proofpack.fallback.merge import combine, MergeStrategy
+        from proofpack.fallback.merge import MergeStrategy, combine
         from proofpack.fallback.web import WebResult
 
         synthesis = {"executive_summary": "Low quality internal"}
@@ -209,7 +209,7 @@ class TestFallbackMerge:
 
     def test_strategy_selection(self):
         """Test automatic strategy selection."""
-        from proofpack.fallback.merge import select_strategy, MergeStrategy
+        from proofpack.fallback.merge import MergeStrategy, select_strategy
 
         # High confidence -> AUGMENT
         strategy = select_strategy("CORRECT", 0.9, 5)
@@ -229,8 +229,8 @@ class TestCRAGFlow:
 
     def test_full_crag_flow(self):
         """Test complete CRAG: evaluate -> correct -> merge."""
-        from proofpack.fallback.evaluate import score, Classification
         from proofpack.fallback.correct import with_web
+        from proofpack.fallback.evaluate import Classification, score
         from proofpack.fallback.merge import combine_with_auto_strategy
 
         # Start with low-confidence synthesis

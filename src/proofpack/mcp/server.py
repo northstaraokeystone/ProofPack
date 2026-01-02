@@ -22,13 +22,12 @@ import json
 import logging
 import sys
 import time
-from typing import Optional
 
 from proofpack.core.receipt import emit_receipt
 
 from .auth import AuthHandler
-from .config import MCPConfig, DEFAULT_CONFIG
-from .tools import list_tools, execute_tool
+from .config import DEFAULT_CONFIG, MCPConfig
+from .tools import execute_tool, list_tools
 
 # Configure logging
 logging.basicConfig(
@@ -45,7 +44,7 @@ class MCPServer:
         self.config = config or DEFAULT_CONFIG
         self.auth_handler = AuthHandler(self.config)
         self._running = False
-        self._start_time: Optional[float] = None
+        self._start_time: float | None = None
         self._request_count = 0
         self._connections: dict[str, dict] = {}
 
@@ -261,7 +260,7 @@ class MCPServer:
 
 
 # Global server instance
-_server: Optional[MCPServer] = None
+_server: MCPServer | None = None
 
 
 def start_server(config: MCPConfig = None):
@@ -295,7 +294,7 @@ def stop_server():
         _server = None
 
 
-def get_server_status() -> Optional[dict]:
+def get_server_status() -> dict | None:
     """Get current server status."""
     if _server:
         return _server.get_status()

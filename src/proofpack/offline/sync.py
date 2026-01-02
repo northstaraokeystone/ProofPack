@@ -18,13 +18,12 @@ from datetime import datetime
 
 from proofpack.core.receipt import emit_receipt
 from proofpack.offline.queue import (
+    clear_queue,
     get_all_queued,
     get_local_merkle_root,
     get_queue_size,
-    clear_queue,
     mark_synced,
 )
-
 
 # Default ledger endpoint (configurable)
 DEFAULT_LEDGER_HOST = "localhost"
@@ -53,7 +52,7 @@ def is_connected(
         result = sock.connect_ex((host, port))
         sock.close()
         return result == 0
-    except (socket.error, OSError):
+    except OSError:
         return False
 
 

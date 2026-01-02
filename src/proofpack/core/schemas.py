@@ -9,7 +9,6 @@ Functions:
 """
 from .receipt import StopRule
 
-
 # Required fields for all receipt types
 REQUIRED_FIELDS = ["receipt_type", "ts", "tenant_id", "payload_hash"]
 

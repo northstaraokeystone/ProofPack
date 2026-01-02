@@ -16,14 +16,9 @@ import uuid
 from dataclasses import dataclass, field
 from typing import Literal
 
-from proofpack.core.receipt import emit_receipt, StopRule
-from proofpack.loop.src.quantum import (
-    FitnessDistribution,
-    Superposition,
-    sample_from_distributions
-)
+from proofpack.core.receipt import StopRule, emit_receipt
 from proofpack.loop.src.harvest import PatternEvidence
-
+from proofpack.loop.src.quantum import FitnessDistribution, Superposition, sample_from_distributions
 
 HelperState = Literal["SUPERPOSITION", "ACTIVE", "DORMANT", "TESTING"]
 

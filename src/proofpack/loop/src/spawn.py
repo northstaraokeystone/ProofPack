@@ -9,15 +9,14 @@ import math
 import time
 from dataclasses import dataclass
 
-from proofpack.core.receipt import emit_receipt, merkle
-from proofpack.core.receipt import dual_hash
+from proofpack.config.features import FEATURE_AUTO_SPAWN_ENABLED
 from proofpack.core.constants import (
     SPAWN_BASE_FORMULA,
     SPAWN_CONVERGENCE_MULTIPLIER,
     SPAWN_CONVERGENCE_THRESHOLD,
-    WOUND_SPAWN_THRESHOLD
+    WOUND_SPAWN_THRESHOLD,
 )
-from proofpack.config.features import FEATURE_AUTO_SPAWN_ENABLED
+from proofpack.core.receipt import dual_hash, emit_receipt, merkle
 
 
 @dataclass

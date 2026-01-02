@@ -1,5 +1,5 @@
 """Alert generation from classified anomalies per QED v7:289-290."""
-from proofpack.core.receipt import emit_receipt, dual_hash
+from proofpack.core.receipt import dual_hash, emit_receipt
 
 # Severity levels per QED v7:289-290
 SEVERITIES = ("low", "medium", "high", "critical")

@@ -6,8 +6,9 @@ Pass criteria:
 - Two approvals at 0.5 ≤ risk < 0.8
 - Observation period at risk ≥ 0.8
 """
-import sys
 import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from conftest import SimConfig, SimState

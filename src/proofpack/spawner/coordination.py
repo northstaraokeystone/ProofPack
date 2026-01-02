@@ -12,9 +12,8 @@ from enum import Enum
 
 from proofpack.core.receipt import emit_receipt
 
-from .registry import get_agent, get_agents_by_group, AgentState
 from .prune import prune_siblings
-
+from .registry import AgentState, get_agent, get_agents_by_group
 
 # Winning threshold
 SOLUTION_CONFIDENCE_THRESHOLD = 0.8
@@ -277,7 +276,7 @@ def timeout_group(
 
     Returns (final_status, receipt)
     """
-    from .prune import prune_agent, PruneReason
+    from .prune import PruneReason, prune_agent
 
     agents = get_agents_by_group(group_id)
 

@@ -8,10 +8,10 @@ Provides:
 """
 
 from .wrapper import (
-    wrap_inference,
     compute_model_hash,
     emit_inference_receipt,
     receipts_inference,
+    wrap_inference,
 )
 
 __all__ = [

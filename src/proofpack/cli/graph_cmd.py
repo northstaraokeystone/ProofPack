@@ -1,10 +1,11 @@
 """Graph commands: status, query, backfill, episode, visualize."""
+import json
 import sys
 import time
-import click
-import json
 
-from .output import success_box, error_box
+import click
+
+from .output import error_box, success_box
 
 
 @click.group()
@@ -18,8 +19,8 @@ def status():
     """Show node/edge counts and last sync."""
     try:
         from graph.backend import get_backend
-        from graph.sync import sync_status
         from graph.index import get_index_stats
+        from graph.sync import sync_status
 
         backend = get_backend()
         sync = sync_status()
@@ -196,7 +197,7 @@ def visualize(output_format: str, output: str, receipt_id: str):
     try:
         if receipt_id:
             # Export specific episode
-            from graph.episodic import extract_episode, episode_to_dot, episode_to_dict
+            from graph.episodic import episode_to_dict, episode_to_dot, extract_episode
 
             ep = extract_episode(receipt_id)
             if not ep:

@@ -5,19 +5,17 @@ Pass criteria:
 - Variance calculation is correct
 - Stability threshold works
 """
-import sys
 import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 import time
 
-from proofpack.simulation.simulate import simulate_action, Action
+from proofpack.core.constants import MONTE_CARLO_DEFAULT_SIMS, MONTE_CARLO_LATENCY_BUDGET_MS
+from proofpack.simulation.simulate import Action, simulate_action
+from proofpack.simulation.threshold import check_stability, is_stable
 from proofpack.simulation.variance import calculate_variance
-from proofpack.simulation.threshold import is_stable, check_stability
-from proofpack.core.constants import (
-    MONTE_CARLO_DEFAULT_SIMS,
-    MONTE_CARLO_LATENCY_BUDGET_MS
-)
 
 
 class TestMonteCarlo:

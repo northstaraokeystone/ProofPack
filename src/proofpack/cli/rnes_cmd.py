@@ -1,9 +1,11 @@
 """RNES compliance CLI commands."""
 import json
+
 import click
 
 from proofpack.privacy import check_rnes_compliance, prepare_for_audit
-from .output import print_json, print_error, print_success
+
+from .output import print_error, print_json, print_success
 
 
 @click.group()
@@ -20,7 +22,7 @@ def validate(receipt_file: str):
     RECEIPT_FILE: Path to receipt JSON file
     """
     try:
-        with open(receipt_file, 'r') as f:
+        with open(receipt_file) as f:
             receipt = json.load(f)
 
         level, violations = check_rnes_compliance(receipt)
@@ -46,7 +48,7 @@ def level(receipt_file: str):
     RECEIPT_FILE: Path to receipt JSON file
     """
     try:
-        with open(receipt_file, 'r') as f:
+        with open(receipt_file) as f:
             receipt = json.load(f)
 
         compliance_level, _ = check_rnes_compliance(receipt)
@@ -76,7 +78,7 @@ def audit(receipt_file: str, audit_level: str):
     RECEIPT_FILE: Path to receipt JSON file
     """
     try:
-        with open(receipt_file, 'r') as f:
+        with open(receipt_file) as f:
             receipt = json.load(f)
 
         audit_receipt = prepare_for_audit(receipt, audit_level)
@@ -100,7 +102,7 @@ def batch_validate(receipts_file: str, file_format: str):
     """
     try:
         receipts = []
-        with open(receipts_file, 'r') as f:
+        with open(receipts_file) as f:
             if file_format == 'jsonl':
                 for line in f:
                     if line.strip():

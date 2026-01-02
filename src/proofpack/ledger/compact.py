@@ -1,6 +1,7 @@
 """Compaction with invariant preservation."""
 from collections import defaultdict
-from .core import dual_hash, emit_receipt, merkle, StopRule
+
+from .core import StopRule, dual_hash, emit_receipt, merkle
 
 COMPACT_SCHEMA = {
     "receipt_type": "compaction_receipt",

@@ -8,9 +8,8 @@ Merge strategies:
 import time
 from dataclasses import dataclass
 from enum import Enum
-from typing import List
 
-from proofpack.core.receipt import emit_receipt, dual_hash
+from proofpack.core.receipt import dual_hash, emit_receipt
 
 from .web import WebResult
 
@@ -26,8 +25,8 @@ class MergeStrategy(Enum):
 class MergeResult:
     """Result of merging internal and web content."""
     merged_content: str
-    internal_receipt_ids: List[str]
-    web_sources: List[str]
+    internal_receipt_ids: list[str]
+    web_sources: list[str]
     strategy: MergeStrategy
     confidence_before: float
     confidence_after: float
@@ -36,7 +35,7 @@ class MergeResult:
 
 def combine(
     internal_synthesis: dict,
-    web_results: List[WebResult],
+    web_results: list[WebResult],
     strategy: MergeStrategy = MergeStrategy.AUGMENT,
     confidence_before: float = 0.5,
     tenant_id: str = "default",
@@ -106,7 +105,7 @@ def combine(
 
 def _merge_augment(
     internal: dict,
-    web_results: List[WebResult],
+    web_results: list[WebResult],
 ) -> str:
     """Augment internal synthesis with web context.
 
@@ -147,7 +146,7 @@ def _merge_augment(
 
 def _merge_replace(
     internal: dict,
-    web_results: List[WebResult],
+    web_results: list[WebResult],
 ) -> str:
     """Replace internal with web results.
 
@@ -176,7 +175,7 @@ def _merge_replace(
 
 def _merge_interleave(
     internal: dict,
-    web_results: List[WebResult],
+    web_results: list[WebResult],
 ) -> str:
     """Interleave internal and web by relevance.
 
@@ -255,7 +254,7 @@ def select_strategy(
 
 def combine_with_auto_strategy(
     internal_synthesis: dict,
-    web_results: List[WebResult],
+    web_results: list[WebResult],
     classification: str,
     confidence_before: float,
     tenant_id: str = "default",

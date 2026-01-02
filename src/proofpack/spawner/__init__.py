@@ -21,20 +21,20 @@ Constraints:
 - Every function emits receipt per CLAUDEME LAW_1
 """
 
-from .birth import spawn_for_gate, simulate_spawn
-from .lifecycle import AgentState, get_agent_state, transition_agent
-from .registry import (
-    register_agent,
-    get_active_agents,
-    get_population_count,
-    can_spawn,
-)
+from .birth import simulate_spawn, spawn_for_gate
+from .coordination import coordinate_siblings, declare_winner
 from .graduate import evaluate_graduation, promote_to_pattern
+from .lifecycle import AgentState, get_agent_state, transition_agent
+from .patterns import find_matching_pattern, store_pattern
 from .prune import prune_agent, prune_expired, prune_siblings
 from .recursion import can_spawn_child, get_lineage
-from .coordination import coordinate_siblings, declare_winner
-from .topology import classify_topology, TopologyClass
-from .patterns import store_pattern, find_matching_pattern
+from .registry import (
+    can_spawn,
+    get_active_agents,
+    get_population_count,
+    register_agent,
+)
+from .topology import TopologyClass, classify_topology
 
 __all__ = [
     # Birth

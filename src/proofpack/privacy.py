@@ -22,7 +22,6 @@ import json
 
 from proofpack.core.receipt import dual_hash, emit_receipt
 
-
 # Fields that must NEVER be redacted (required for RNES compliance)
 PROTECTED_FIELDS = frozenset([
     "receipt_type",

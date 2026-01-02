@@ -17,10 +17,10 @@ success_criteria:
 """
 
 import random
-from dataclasses import dataclass
-from typing import Callable
-
 import sys
+from collections.abc import Callable
+from dataclasses import dataclass
+
 sys.path.insert(0, '..')
 from conftest import SimConfig, SimState
 

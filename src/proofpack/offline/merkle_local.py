@@ -4,7 +4,6 @@ Builds and maintains Merkle trees for offline receipt batches,
 enabling proof of inclusion even before sync to main ledger.
 """
 import json
-from typing import Optional
 
 from proofpack.core.receipt import dual_hash
 
@@ -61,7 +60,7 @@ def build_local_merkle(receipts: list[dict]) -> dict:
 def get_proof_path(
     receipt_hash: str,
     merkle_tree: dict
-) -> Optional[list[dict]]:
+) -> list[dict] | None:
     """Get Merkle proof path for a specific receipt.
 
     Args:

@@ -3,7 +3,7 @@
 Blocks catastrophic actions BEFORE execution, not after.
 """
 from .confidence import calculate_confidence
-from .decision import gate_decision, GateDecision
+from .decision import GateDecision, gate_decision
 from .drift import measure_drift
 
 __all__ = [

@@ -1,14 +1,16 @@
 """Privacy CLI commands."""
 import json
+
 import click
 
 from proofpack.privacy import (
-    redact_receipt,
-    verify_redaction,
     get_public_view,
     prepare_for_audit,
+    redact_receipt,
+    verify_redaction,
 )
-from .output import print_json, print_error, print_success
+
+from .output import print_error, print_json, print_success
 
 
 @click.group()
@@ -32,7 +34,7 @@ def redact(receipt_file: str, fields: str, reason: str, output: str):
     RECEIPT_FILE: Path to receipt JSON file
     """
     try:
-        with open(receipt_file, 'r') as f:
+        with open(receipt_file) as f:
             receipt = json.load(f)
 
         fields_list = [f.strip() for f in fields.split(',')]
@@ -61,7 +63,7 @@ def verify(original_hash: str, redacted_file: str):
     REDACTED_FILE: Path to redacted receipt JSON file
     """
     try:
-        with open(redacted_file, 'r') as f:
+        with open(redacted_file) as f:
             redacted = json.load(f)
 
         is_valid = verify_redaction(original_hash, redacted)
@@ -94,7 +96,7 @@ def audit(receipt_file: str, audit_level: str):
     RECEIPT_FILE: Path to receipt JSON file
     """
     try:
-        with open(receipt_file, 'r') as f:
+        with open(receipt_file) as f:
             receipt = json.load(f)
 
         audit_view = prepare_for_audit(receipt, audit_level)
@@ -112,7 +114,7 @@ def public(receipt_file: str):
     RECEIPT_FILE: Path to receipt JSON file
     """
     try:
-        with open(receipt_file, 'r') as f:
+        with open(receipt_file) as f:
             receipt = json.load(f)
 
         public_view = get_public_view(receipt)
@@ -130,7 +132,7 @@ def status(receipt_file: str):
     RECEIPT_FILE: Path to receipt JSON file
     """
     try:
-        with open(receipt_file, 'r') as f:
+        with open(receipt_file) as f:
             receipt = json.load(f)
 
         result = {
