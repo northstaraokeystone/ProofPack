@@ -1,0 +1,98 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "proofpack"
+version = "0.3.2"
+description = "Receipts-native accountability infrastructure - cryptographic proof for every operation"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+authors = [
+    {name = "Northstar AO Keystone Research Lab", email = "research@northstarao.com"}
+]
+keywords = [
+    "receipts",
+    "accountability",
+    "cryptographic-proof",
+    "merkle-tree",
+    "fraud-detection",
+    "audit-trail",
+    "enterprise-governance",
+    "ai-safety"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Intended Audience :: Healthcare Industry",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Security :: Cryptography",
+    "Topic :: System :: Logging",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "click>=8.0",
+    "blake3>=0.3.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0.0",
+]
+graph = [
+    "networkx>=3.0",
+]
+mcp = [
+    "mcp>=0.1",
+]
+enterprise = [
+    "pandas>=2.0.0",
+    "matplotlib>=3.7.0",
+    "numpy>=1.24.0",
+    "scipy>=1.10.0",
+]
+all = [
+    "proofpack[dev,graph,mcp,enterprise]",
+]
+
+[project.scripts]
+proofpack = "proofpack.cli.main:cli"
+
+[project.urls]
+Homepage = "https://github.com/northstaraokeystone/ProofPack"
+Documentation = "https://github.com/northstaraokeystone/ProofPack/tree/main/docs"
+Repository = "https://github.com/northstaraokeystone/ProofPack"
+Issues = "https://github.com/northstaraokeystone/ProofPack/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+proofpack = ["schemas/**/*.json", "schemas/**/*.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+addopts = "-v --tb=short"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_ignores = true
