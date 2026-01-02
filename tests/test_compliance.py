@@ -23,24 +23,29 @@ import pytest
 PROOFPACK_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(PROOFPACK_ROOT))
 
-# Constants - Updated for flat architecture
+# Constants - Updated for src layout
+SRC_ROOT = PROOFPACK_ROOT / "src" / "proofpack"
 SRC_DIRS = [
-    PROOFPACK_ROOT / "core",
-    PROOFPACK_ROOT / "ledger",
-    PROOFPACK_ROOT / "anchor",
-    PROOFPACK_ROOT / "detect",
-    PROOFPACK_ROOT / "loop",
-    PROOFPACK_ROOT / "brief",
-    PROOFPACK_ROOT / "packet",
-    PROOFPACK_ROOT / "gate",
-    PROOFPACK_ROOT / "graph",
-    PROOFPACK_ROOT / "fallback",
-    PROOFPACK_ROOT / "mcp",
-    PROOFPACK_ROOT / "offline",
-    PROOFPACK_ROOT / "spawner",
-    PROOFPACK_ROOT / "monte_carlo",
-    PROOFPACK_ROOT / "enterprise",
-    PROOFPACK_ROOT / "qed_bridge",
+    SRC_ROOT / "core",
+    SRC_ROOT / "ledger",
+    SRC_ROOT / "anchor",
+    SRC_ROOT / "detect",
+    SRC_ROOT / "loop",
+    SRC_ROOT / "brief",
+    SRC_ROOT / "packet",
+    SRC_ROOT / "gate",
+    SRC_ROOT / "graph",
+    SRC_ROOT / "fallback",
+    SRC_ROOT / "mcp",
+    SRC_ROOT / "offline",
+    SRC_ROOT / "spawner",
+    SRC_ROOT / "simulation",  # renamed from monte_carlo
+    SRC_ROOT / "enterprise",
+    SRC_ROOT / "bridges",  # renamed from qed_bridge
+    SRC_ROOT / "config",
+    SRC_ROOT / "schemas",
+    SRC_ROOT / "cli",
+    SRC_ROOT,  # Root for economic.py, privacy.py, proof.py
 ]
 EMIT_RECEIPT_PATTERN = re.compile(r"\bemit_receipt\s*\(")
 LOGGER_PATTERN = re.compile(r"\b(logger\.|logging\.|print\s*\()")
@@ -171,7 +176,7 @@ class TestP2CryptographicLineage:
 
     def test_dual_hash_implementation(self):
         """Verify dual_hash() function exists and returns correct format."""
-        from core.receipt import dual_hash
+        from proofpack.core.receipt import dual_hash
 
         # Test dual_hash function
         test_data = b"test_payload"
@@ -196,7 +201,7 @@ class TestP2CryptographicLineage:
 
     def test_merkle_implementation(self):
         """Verify Merkle tree implementation exists and works."""
-        from core.receipt import merkle
+        from proofpack.core.receipt import merkle
 
         # Test merkle with sample receipts
         receipts = [
@@ -267,7 +272,7 @@ class TestP3VerifiableCausality:
 
     def test_decision_receipt_structure(self):
         """Verify decision-type receipts include input references."""
-        from proof import proof, ProofMode
+        from proofpack.proof import proof, ProofMode
 
         # Create a decision packet with receipts
         evidence = ["evidence1", "evidence2", "evidence3"]
@@ -294,7 +299,7 @@ class TestP3VerifiableCausality:
 
     def test_packet_attached_receipts(self):
         """Verify decision packets attach receipt hashes."""
-        from proof import proof, ProofMode
+        from proofpack.proof import proof, ProofMode
 
         # Create receipts
         receipts = [
@@ -327,7 +332,7 @@ class TestP3VerifiableCausality:
 
     def test_input_hash_verification(self):
         """Verify inputs are hashed before processing."""
-        from core.receipt import emit_receipt
+        from proofpack.core.receipt import emit_receipt
 
         # Emit a receipt and verify payload is hashed
         test_data = {"key": "value", "number": 42}
@@ -463,7 +468,7 @@ class TestP5ThermodynamicGovernance:
         print("\n=== P5: Entropy Calculation ===")
 
         try:
-            from loop.entropy import system_entropy
+            from proofpack.loop.entropy import system_entropy
 
             # Test entropy calculation
             receipts = [
@@ -495,7 +500,7 @@ class TestP5ThermodynamicGovernance:
         print("\n=== P5: Entropy Conservation ===")
 
         try:
-            from loop.entropy import entropy_conservation
+            from proofpack.loop.entropy import entropy_conservation
 
             cycle_receipts = {
                 "sensed": [{"receipt_type": "ingest"}, {"receipt_type": "anchor"}],
@@ -523,7 +528,7 @@ class TestP5ThermodynamicGovernance:
         """Verify StopRule exists and is used on violations."""
         print("\n=== P5: StopRule Implementation ===")
 
-        from core.receipt import StopRule
+        from proofpack.core.receipt import StopRule
 
         # Verify StopRule is an exception
         assert issubclass(StopRule, Exception), "FAIL: StopRule is not an Exception"
@@ -601,10 +606,9 @@ class TestP6ReceiptsGatedProgress:
         print(f"Gate shell scripts: {len(existing_scripts)}/3")
 
         # Check for gate module
-        gate_module = PROOFPACK_ROOT / "gate"
-        gate_proofpack = PROOFPACK_ROOT / "proofpack" / "gate"
+        gate_module = SRC_ROOT / "gate"
 
-        gate_exists = gate_module.exists() or (gate_proofpack.exists() if gate_proofpack else False)
+        gate_exists = gate_module.exists()
         print(f"Gate module exists: {gate_exists}")
 
         # Check for gate-related code
@@ -627,7 +631,7 @@ class TestP6ReceiptsGatedProgress:
         """Verify StopRule class is defined."""
         print("\n=== P6: StopRule Definition ===")
 
-        from core.receipt import StopRule
+        from proofpack.core.receipt import StopRule
 
         # Verify it's defined as Exception
         assert issubclass(StopRule, Exception), "FAIL: StopRule not an Exception"

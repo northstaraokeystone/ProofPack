@@ -1,57 +1,108 @@
 # ProofPack
 
-**Receipts all the way down.**
+**Receipts-Native Accountability Infrastructure**
 
-Pre-execution safety + cryptographic proof for AI agents.
+ProofPack is a system that keeps cryptographic receipts for everything. Every operation emits proof. Every decision is verifiable. No receipt → not real.
 
-```bash
-pip install -e .
-proof anchor hash "test data"   # Emit SHA256:BLAKE3 receipt
+[![CI](https://github.com/northstaraokeystone/ProofPack/actions/workflows/ci.yml/badge.svg)](https://github.com/northstaraokeystone/ProofPack/actions)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-yellow.svg)](https://opensource.org/licenses/Apache-2.0)
+
+## The Three Laws
+
+```python
+LAW_1 = "No receipt → not real"
+LAW_2 = "No test → not shipped"
+LAW_3 = "No gate → not alive"
 ```
 
----
+## Installation
+
+```bash
+pip install proofpack
+```
+
+Or from source:
+```bash
+git clone https://github.com/northstaraokeystone/ProofPack.git
+cd ProofPack
+pip install -e ".[dev]"
+```
 
 ## Quick Start
 
-```bash
-git clone https://github.com/northstaraokeystone/ProofPack && cd ProofPack
-pip install -e .
-python receipts/generate_fraud_receipts.py
-./receipts/reproduce_fraud.sh
+```python
+from proofpack import dual_hash, emit_receipt, StopRule
+
+# Hash data with dual SHA256:BLAKE3
+hash_value = dual_hash(b"my data")
+print(hash_value)  # sha256_hex:blake3_hex
+
+# Emit a receipt
+receipt = emit_receipt("ingest", {
+    "tenant_id": "my_tenant",
+    "payload": {"key": "value"}
+})
+print(receipt)
 ```
 
----
+## CLI Usage
 
-## Core Modules
+```bash
+# Show available commands
+proofpack --help
 
-| Module | Purpose |
-|--------|---------|
-| `core/` | Receipt primitives (dual_hash, emit_receipt, merkle, StopRule) |
-| `gate/` | Pre-execution gating (GREEN/YELLOW/RED decisions) |
-| `loop/` | Self-improving meta-layer (quantum cycles, wounds, spawn) |
-| `ledger/` | Receipt storage, compaction, verification |
-| `anchor/` | Merkle proof generation and verification |
-| `monte_carlo/` | Variance reduction via simulation |
-| `brief/` | Evidence synthesis and retrieval |
-| `detect/` | Anomaly and drift detection |
+# Ledger operations
+proofpack ledger ingest data.json --tenant my_tenant
+proofpack ledger verify receipt_123
 
-## Extended Modules
+# Gate decisions
+proofpack gate check --confidence 0.85
 
-| Module | Purpose |
-|--------|---------|
-| `proof.py` | Unified interface (BRIEF/PACKET/DETECT modes) |
-| `graph/` | Episodic memory graph with sync |
-| `mcp/` | Model Context Protocol server integration |
-| `offline/` | Disconnected operation + local sync |
-| `enterprise/` | Workflow DAG, sandbox, inference, plan approval |
-| `fallback/` | LLM fallback chain with receipts |
-| `qed_bridge/` | QED formal verification bridge |
-| `privacy.py` | Differential privacy primitives |
-| `economic.py` | Economic simulation and resource tracking |
+# Monte Carlo simulation
+proofpack monte run --scenario BASELINE
 
----
+# Anchor operations
+proofpack anchor prove --data "test"
+
+# MCP server
+proofpack mcp serve
+```
+
+Or run as a module:
+```bash
+python -m proofpack --help
+```
 
 ## Architecture
+
+```
+src/proofpack/
+├── core/           # Receipt primitives (dual_hash, emit_receipt, merkle, StopRule)
+├── ledger/         # Receipt storage, verification, compaction
+├── anchor/         # Cryptographic proofs with dual-hash Merkle trees
+├── detect/         # Anomaly detection, drift, resource monitoring
+├── gate/           # Pre-execution gating (GREEN/YELLOW/RED decisions)
+├── loop/           # Self-improving meta-layer (quantum cycles, wounds, spawn)
+├── spawner/        # Agent lifecycle (birth, graduation, pruning)
+├── simulation/     # Monte Carlo scenarios and variance reduction
+├── mcp/            # Model Context Protocol server integration
+├── enterprise/     # Workflow DAG, sandbox, inference, compliance
+├── graph/          # Temporal knowledge graph with episodic memory
+├── brief/          # Evidence synthesis and decision health
+├── packet/         # Claim-to-receipt mapping and audit
+├── fallback/       # LLM fallback chain with receipts
+├── bridges/        # External integrations (QED)
+├── offline/        # Disconnected operation + local sync
+├── config/         # Feature flags and allowlists
+├── schemas/        # JSON schemas and receipt definitions
+├── cli/            # Command-line interface
+├── proof.py        # Unified interface (BRIEF/PACKET/DETECT modes)
+├── privacy.py      # Differential privacy primitives
+└── economic.py     # Economic simulation and resource tracking
+```
+
+## Flow
 
 ```
 Action → Monte Carlo → Gate Decision
@@ -66,7 +117,7 @@ Action → Monte Carlo → Gate Decision
                Receipt emitted + anchored
 ```
 
-### Loop Meta-Layer (Quantum Edition)
+### Loop Meta-Layer
 
 ```
 Sense → Emit → Harvest → Genesis
@@ -75,72 +126,6 @@ Sense → Emit → Harvest → Genesis
 
 Wounds accumulate → Spawn helpers → Convergence proof
 ```
-
-The `loop/` module provides self-improvement capabilities:
-- **cycle.py**: Thermodynamic cycle management
-- **quantum.py**: Shannon entropy calculations
-- **wounds.py**: Confidence drop tracking (>15% = wound)
-- **spawn.py**: Auto-spawn helpers when stuck
-- **convergence.py**: Detect reasoning loops
-- **genesis.py**: Helper creation
-
----
-
-## Usage
-
-```python
-from core.receipt import dual_hash, emit_receipt, StopRule
-from gate import gate_decision
-from proof import proof, ProofMode
-from loop import META_LOOP
-
-# Gate a decision
-result, receipt = gate_decision(confidence_score=0.85)
-
-# Unified proof
-brief = proof(ProofMode.BRIEF, {"operation": "compose", "evidence": chunks})
-
-# Run meta-loop cycle
-cycle_result = META_LOOP.run_cycle(context)
-```
-
----
-
-## Structure
-
-```
-ProofPack/
-├── core/           # Receipt primitives (dual_hash, emit_receipt, merkle)
-├── gate/           # Pre-execution gating (confidence, decision, drift)
-├── loop/           # Self-improving meta-layer
-│   └── src/        # Quantum cycles, wounds, spawn, convergence
-├── ledger/         # Receipt storage + compaction
-├── anchor/         # Merkle proof generation
-├── monte_carlo/    # Variance reduction (simulate, threshold)
-├── brief/          # Evidence synthesis (compose, dialectic, retrieve)
-├── detect/         # Anomaly detection
-├── graph/          # Episodic memory (ingest, query, sync)
-├── mcp/            # MCP server integration
-├── offline/        # Disconnected operation + sync
-├── enterprise/     # Workflow DAG, sandbox, inference
-├── fallback/       # LLM fallback chains
-├── qed_bridge/     # QED formal verification
-├── proof.py        # Unified interface
-├── privacy.py      # Differential privacy
-├── economic.py     # Economic simulation
-├── proofpack_cli/  # CLI tools
-└── tests/          # Compliance tests
-```
-
----
-
-## Laws
-
-1. **No receipt → not real**
-2. **No test → not shipped**
-3. **No gate → not alive**
-
----
 
 ## Key Concepts
 
@@ -153,26 +138,39 @@ Exception that halts execution. Never catch silently.
 ### Entropy Conservation
 The loop module enforces thermodynamic laws - entropy cannot decrease without work.
 
----
+## Enterprise Features
 
-## Verify
+- **RACI Accountability**: Every receipt tracks Responsible, Accountable, Consulted, Informed
+- **Model Provenance**: Version tracking for all decision models
+- **Reason Codes**: Structured human intervention capture
+- **Compliance Reports**: DOD 3000.09, EU AI Act, FDA TPLC ready
+- **Workflow DAG**: Explicit execution visibility with 7-node graph
+- **Sandbox Execution**: Docker isolation with network allowlist
+
+## Testing
 
 ```bash
-pip install pytest blake3
+# Run all tests
+pytest tests/ -v
+
+# Run compliance tests
 pytest tests/test_compliance.py -v
 ```
 
----
-
 ## Documentation
 
-- [Receipt bundles](receipts/)
-- [RNES spec](standards/RNES_v1.md)
-- [CLAUDEME](CLAUDEME.md)
-- [Architecture details](docs/architecture.md)
-- [Roadmap](ROADMAP.md)
-- [Limitations](LIMITATIONS.md)
+- [CLAUDEME](CLAUDEME.md) - Self-describing execution standard
+- [ROADMAP](ROADMAP.md) - Development roadmap
+- [LIMITATIONS](LIMITATIONS.md) - Known limitations
+- [Architecture](docs/architecture.md) - Detailed architecture
+- [RNES Spec](docs/RNES_v1.md) - Receipts-Native specification
+
+## License
+
+Apache 2.0
 
 ---
 
-Apache 2.0
+*Built by Northstar AO Keystone Research Lab*
+
+*No receipt → not real. No test → not shipped. No gate → not alive.*
