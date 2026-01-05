@@ -169,6 +169,6 @@ Apache 2.0
 
 ---
 
-*Built by Northstar AO Keystone Research Lab*
+*Built by Keystone Research Lab*
 
 *No receipt → not real. No test → not shipped. No gate → not alive.*
