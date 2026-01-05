@@ -4,7 +4,6 @@
 
 ProofPack is a system that keeps cryptographic receipts for everything. Every operation emits proof. Every decision is verifiable. No receipt → not real.
 
-[![CI](https://github.com/northstaraokeystone/ProofPack/actions/workflows/ci.yml/badge.svg)](https://github.com/northstaraokeystone/ProofPack/actions)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-yellow.svg)](https://opensource.org/licenses/Apache-2.0)
 
