@@ -159,7 +159,6 @@ pytest tests/test_compliance.py -v
 ## Documentation
 
 - [CLAUDEME](CLAUDEME.md) - Self-describing execution standard
-- [ROADMAP](ROADMAP.md) - Development roadmap
 - [LIMITATIONS](LIMITATIONS.md) - Known limitations
 - [Architecture](docs/architecture.md) - Detailed architecture
 - [RNES Spec](docs/RNES_v1.md) - Receipts-Native specification
